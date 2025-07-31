@@ -1,7 +1,7 @@
 # Introduction
 
 This package provides the connector for Magento 2 to integrate with the MageProxy platform for optimized JavaScript bundling, minification and more... To
-find out more, visit our website at [https://mageproxy.com](https://mageproxy.io).
+find out more, visit our website at [https://mageproxy.io](https://mageproxy.io).
 
 # Installation
 
@@ -12,7 +12,7 @@ bin/magento setup:upgrade
 
 # Credentials
 
-The extension requires a Service ID and API key to integrate with our platform. Sign up for an account at [https://mageproxy.com](https://mageproxy.com) to obtain these credentials.
+The extension requires a Service ID and API key to integrate with our platform. Sign up for an account at [https://mageproxy.io](https://mageproxy.io) to obtain these credentials.
 
 # System Requirements
 
@@ -21,7 +21,7 @@ The extension requires a Service ID and API key to integrate with our platform. 
 
 # Usage
 
-See our dedicated documentation for detailed usage instructions: [https://docs.mageproxy.com](https://docs.mageproxy.com).
+See our dedicated documentation for detailed usage instructions: [https://mageproxy.io/docs](https://mageproxy.io/docs).
 
 # Tests
 
