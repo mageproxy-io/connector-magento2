@@ -1,0 +1,16 @@
+<?xml version="1.0" ?>
+<!--
+  ~ Mageproxy Connector for Magento2.
+  ~
+  ~ @package    Mageproxy_Connector
+  ~ @copyright  Copyright (c) 2025 Iframe Co Ltd
+  ~ @license    See LICENSE.txt for license details
+  -->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="admin_system_config_changed_section_mageproxy_connector">
+        <observer name="mageproxy_validate_config_changes" instance="Mageproxy\Connector\Observer\ValidateConfigChanges" />
+    </event>
+    <event name="controller_action_predispatch_mageproxy">
+        <observer name="mageproxy_controller_predispatch" instance="Mageproxy\Connector\Observer\Adminhtml\ControllerPreDispatch"/>
+    </event>
+</config>

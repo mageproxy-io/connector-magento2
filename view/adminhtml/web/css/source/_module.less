@@ -1,0 +1,88 @@
+/*
+ * Mageproxy Connector for Magento2.
+ *
+ * @package    Mageproxy_Connector
+ * @copyright  Copyright (c) 2025 Iframe Co Ltd
+ * @license    See LICENSE.txt for license details
+ */
+
+@recording-status-running-color: #185b00;
+@recording-status-running-background-color: #d0e5a9;
+@recording-status-running-border: #5b8116;
+
+@recording-status-error-color: @color-tomato-brick;
+@recording-status-error-background-color: #f9d4d4;
+@recording-status-error-border: @recording-status-error-color;
+
+@recording-status-pending-color: @color-brownie;
+@recording-status-pending-background-color: @color-gray89;
+@recording-status-pending-border: @color-gray68;
+
+@recording-status-stopped-color: #eb5202;
+@recording-status-stopped-background-color: #feeee1;
+@recording-status-stopped-border: @recording-status-stopped-color;
+
+@recording-status-finished-color: #31339e;
+@recording-status-finished-background-color: lighten(@recording-status-finished-color, 50%);
+@recording-status-finished-border: #17198b;
+
+/* grid styles */
+.grid-recording-status-running {
+    .recording-status(running);
+    width: 100%;
+}
+.grid-recording-status-finished {
+    .recording-status(finished);
+    width: 100%;
+}
+.grid-recording-status-error {
+    .recording-status(error);
+    width: 100%;
+}
+.grid-recording-status-pending {
+    .recording-status(pending);
+    width: 100%;
+}
+.grid-recording-status-stopped {
+    .recording-status(stopped);
+    width: 100%;
+}
+
+/* form styles */
+.form-recording-status-finished {
+    .recording-status(finished);
+}
+.form-recording-status-stopped {
+    .recording-status(stopped);
+}
+.form-recording-status-running {
+    .recording-status(running);
+}
+.form-recording-status-pending {
+    .recording-status(pending);
+}
+.form-recording-status-error {
+    .recording-status(error);
+}
+
+.recording-status(@status) {
+    background-color: ~"@{recording-status-@{status}-background-color}";
+    color: ~"@{recording-status-@{status}-color}";
+    border-color: ~"@{recording-status-@{status}-border}";
+    border-width: @border-width__base;
+    border-style: solid;
+    font-weight: @font-weight__bold;
+    padding: @button-primary__padding;
+    display: inline-block;
+    text-align: center;
+}
+
+.admin__field.duration {
+    .admin__control-addon {
+        gap: 5px;
+    }
+
+    .admin__addon-suffix {
+        color: inherit;
+    }
+}

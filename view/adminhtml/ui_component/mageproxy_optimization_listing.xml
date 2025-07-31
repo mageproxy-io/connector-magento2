@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Mageproxy Connector for Magento2.
+  ~
+  ~ @package    Mageproxy_Connector
+  ~ @copyright  Copyright (c) 2025 Iframe Co Ltd
+  ~ @license    See LICENSE.txt for license details
+  -->
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">mageproxy_optimization_listing.mageproxy_optimization_listing_data_source</item>
+        </item>
+    </argument>
+    <settings>
+        <spinner>mageproxy_optimization_listing_columns</spinner>
+        <deps>
+            <dep>mageproxy_optimization_listing.mageproxy_optimization_listing_data_source</dep>
+        </deps>
+        <buttons/>
+    </settings>
+    <dataSource name="mageproxy_optimization_listing_data_source" component="Magento_Ui/js/grid/provider">
+        <settings>
+            <storageConfig>
+                <param name="indexField" xsi:type="string">optimization_id</param>
+            </storageConfig>
+            <updateUrl path="mui/index/render"/>
+        </settings>
+        <dataProvider class="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider" name="mageproxy_optimization_listing_data_source">
+            <settings>
+                <requestFieldName>id</requestFieldName>
+                <primaryFieldName>optimization_id</primaryFieldName>
+            </settings>
+        </dataProvider>
+    </dataSource>
+    <listingToolbar name="listing_top">
+        <columnsControls name="columns_controls"/>
+        <filters name="listing_filters"/>
+        <paging name="listing_paging"/>
+    </listingToolbar>
+    <columns name="mageproxy_optimization_listing_columns">
+        <column name="optimization_id" sortOrder="0">
+            <settings>
+                <filter>textRange</filter>
+                <label translate="true">ID</label>
+            </settings>
+        </column>
+        <column name="uuid" sortOrder="10">
+            <settings>
+                <label translate="true">UUID</label>
+            </settings>
+        </column>
+        <column name="requested_at" class="Magento\Ui\Component\Listing\Columns\Date" component="Magento_Ui/js/grid/columns/date" sortOrder="20">
+            <settings>
+                <filter>dateRange</filter>
+                <dataType>date</dataType>
+                <label translate="true">Requested At</label>
+            </settings>
+        </column>
+        <column name="deployed_at" class="Magento\Ui\Component\Listing\Columns\Date" component="Magento_Ui/js/grid/columns/date" sortOrder="25">
+            <settings>
+                <filter>dateRange</filter>
+                <dataType>date</dataType>
+                <label translate="true">Deployed At</label>
+            </settings>
+        </column>
+        <column name="reverted_at" class="Magento\Ui\Component\Listing\Columns\Date" component="Magento_Ui/js/grid/columns/date" sortOrder="25">
+            <settings>
+                <filter>dateRange</filter>
+                <dataType>date</dataType>
+                <label translate="true">Reverted At</label>
+            </settings>
+        </column>
+        <column name="minify_js" sortOrder="30" component="Magento_Ui/js/grid/columns/select">
+            <settings>
+                <label translate="true">Minify JS</label>
+                <dataType>select</dataType>
+                <options>
+                    <option name="0" xsi:type="array">
+                        <item name="value" xsi:type="string">0</item>
+                        <item name="label" xsi:type="string" translate="true">No</item>
+                    </option>
+                    <option name="1" xsi:type="array">
+                        <item name="value" xsi:type="string">1</item>
+                        <item name="label" xsi:type="string" translate="true">Yes</item>
+                    </option>
+                </options>
+            </settings>
+        </column>
+        <column name="minify_html" sortOrder="40" component="Magento_Ui/js/grid/columns/select">
+            <settings>
+                <label translate="true">Minify Html</label>
+                <dataType>select</dataType>
+                <options>
+                    <option name="0" xsi:type="array">
+                        <item name="value" xsi:type="string">0</item>
+                        <item name="label" xsi:type="string" translate="true">No</item>
+                    </option>
+                    <option name="1" xsi:type="array">
+                        <item name="value" xsi:type="string">1</item>
+                        <item name="label" xsi:type="string" translate="true">Yes</item>
+                    </option>
+                </options>
+            </settings>
+        </column>
+        <column name="deps_cnt" sortOrder="50">
+            <settings>
+                <label translate="true">Dependency Count</label>
+            </settings>
+        </column>
+        <column name="recording_checksum" sortOrder="60">
+            <settings>
+                <label translate="true">Checksum</label>
+            </settings>
+        </column>
+        <column name="requested_by" sortOrder="70">
+            <settings>
+                <label translate="true">Requested By</label>
+            </settings>
+        </column>
+        <column name="status" component="Magento_Ui/js/grid/columns/select" sortOrder="80">
+            <settings>
+                <label translate="true">Status</label>
+                <filter>select</filter>
+                <dataType>select</dataType>
+                <options class="\Mageproxy\Connector\Model\Optimization\Source\Status"/>
+            </settings>
+        </column>
+        <actionsColumn name="actions" class="Mageproxy\Connector\Ui\Component\Listing\Column\OptimizationActions" sortOrder="100">
+            <settings>
+                <indexField>optimization_id</indexField>
+            </settings>
+        </actionsColumn>
+    </columns>
+</listing>

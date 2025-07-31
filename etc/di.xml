@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  ~ Mageproxy Connector for Magento2.
+  ~
+  ~ @package    Mageproxy_Connector
+  ~ @copyright  Copyright (c) 2025 Iframe Co Ltd
+  ~ @license    See LICENSE.txt for license details
+  -->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Mageproxy\Connector\Api\Data\RecordingInterface" type="Mageproxy\Connector\Model\Recording"/>
+    <preference for="Mageproxy\Connector\Api\Data\DependencyInterface" type="Mageproxy\Connector\Model\Dependency"/>
+    <preference for="Mageproxy\Connector\Api\Data\OptimizationInterface" type="Mageproxy\Connector\Model\Optimization"/>
+    <preference for="Mageproxy\Connector\Api\Data\RecordingSearchResultsInterface" type="Mageproxy\Connector\Model\RecordingSearchResults"/>
+    <preference for="Mageproxy\Connector\Api\Data\OptimizationBundleInterface" type="Mageproxy\Connector\Model\Optimization\Bundle"/>
+    <preference for="Mageproxy\Connector\Api\Data\OptimizationBundleSearchResultsInterface" type="Mageproxy\Connector\Model\Optimization\BundleSearchResults"/>
+    <preference for="Mageproxy\Connector\Api\Data\OptimizationSearchResultsInterface" type="Mageproxy\Connector\Model\OptimizationSearchResults"/>
+    <preference for="Mageproxy\Connector\Api\RecordingRepositoryInterface" type="Mageproxy\Connector\Model\RecordingRepository"/>
+    <preference for="Mageproxy\Connector\Api\RecordingManagerInterface" type="Mageproxy\Connector\Model\RecordingManager"/>
+    <preference for="Mageproxy\Connector\Api\OptimizationManagerInterface" type="Mageproxy\Connector\Model\OptimizationManager"/>
+    <preference for="Mageproxy\Connector\Api\OptimizationRepositoryInterface" type="Mageproxy\Connector\Model\OptimizationRepository"/>
+    <preference for="Mageproxy\Connector\Api\OptimizationBundleRepositoryInterface" type="Mageproxy\Connector\Model\Optimization\BundleRepository"/>
+    <preference for="Mageproxy\Connector\Api\Data\OptimizationTemplateInterface" type="Mageproxy\Connector\Model\Optimization\Template"/>
+    <preference for="Mageproxy\Connector\Api\OptimizationTemplateRepositoryInterface" type="Mageproxy\Connector\Model\Optimization\TemplateRepository"/>
+    <preference for="Mageproxy\Connector\Api\Data\OptimizationTemplateSearchResultsInterface" type="Mageproxy\Connector\Model\Optimization\TemplateSearchResults"/>
+    <preference for="Mageproxy\Connector\Model\ApiClient\PostOptimizeRecordingRequestInterface" type="Mageproxy\Connector\Model\ApiClient\PostOptimizeRecordingRequest"/>
+    <preference for="Mageproxy\Connector\Model\ApiClient\PostOptimizeRecordingInterface" type="Mageproxy\Connector\Model\ApiClient\PostOptimizeRecording"/>
+    <preference for="Mageproxy\Connector\Model\ApiClient\PostOptimizeRecordingResponseInterface" type="Mageproxy\Connector\Model\ApiClient\PostOptimizeRecordingResponse"/>
+    <preference for="Mageproxy\Connector\Model\ApiClient\GetRecordingJsDepsInterface" type="Mageproxy\Connector\Model\ApiClient\GetRecordingJsDeps"/>
+    <preference for="Mageproxy\Connector\Model\ApiClient\PostNewRecordingInterface" type="Mageproxy\Connector\Model\ApiClient\PostNewRecording"/>
+    <preference for="Mageproxy\Connector\Model\ApiClient\PostNewRecordingResponseInterface" type="Mageproxy\Connector\Model\ApiClient\PostNewRecordingResponse"/>
+    <preference for="Mageproxy\Connector\Model\ApiClient\PostNewRecordingRequestInterface" type="Mageproxy\Connector\Model\ApiClient\PostNewRecordingRequest"/>
+    <preference for="Mageproxy\Connector\Model\ApiClient\GetOptimizationInterface" type="Mageproxy\Connector\Model\ApiClient\GetOptimization"/>
+    <preference for="Mageproxy\Connector\Model\ApiClient\GetOptimizationResponseInterface" type="Mageproxy\Connector\Model\ApiClient\GetOptimizationResponse"/>
+    <preference for="Mageproxy\Connector\Model\ApiClient\DistributionInterface" type="Mageproxy\Connector\Model\ApiClient\Distribution"/>
+    <preference for="Mageproxy\Connector\Model\ApiClient\OptimizationBundleInterface" type="Mageproxy\Connector\Model\ApiClient\OptimizationBundle"/>
+    <preference for="Mageproxy\Connector\Model\ApiClient\GetServiceInterface" type="Mageproxy\Connector\Model\ApiClient\GetService"/>
+    <preference for="Mageproxy\Connector\Model\ApiClient\GetServiceResponseInterface" type="Mageproxy\Connector\Model\ApiClient\GetServiceResponse"/>
+    <preference for="Mageproxy\Connector\Model\ApiClient\Auth\AuthStrategyInterface" type="Mageproxy\Connector\Model\ApiClient\Auth\ApiKey"/>
+    <preference for="Mageproxy\Connector\Model\ApiClient\GetRecordingJsDepsCountTsInterface" type="Mageproxy\Connector\Model\ApiClient\GetRecordingJsDepsCountTs"/>
+    <preference for="Mageproxy\Connector\Model\ApiClient\PostOptimizationDeployInterface" type="Mageproxy\Connector\Model\ApiClient\PostOptimizationDeploy"/>
+    <preference for="Mageproxy\Connector\Model\ApiClient\PostOptimizationRevertInterface" type="Mageproxy\Connector\Model\ApiClient\PostOptimizationRevert"/>
+    <preference for="Mageproxy\Connector\Model\ApiClient\GetRecordingJsDepsCountInterface" type="Mageproxy\Connector\Model\ApiClient\GetRecordingJsDepsCount"/>
+    <preference for="Mageproxy\Connector\Model\ApiClient\GetRecordingJsDepsCountResponseInterface" type="Mageproxy\Connector\Model\ApiClient\GetRecordingJsDepsCountResponse"/>
+    <preference for="Mageproxy\Connector\Model\ApiClient\PostRecordingStartInterface" type="Mageproxy\Connector\Model\ApiClient\PostRecordingStart"/>
+    <preference for="Mageproxy\Connector\Model\ApiClient\GetRecordingSnapshotInterface" type="Mageproxy\Connector\Model\ApiClient\GetRecordingSnapshot"/>
+    <preference for="Mageproxy\Connector\Model\ApiClient\GetRecordingSnapshotResponseInterface" type="Mageproxy\Connector\Model\ApiClient\GetRecordingSnapshotResponse"/>
+    <preference for="Mageproxy\Connector\Model\Optimization\Source\ChunkSizeSourceInterface" type="Mageproxy\Connector\Model\Optimization\Source\ChunkSize"/>
+
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="mageproxy_optimization_listing_data_source" xsi:type="string">Mageproxy\Connector\Ui\DataProvider\Listing\OptimizationDataProvider</item>
+                <item name="mageproxy_recording_listing_data_source" xsi:type="string">Mageproxy\Connector\Ui\DataProvider\Listing\RecordingDataProvider</item>
+                <item name="mageproxy_dependency_listing_data_source" xsi:type="string">Mageproxy\Connector\Ui\DataProvider\Listing\DependencyDataProvider</item>
+                <item name="mageproxy_dependency_listing_modal_data_source" xsi:type="string">Mageproxy\Connector\Ui\DataProvider\Listing\DependencyModalDataProvider</item>
+                <item name="mageproxy_dependency_listing_modal_remove_data_source" xsi:type="string">Mageproxy\Connector\Ui\DataProvider\Listing\DependencyModalDataProvider</item>
+                <item name="mageproxy_pagehandle_listing_modal_data_source" xsi:type="string">Mageproxy\Connector\Ui\DataProvider\Listing\PageHandleModalDataProvider</item>
+                <item name="mageproxy_bundle_listing_data_source" xsi:type="string">Mageproxy\Connector\Ui\DataProvider\Listing\BundleDataProvider</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Mageproxy\Connector\Model\ConfigValidator">
+        <arguments>
+            <argument name="validators" xsi:type="array">
+                <item name="devJsConfig" xsi:type="object">Mageproxy\Connector\Model\Config\DevJsConfigValidator</item>
+                <item name="deploymentMode" xsi:type="object">Mageproxy\Connector\Model\Config\DeploymentModeValidator</item>
+                <item name="serviceId" xsi:type="object">Mageproxy\Connector\Model\Config\ServiceIdValidator</item>
+                <item name="staticSign" xsi:type="object">Mageproxy\Connector\Model\Config\StaticSignValidator</item>
+            </argument>
+        </arguments>
+    </type>
+    <!-- API Adapters -->
+    <virtualType name="GetServiceAdapter" type="Mageproxy\Connector\Model\ApiClient\Adapter">
+        <arguments>
+            <argument name="responseFactory" xsi:type="object">GetServiceResponseFactory</argument>
+            <argument name="endpointConfigPath" xsi:type="const">Mageproxy\Connector\Model\Config::XML_PATH_API_PATH_GET_SERVICE</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="GetServiceResponseFactory" type="Mageproxy\Connector\Model\ApiClient\ResponseFactory">
+        <arguments>
+            <argument name="instanceName" xsi:type="string">Mageproxy\Connector\Model\ApiClient\GetServiceResponseInterface</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="PostRecordingResponseFactory" type="Mageproxy\Connector\Model\ApiClient\ResponseFactory">
+        <arguments>
+            <argument name="instanceName" xsi:type="string">Mageproxy\Connector\Model\ApiClient\PostNewRecordingResponseInterface</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="PostNewRecordingAdapter" type="Mageproxy\Connector\Model\ApiClient\Adapter">
+        <arguments>
+            <argument name="responseFactory" xsi:type="object">PostRecordingResponseFactory</argument>
+            <argument name="endpointConfigPath" xsi:type="const">Mageproxy\Connector\Model\Config::XML_PATH_API_PATH_NEW_RECORDING</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="GetRecordingJsDepsAdapter" type="Mageproxy\Connector\Model\ApiClient\Adapter">
+        <arguments>
+            <argument name="endpointConfigPath" xsi:type="const">Mageproxy\Connector\Model\Config::XML_PATH_API_PATH_GET_RECORDING_DEPS</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="PostOptimizeRecordingAdapter" type="Mageproxy\Connector\Model\ApiClient\Adapter">
+        <arguments>
+            <argument name="endpointConfigPath" xsi:type="const">Mageproxy\Connector\Model\Config::XML_PATH_API_PATH_RECORDING_OPTIMIZE</argument>
+            <argument name="responseFactory" xsi:type="object">PostOptimizeRecordingResponseFactory</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="PostOptimizeRecordingResponseFactory" type="Mageproxy\Connector\Model\ApiClient\ResponseFactory">
+        <arguments>
+            <argument name="instanceName" xsi:type="string">Mageproxy\Connector\Model\ApiClient\PostOptimizeRecordingResponseInterface</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="GetOptimizationResponseFactory" type="Mageproxy\Connector\Model\ApiClient\ResponseFactory">
+        <arguments>
+            <argument name="instanceName" xsi:type="string">Mageproxy\Connector\Model\ApiClient\GetOptimizationResponseInterface</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="GetOptimizationAdapter" type="Mageproxy\Connector\Model\ApiClient\Adapter">
+        <arguments>
+            <argument name="endpointConfigPath" xsi:type="const">Mageproxy\Connector\Model\Config::XML_PATH_API_PATH_GET_OPTIMIZATION</argument>
+            <argument name="responseFactory" xsi:type="object">GetOptimizationResponseFactory</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="GetRecordingJsDepsCountTsAdapter" type="Mageproxy\Connector\Model\ApiClient\Adapter">
+        <arguments>
+            <argument name="endpointConfigPath" xsi:type="const">Mageproxy\Connector\Model\Config::XML_PATH_API_PATH_GET_RECORDING_DEPS_CNT_TS</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="PostOptimizationDeployAdapter" type="Mageproxy\Connector\Model\ApiClient\Adapter">
+        <arguments>
+            <argument name="endpointConfigPath" xsi:type="const">Mageproxy\Connector\Model\Config::XML_PATH_API_PATH_POST_OPTIMIZATION_DEPLOY</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="PostOptimizationRevertAdapter" type="Mageproxy\Connector\Model\ApiClient\Adapter">
+        <arguments>
+            <argument name="endpointConfigPath" xsi:type="const">Mageproxy\Connector\Model\Config::XML_PATH_API_PATH_POST_OPTIMIZATION_REVERT</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="GetRecordingJsDepsCountAdapter" type="Mageproxy\Connector\Model\ApiClient\Adapter">
+        <arguments>
+            <argument name="responseFactory" xsi:type="object">GetRecordingJsDepsCountResponseFactory</argument>
+            <argument name="endpointConfigPath" xsi:type="const">Mageproxy\Connector\Model\Config::XML_PATH_API_PATH_GET_RECORDING_DEPS_CNT</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="GetRecordingJsDepsCountResponseFactory" type="Mageproxy\Connector\Model\ApiClient\ResponseFactory">
+        <arguments>
+            <argument name="instanceName" xsi:type="string">Mageproxy\Connector\Model\ApiClient\GetRecordingJsDepsCountResponseInterface</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="PostRecordingStartAdapter" type="Mageproxy\Connector\Model\ApiClient\Adapter">
+        <arguments>
+            <argument name="endpointConfigPath" xsi:type="const">Mageproxy\Connector\Model\Config::XML_PATH_API_PATH_POST_RECORDING_START</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="GetRecordingSnapshotAdapter" type="Mageproxy\Connector\Model\ApiClient\Adapter">
+        <arguments>
+            <argument name="responseFactory" xsi:type="object">GetRecordingSnapshotResponseFactory</argument>
+            <argument name="endpointConfigPath" xsi:type="const">Mageproxy\Connector\Model\Config::XML_PATH_API_PATH_GET_RECORDING_SNAPSHOT</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="GetRecordingSnapshotResponseFactory" type="Mageproxy\Connector\Model\ApiClient\ResponseFactory">
+        <arguments>
+            <argument name="instanceName" xsi:type="string">Mageproxy\Connector\Model\ApiClient\GetRecordingSnapshotResponseInterface</argument>
+        </arguments>
+    </virtualType>
+    <!-- API commands -->
+    <type name="Mageproxy\Connector\Model\ApiClient\GetService">
+        <arguments>
+            <argument name="adapter" xsi:type="object">GetServiceAdapter</argument>
+        </arguments>
+    </type>
+    <type name="Mageproxy\Connector\Model\ApiClient\PostNewRecording">
+        <arguments>
+            <argument name="adapter" xsi:type="object">PostNewRecordingAdapter</argument>
+        </arguments>
+    </type>
+    <type name="Mageproxy\Connector\Model\ApiClient\GetOptimization">
+        <arguments>
+            <argument name="adapter" xsi:type="object">GetOptimizationAdapter</argument>
+        </arguments>
+    </type>
+    <type name="Mageproxy\Connector\Model\ApiClient\GetRecordingJsDeps">
+        <arguments>
+            <argument name="adapter" xsi:type="object">GetRecordingJsDepsAdapter</argument>
+        </arguments>
+    </type>
+    <type name="Mageproxy\Connector\Model\ApiClient\PostOptimizeRecording">
+        <arguments>
+            <argument name="adapter" xsi:type="object">PostOptimizeRecordingAdapter</argument>
+        </arguments>
+    </type>
+    <type name="Mageproxy\Connector\Model\ApiClient\GetRecordingJsDepsCountTs">
+        <arguments>
+            <argument name="adapter" xsi:type="object">GetRecordingJsDepsCountTsAdapter</argument>
+        </arguments>
+    </type>
+    <type name="Mageproxy\Connector\Model\ApiClient\PostOptimizationDeploy">
+        <arguments>
+            <argument name="adapter" xsi:type="object">PostOptimizationDeployAdapter</argument>
+        </arguments>
+    </type>
+    <type name="Mageproxy\Connector\Model\ApiClient\PostOptimizationRevert">
+        <arguments>
+            <argument name="adapter" xsi:type="object">PostOptimizationRevertAdapter</argument>
+        </arguments>
+    </type>
+    <type name="Mageproxy\Connector\Model\ApiClient\GetRecordingJsDepsCount">
+        <arguments>
+            <argument name="adapter" xsi:type="object">GetRecordingJsDepsCountAdapter</argument>
+        </arguments>
+    </type>
+    <type name="Mageproxy\Connector\Model\ApiClient\PostRecordingStart">
+        <arguments>
+            <argument name="adapter" xsi:type="object">PostRecordingStartAdapter</argument>
+        </arguments>
+    </type>
+    <type name="Mageproxy\Connector\Model\ApiClient\GetRecordingSnapshot">
+        <arguments>
+            <argument name="adapter" xsi:type="object">GetRecordingSnapshotAdapter</argument>
+        </arguments>
+    </type>
+    <!-- Override deployment -->
+    <preference for="Magento\RequireJs\Model\FileManager" type="Mageproxy\Connector\Model\Asset\FileManager"/>
+    <preference for="Magento\Framework\RequireJs\Config" type="Mageproxy\Connector\Model\Asset\RequireJsConfig"/>
+    <preference for="Magento\Deploy\Service\DeployRequireJsConfig" type="Mageproxy\Connector\Model\Asset\DeployRequireJsConfig"/>
+    <preference for="Magento\Framework\App\View\Asset\Publisher" type="Mageproxy\Connector\Model\Asset\Publisher"/>
+    <preference for="Magento\Framework\View\Asset\File" type="Mageproxy\Connector\Model\Asset\FileEx"/>
+</config>

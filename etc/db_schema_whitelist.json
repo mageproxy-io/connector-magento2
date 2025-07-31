@@ -1,0 +1,122 @@
+{
+    "mageproxy_recording": {
+        "column": {
+            "recording_id": true,
+            "uuid": true,
+            "scheduled_at": true,
+            "started_at": true,
+            "duration": true,
+            "status": true,
+            "store_id": true,
+            "include_timestamp": true,
+            "finished_at": true,
+            "deps_cnt": true,
+            "start_count": true,
+            "static_version": true,
+            "initiator": true,
+            "record_schedule": true,
+            "error_msg": true,
+            "created_at": true,
+            "hdls_cnt": true,
+            "auto_run_type": true,
+            "page_handle_priority": true
+        },
+        "index": {
+            "MAGEPROXY_RECORDING_UUID": true,
+            "MAGEPROXY_RECORDING_STATUS": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "MAGEPROXY_RECORDING_STORE_ID_STORE_STORE_ID": true
+        }
+    },
+    "mageproxy_dependency": {
+        "column": {
+            "dependency_id": true,
+            "recording_id": true,
+            "module_id": true,
+            "page_handle": true,
+            "priority": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "FK_A2F64E23F50FC88F44E9868AC8FCD262": true,
+            "MAGEPROXY_DEPENDENCY_RECORDING_ID_MODULE_ID_PAGE_HANDLE": true
+        }
+    },
+    "mageproxy_optimization": {
+        "column": {
+            "optimization_id": true,
+            "uuid": true,
+            "requested_at": true,
+            "status": true,
+            "recording_id": true,
+            "minify_js": true,
+            "minify_html": true,
+            "store_id": true,
+            "requested_by": true,
+            "deployed_at": true,
+            "template_id": true,
+            "exclude_deps": true,
+            "remove_deps": true,
+            "handles": true,
+            "browserslist_config": true,
+            "transpile_globs": true,
+            "deps_cnt": true,
+            "error_message": true,
+            "reverted_at": true,
+            "use_polyfills": true,
+            "hdls_cnt": true,
+            "recording_checksum": true,
+            "chunk_js": true,
+            "chunk_js_size": true,
+            "include_sourcemap_js": true
+        },
+        "index": {
+            "MAGEPROXY_OPTIMIZATION_UUID": true,
+            "MAGEPROXY_OPTIMIZATION_STATUS": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "FK_1B21B2C97CD1395CB5B8DA9D6305C430": true,
+            "MAGEPROXY_OPTIMIZATION_STORE_ID_STORE_STORE_ID": true,
+            "FK_5D181C827610E2E1292878A3D5369C6B": true
+        }
+    },
+    "mageproxy_optimization_bundle": {
+        "column": {
+            "bundle_id": true,
+            "url": true,
+            "sri_hash": true,
+            "optimization_id": true,
+            "raw_size": true,
+            "min_size": true,
+            "com_size": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "FK_EA54E78F76F8AD9083CEFF11ACA5D31A": true
+        }
+    },
+    "mageproxy_optimization_template": {
+        "column": {
+            "template_id": true,
+            "minify_js": true,
+            "minify_html": true,
+            "exclude_deps": true,
+            "remove_deps": true,
+            "handles": true,
+            "browserslist_config": true,
+            "transpile_globs": true,
+            "store_id": true,
+            "chunk_js": true,
+            "chunk_js_size": true,
+            "use_polyfills": true,
+            "include_sourcemap_js": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "MAGEPROXY_OPTIMIZATION_TEMPLATE_STORE_ID_STORE_STORE_ID": true
+        }
+    }
+}

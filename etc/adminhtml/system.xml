@@ -1,0 +1,171 @@
+<?xml version="1.0"?>
+<!--
+  ~ Mageproxy Connector for Magento2.
+  ~
+  ~ @package    Mageproxy_Connector
+  ~ @copyright  Copyright (c) 2025 Iframe Co Ltd
+  ~ @license    See LICENSE.txt for license details
+  -->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="mageproxy_connector" translate="label" type="text" sortOrder="400" showInDefault="1" showInWebsite="1" showInStore="1">
+            <tab>service</tab>
+            <label>MageProxy Connector</label>
+            <resource>Mageproxy_Connector::Config</resource>
+            <group id="settings" type="text" translate="label comment" showInDefault="1" showInWebsite="1" showInStore="1" sortOrder="10">
+                <label>Settings</label>
+                <frontend_model>Mageproxy\Connector\Block\Adminhtml\System\Config\SettingsFieldset</frontend_model>
+                <field id="module_version" type="label" showInDefault="1" translate="label" sortOrder="10">
+                    <label>Version</label>
+                    <frontend_model>Mageproxy\Connector\Block\Adminhtml\System\Config\Version</frontend_model>
+                </field>
+                <field id="enabled" translate="label" type="select" sortOrder="10" showInDefault="1" canRestore="1">
+                    <label>Enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <group id="credentials" type="text" translate="label comment tooltip" showInDefault="1" sortOrder="15">
+                    <label>Credentials</label>
+                    <frontend_model>Mageproxy\Connector\Block\Adminhtml\System\Config\CredentialsFieldset</frontend_model>
+                    <comment>
+                        <![CDATA[Sign up for a 7 day trial <a href="https://mageproxy.io/#pricing" target="_blank">plan</a> to receive your credentials]]>
+                    </comment>
+                    <field id="service_id" type="text" translate="label" sortOrder="40" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="0">
+                        <label>Service ID</label>
+                        <config_path>mageproxy_connector/settings/service_id</config_path>
+                        <frontend_model>Mageproxy\Connector\Block\Adminhtml\System\Config\ServiceInfo</frontend_model>
+                    </field>
+                    <field id="api_key" translate="label comment" type="obscure" sortOrder="45" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="0">
+                        <label>Api Key</label>
+                        <frontend_class>masked</frontend_class>
+                        <backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
+                        <config_path>mageproxy_connector/settings/api_key</config_path>
+                    </field>
+                </group>
+                <group id="urls" type="text" translate="label comment" showInDefault="1" sortOrder="20">
+                    <label>Endpoints</label>
+                    <frontend_model>Mageproxy\Connector\Block\Adminhtml\System\Config\UrlsFieldset</frontend_model>
+                    <field id="tracking_url" type="text" translate="label" sortOrder="50" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
+                        <label>Tracking URL</label>
+                        <validate>validate-url</validate>
+                        <config_path>mageproxy_connector/settings/tracking_url</config_path>
+                    </field>
+                    <field id="api_base_url" type="text" translate="label" sortOrder="60" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
+                        <label>Api URL</label>
+                        <validate>validate-url</validate>
+                        <config_path>mageproxy_connector/settings/api_base_url</config_path>
+                    </field>
+                </group>
+                <group id="autorun" type="text" translate="label comment" showInDefault="1" showInWebsite="1" showInStore="1" sortOrder="40">
+                    <label>Auto Run</label>
+                    <frontend_model>Mageproxy\Connector\Block\Adminhtml\System\Config\AutoRunFieldset</frontend_model>
+                    <field id="run_mode" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                        <label>Run Mode</label>
+                        <source_model>Mageproxy\Connector\Model\System\Config\Source\RunMode</source_model>
+                        <config_path>mageproxy_connector/settings/run_mode</config_path>
+                        <backend_model>Mageproxy\Connector\Model\System\Config\Backend\AutoRun</backend_model>
+                    </field>
+                    <field id="auto_run_type" translate="label comment" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                        <label>Run Type</label>
+                        <source_model>Mageproxy\Connector\Model\System\Config\Source\AutoRunType</source_model>
+                        <config_path>mageproxy_connector/settings/auto_run_type</config_path>
+                        <depends>
+                            <field id="run_mode">auto</field>
+                        </depends>
+                        <comment>In Continuous mode, dependencies are tracked continuously until the specified Recording Duration elapses. In Scheduled mode, you can define the recording schedule according to your needs.</comment>
+                    </field>
+                    <field id="auto_run_duration" translate="label comment" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                        <label>Recording Duration</label>
+                        <config_path>mageproxy_connector/settings/auto_run_duration</config_path>
+                        <source_model>Mageproxy\Connector\Model\System\Config\Source\AutoRunDuration</source_model>
+                        <depends>
+                            <field id="run_mode">auto</field>
+                            <field id="auto_run_type">continuous</field>
+                        </depends>
+                    </field>
+                    <field id="auto_run_opt_freq" translate="label comment" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                        <label>Optimization Frequency</label>
+                        <config_path>mageproxy_connector/settings/auto_run_opt_freq</config_path>
+                        <source_model>Mageproxy\Connector\Model\System\Config\Source\AutoRunOptFreq</source_model>
+                        <depends>
+                            <field id="run_mode">auto</field>
+                            <field id="auto_run_type">continuous</field>
+                        </depends>
+                        <comment>No optimisation will be created if the number of JavaScript dependencies has not increased. Note that deploying a new optimisation will also flush the FPC cache.</comment>
+                    </field>
+                    <field id="record_schedule" translate="label comment" showInDefault="1" showInWebsite="1" showInStore="1" sortOrder="50" canRestore="1">
+                        <label>Schedule</label>
+                        <frontend_model>Mageproxy\Connector\Model\System\Config\Backend\AutoRunSchedule</frontend_model>
+                        <backend_model>Magento\Config\Model\Config\Backend\Serialized\ArraySerialized</backend_model>
+                        <config_path>mageproxy_connector/settings/record_schedule</config_path>
+                        <depends>
+                            <field id="run_mode">auto</field>
+                            <field id="auto_run_type">scheduled</field>
+                        </depends>
+                    </field>
+                    <field id="minify_js" translate="label comment" showInDefault="1" type="select" sortOrder="60" showInWebsite="1" showInStore="1" canRestore="1">
+                        <label>Minify JavaScript Bundles</label>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                        <config_path>mageproxy_connector/settings/minify_js</config_path>
+                        <depends>
+                            <field id="run_mode">auto</field>
+                        </depends>
+                        <comment>This can be overridden in the Auto Run Template.</comment>
+                    </field>
+                    <field id="minify_html" translate="label comment" showInDefault="1" type="select" sortOrder="70" showInWebsite="1" showInStore="1" canRestore="1">
+                        <label>Minify Knockout Templates</label>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                        <config_path>mageproxy_connector/settings/minify_html</config_path>
+                        <depends>
+                            <field id="run_mode">auto</field>
+                        </depends>
+                        <comment>This can be overridden in the Auto Run Template.</comment>
+                    </field>
+                </group>
+                <group id="advanced" type="text" translate="label comment" showInDefault="1" sortOrder="50">
+                    <label>Advanced</label>
+                    <frontend_model>Mageproxy\Connector\Block\Adminhtml\System\Config\AdvancedFieldset</frontend_model>
+                    <field id="include_timestamp" translate="label comment" type="select" sortOrder="10" showInDefault="1" canRestore="1">
+                        <label>Include timestamp</label>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                        <config_path>mageproxy_connector/settings/include_timestamp</config_path>
+                        <comment>Cache bust tracking requests</comment>
+                    </field>
+                    <field id="request_timeout" type="text" translate="label comment" showInDefault="1" sortOrder="20" canRestore="1">
+                        <label>Request Timeout</label>
+                        <config_path>mageproxy_connector/settings/request_timeout</config_path>
+                        <validate>validate-digits validate-digits-range digits-range-1-10</validate>
+                        <comment>Timeout in seconds (1-10) for MageProxy API requests</comment>
+                    </field>
+                    <field id="recording_flush_fpc" type="select" translate="label" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                        <label>Flush FPC On Recording Start/Stop</label>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                        <config_path>mageproxy_connector/settings/recording_flush_fpc</config_path>
+                    </field>
+                    <field id="preload_bundles" type="select" translate="label comment" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                        <label>Preload Bundles</label>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                        <config_path>mageproxy_connector/settings/preload_bundles</config_path>
+                        <comment>Preloading the core bundle can improve performance. NOTE: this will only apply when the configuration to move scripts to the bottom of the page is enabled.</comment>
+                    </field>
+                    <field id="prefetch_rules" type="textarea" translate="label" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                        <label>Prefetch Rules</label>
+                        <config_path>mageproxy_connector/settings/prefetch_rules</config_path>
+                        <comment><![CDATA[Each line contains a rule. Expected format: selector|bundle pattern[|prefetch_on ('viewport'|'interaction')]]]></comment>
+                    </field>
+                </group>
+            </group>
+        </section>
+        <section id="dev">
+            <group id="js">
+                <field id="merge_files" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <source_model>Mageproxy\Connector\Model\Config\Source\No</source_model>
+                    <comment>Disabled by MageProxy Connector</comment>
+                </field>
+                <field id="enable_js_bundling" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <source_model>Mageproxy\Connector\Model\Config\Source\No</source_model>
+                    <comment>Disabled by MageProxy Connector</comment>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<!--
+  ~ Mageproxy Connector for Magento2.
+  ~
+  ~ @package    Mageproxy_Connector
+  ~ @copyright  Copyright (c) 2025 Iframe Co Ltd
+  ~ @license    See LICENSE.txt for license details
+  -->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <mageproxy_connector>
+            <settings>
+                <enabled>0</enabled>
+                <client_id backend_model="Magento\Config\Model\Config\Backend\Encrypted" />
+                <client_secret backend_model="Magento\Config\Model\Config\Backend\Encrypted" />
+                <api_token backend_model="Magento\Config\Model\Config\Backend\Encrypted" />
+                <api_key backend_model="Magento\Config\Model\Config\Backend\Encrypted" />
+                <api_path_new_recording>/v1/services/:id/record</api_path_new_recording>
+                <api_path_recording_deps>/v1/recordings/:id/handles/deps</api_path_recording_deps>
+                <api_path_recording_deps_cnt_ts>/v1/recordings/:id/deps/ts</api_path_recording_deps_cnt_ts>
+                <api_path_recording_deps_cnt>/v1/recordings/:id/deps/cnt</api_path_recording_deps_cnt>
+                <api_path_recording_snapshot>/v1/recordings/:id/snapshot</api_path_recording_snapshot>
+                <api_path_recording_start>/v1/recordings/:id/start/:duration</api_path_recording_start>
+                <api_path_recording_optimize>/v1/recordings/:id/optimize</api_path_recording_optimize>
+                <api_path_get_optimization>/v1/optimizations/:id</api_path_get_optimization>
+                <api_path_get_service>/v1/services/:id</api_path_get_service>
+                <api_path_oauth_token>/v1/oauth/token</api_path_oauth_token>
+                <api_path_post_optimization_deploy>/v1/optimizations/:id/deploy</api_path_post_optimization_deploy>
+                <api_path_post_optimization_revert>/v1/optimizations/:id/revert</api_path_post_optimization_revert>
+                <api_base_url>https://api.mageproxy.io</api_base_url>
+                <tracking_url>https://recorder.mageproxy.io/v1/track.html</tracking_url>
+                <include_timestamp>0</include_timestamp>
+                <request_timeout>5</request_timeout>
+                <run_mode>manual</run_mode>
+                <auto_run_type>continuous</auto_run_type>
+                <auto_run_duration>120</auto_run_duration>
+                <auto_run_opt_freq>60</auto_run_opt_freq>
+                <minify_js>1</minify_js>
+                <minify_html>1</minify_html>
+                <recording_flush_fpc>0</recording_flush_fpc>
+                <preload_bundles>0</preload_bundles>
+                <prefetch_rules>
+                    <![CDATA[
+a[href*="/customer/account/create"]|customer.account.create|interaction
+                    ]]>
+                </prefetch_rules>
+            </settings>
+        </mageproxy_connector>
+    </default>
+</config>

@@ -1,0 +1,242 @@
+Back,Back
+"Start New Recording","Start New Recording"
+"Create Optimization","Create Optimization"
+Cancel,Cancel
+Deploy,Deploy
+"Are you sure you want to do this?","Are you sure you want to do this?"
+Delete,Delete
+Optimize,Optimize
+"label' 'Button","label' 'Button"
+Refresh,Refresh
+"Revert Deployment","Revert Deployment"
+"Save as Auto Run Template","Save as Auto Run Template"
+Save,Save
+"Schedule New Recording","Schedule New Recording"
+"Page Handle","Page Handle"
+Dependency,Dependency
+Timeline,Timeline
+"Unable to deploy optimization. Optimization could not be found.","Unable to deploy optimization. Optimization could not be found."
+"The optimization was deployed. Select ""Revert"" do undo the deployment.","The optimization was deployed. Select ""Revert"" do undo the deployment."
+"Generate JS Bundles","Generate JS Bundles"
+Optimizations,Optimizations
+"The optimization deployment was reverted","The optimization deployment was reverted"
+"The optimization was not found","The optimization was not found"
+"An error occurred while reverting the optimization","An error occurred while reverting the optimization"
+"Unable to retrieve recording for optimization","Unable to retrieve recording for optimization"
+"Successfully requested recording optimization. Check the latest status in the ""Optimizations"" section.","Successfully requested recording optimization. Check the latest status in the ""Optimizations"" section."
+"Template was saved successfully.","Template was saved successfully."
+"An error occurred while trying to save the template.","An error occurred while trying to save the template."
+"The mageproxy.io connector is disabled.","The mageproxy.io connector is disabled."
+"All stores are setup to run in auto run mode.","All stores are setup to run in auto run mode."
+"Create Recording","Create Recording"
+"An error occurred while deleting the recording.","An error occurred while deleting the recording."
+"Recording was deleted successfully.","Recording was deleted successfully."
+"Mageproxy Connector is disabled. Please enable it in Stores > Configuration > Services > Mageproxy Connector.","Mageproxy Connector is disabled. Please enable it in Stores > Configuration > Services > Mageproxy Connector."
+"Recordings","Recordings"
+"The recording with ID ""%1"" is deployed and cannot be deleted. First revert the deployment before deleting.","The recording with ID ""%1"" is deployed and cannot be deleted. First revert the deployment before deleting."
+"A total of %1 record(s) have been deleted.","A total of %1 record(s) have been deleted."
+"All requested stores are setup to run in auto run mode.","All requested stores are setup to run in auto run mode."
+"Scheduled time must be in the future.","Scheduled time must be in the future."
+"Failed to create recording(s), error: %1.","Failed to create recording(s), error: %1."
+"Failed to create recording for store ""%1"", error: %2","Failed to create recording for store ""%1"", error: %2"
+"The recording ID is missing.","The recording ID is missing."
+"An error occurred while starting the recording.","An error occurred while starting the recording."
+"The recording was started successfully.","The recording was started successfully."
+"The recording was stopped successfully.","The recording was stopped successfully."
+"An error occurred while stopping the recording.","An error occurred while stopping the recording."
+"An error occurred while synchronizing the recording.","An error occurred while synchronizing the recording."
+"An error occurred while synchronizing the optimization.","An error occurred while synchronizing the optimization."
+"The recording data was successfully synchronized from the MageProxy API.","The recording data was successfully synchronized from the MageProxy API."
+Recording,Recording
+"Template not found.","Template not found."
+"The template has been deleted.","The template has been deleted."
+"An error occurred while deleting the template.","An error occurred while deleting the template."
+"Auto Optimize Template","Auto Optimize Template"
+"Unauthorized. Check the Service ID and Api Key settings in configuration.","Unauthorized. Check the Service ID and Api Key settings in configuration."
+"Resource not found","Resource not found"
+"An error occurred. Please contact support.","An error occurred. Please contact support."
+"You have deployed static assets using compact mode. Please run static content deploy with standard or quick mode","You have deployed static assets using compact mode. Please run static content deploy with standard or quick mode"
+"Js minification is enabled. Please disable this setting in system configuration.","Js minification is enabled. Please disable this setting in system configuration."
+"Merge js files is enabled. Please disable this setting in system configuration.","Merge js files is enabled. Please disable this setting in system configuration."
+"JavaScript bundling is enabled in system configuration. To allow this module to work correctly, this setting must be disabled.","JavaScript bundling is enabled in system configuration. To allow this module to work correctly, this setting must be disabled."
+"An error occurred while validating the service ID. Please contact support.","An error occurred while validating the service ID. Please contact support."
+"The service ID is not active. Please contact support.","The service ID is not active. Please contact support."
+"The service ID is invalid. Please contact support","The service ID is invalid. Please contact support"
+"Validator must implement ValidatorInterface","Validator must implement ValidatorInterface"
+"An error occurred while fetching the recording dependencies: %1","An error occurred while fetching the recording dependencies: %1"
+"Bundle with id ""%1"" does not exist.","Bundle with id ""%1"" does not exist."
+Requested,Requested
+Published,Published
+Ready,Ready
+Failed,Failed
+Deployed,Deployed
+Finished,Finished
+"All Stores","All Stores"
+"Current Store","Current Store"
+"Template with id ""%1"" does not exist.","Template with id ""%1"" does not exist."
+"Optimization is not ready for deployment.","Optimization is not ready for deployment."
+"An optimization is already deployed, first revert it before deploying another optimization.","An optimization is already deployed, first revert it before deploying another optimization."
+"Could not deploy optimization.","Could not deploy optimization."
+"Optimization is not deployed","Optimization is not deployed"
+"Could not revert optimization","Could not revert optimization"
+"Recording has no dependencies. Optimization is not possible.","Recording has no dependencies. Optimization is not possible."
+"Could not create optimization. Please contact support.","Could not create optimization. Please contact support."
+"Optimization with id ""%1"" does not exist.","Optimization with id ""%1"" does not exist."
+"Optimization with uuid ""%1"" does not exist.","Optimization with uuid ""%1"" does not exist."
+User,User
+Cron,Cron
+Pending,Pending
+Running,Running
+Stopped,Stopped
+Error,Error
+Missed,Missed
+"No auto run schedule configured for store %1","No auto run schedule configured for store %1"
+"Recording is already stopped","Recording is already stopped"
+"Recording in status ""%1"" can not be stopped","Recording in status ""%1"" can not be stopped"
+"Recording is already running","Recording is already running"
+"Recording in status ""%1"" can not be started","Recording in status ""%1"" can not be started"
+"Another recording is already running for the same store","Another recording is already running for the same store"
+"Recording is not pending","Recording is not pending"
+"Could not save the recording: %1","Could not save the recording: %1"
+"Could not delete the recording with id ""%1""","Could not delete the recording with id ""%1"""
+"Recording with uuid ""%1"" does not exist.","Recording with uuid ""%1"" does not exist."
+"Recording with id ""%1"" does not exist.","Recording with id ""%1"" does not exist."
+"Recording is required","Recording is required"
+"Optimization template for Specified Store","Optimization template for Specified Store"
+UUID,UUID
+"Recording interval overlaps with another recording","Recording interval overlaps with another recording"
+"You cannot change to auto run mode when there are deployed optimizations. First revert any deployed optimizations.","You cannot change to auto run mode when there are deployed optimizations. First revert any deployed optimizations."
+"Record for","Record for"
+Duration,Duration
+"Pause for","Pause for"
+". ' minutes'",". ' minutes'"
+"United States","United States"
+Europe,Europe
+"Asia Pacific","Asia Pacific"
+Australia,Australia
+"South America","South America"
+Africa,Africa
+"Middle East","Middle East"
+Auto,Auto
+Manual,Manual
+"Mageproxy Connector configuration validation failed.","Mageproxy Connector configuration validation failed."
+" Check our <a href=""%1"">troubleshooting guide</a> for more information."," Check our <a href=""%1"">troubleshooting guide</a> for more information."
+"Mageproxy Connector configuration validation failed. Check system messages for guidance.","Mageproxy Connector configuration validation failed. Check system messages for guidance."
+"Any running recordings or deployed optimizations will be reset on the next cron run.","Any running recordings or deployed optimizations will be reset on the next cron run."
+Yes,Yes
+View,View
+"All Store Views","All Store Views"
+"No items selected","No items selected"
+"Recording should have been finished. Please check the cron is running normally.","Recording should have been finished. Please check the cron is running normally."
+Copied!,Copied!
+No,No
+"Manage Mageproxy Configuration","Manage Mageproxy Configuration"
+"Mageproxy Connector","Mageproxy Connector"
+Create,Create
+Start,Start
+Stop,Stop
+Optimization,Optimization
+Revert,Revert
+mageproxy.io,mageproxy.io
+"MageProxy Connector","MageProxy Connector"
+Settings,Settings
+Version,Version
+Enabled,Enabled
+Credentials,Credentials
+"Service ID","Service ID"
+"Api Key","Api Key"
+Endpoints,Endpoints
+"Tracking URL","Tracking URL"
+"Api URL","Api URL"
+"Auto Run","Auto Run"
+"Run Mode","Run Mode"
+"Minify JavaScript Bundles","Minify JavaScript Bundles"
+"Minify Knockout Templates","Minify Knockout Templates"
+Schedule,Schedule
+Advanced,Advanced
+"Include timestamp","Include timestamp"
+"Request Timeout","Request Timeout"
+Bundle,Bundle
+"SRI Hash","SRI Hash"
+"File Size","File Size"
+"Minified Size","Minified Size"
+"Compressed Size","Compressed Size"
+recording,recording
+"Module ID","Module ID"
+Priority,Priority
+Path,Path
+"New Optimization","New Optimization"
+Minification,Minification
+Bundling,Bundling
+"Select dependencies that should not be bundled","Select dependencies that should not be bundled"
+"Select Dependencies","Select Dependencies"
+ID,ID
+Distribute,Distribute
+"Configure page handle priority when dependencies are tied between
+                        different page handles","Configure page handle priority when dependencies are tied between
+                        different page handles"
+"Select Page Handles","Select Page Handles"
+Remove,Remove
+"Select dependencies to remove","Select dependencies to remove"
+"Transpilation (PRO)","Transpilation (PRO)"
+"Enter browserslist config here, e.g. > 0.5%, last 2 versions","Enter browserslist config here, e.g. > 0.5%, last 2 versions"
+"For more information, visit the Browserslist website","For more information, visit the Browserslist website"
+Paths,Paths
+"
+                        Supports glob wild card patterns like *, ?, e.g Vendor_Module/js/**/*.js would recursively look
+                        through all folders in the module for .js files. Use ! to exclude files, e.g. !Vendor_Module/js/**/*.min.js
+                    ","
+                        Supports glob wild card patterns like *, ?, e.g Vendor_Module/js/**/*.js would recursively look
+                        through all folders in the module for .js files. Use ! to exclude files, e.g. !Vendor_Module/js/**/*.min.js
+                    "
+Glob,Glob
+"Requested At","Requested At"
+"Deployed At","Deployed At"
+"Minify JS","Minify JS"
+"Minify Html","Minify Html"
+"Dependency Count","Dependency Count"
+"Requested By","Requested By"
+Status,Status
+General,General
+"Auto Run Template","Auto Run Template"
+"Error message","Error message"
+"In case of an error, contact support@mageproxy.io and mention the UUID above.","In case of an error, contact support@mageproxy.io and mention the UUID above."
+Bundles,Bundles
+"Minify Js","Minify Js"
+"Minify Templates","Minify Templates"
+"Excluded Dependencies","Excluded Dependencies"
+"No excluded dependencies.","No excluded dependencies."
+"Removed Dependencies","Removed Dependencies"
+"No removed dependencies.","No removed dependencies."
+"Page Handle Priority","Page Handle Priority"
+"No custom page handle priority.","No custom page handle priority."
+Transpilation,Transpilation
+"No transpilation instructions.","No transpilation instructions."
+"Enter browserslist config here...","Enter browserslist config here..."
+"Glob Pattern","Glob Pattern"
+"Select Store","Select Store"
+"New Recording Info","New Recording Info"
+"Store View","Store View"
+"Recording Information","Recording Information"
+Store,Store
+"Started At","Started At"
+"Scheduled Duration","Last Run Scheduled Duration"
+Minutes,Minutes
+"Ended At","Ended At"
+"Static Version","Static Version"
+"What is this?","What is this?"
+"Initiated By","Initiated By"
+Dependencies,Dependencies
+"Optimization Info","Optimization Info"
+"Dependency Count Chart","Dependency Count Chart"
+Close,Close
+"RequireJs Dependency Count","RequireJs Dependency Count"
+Count,Count
+"Optimize Recording","Optimize Recording"
+"System Configuration","System Configuration"
+"Are you sure you want to delete selected items?","Are you sure you want to delete selected items?"
+"Delete items","Delete items"
+"Scheduled At","Scheduled At"
+"Finished At","Finished At"
+"Duration (min)","Duration (min)"
+Initiator,Initiator

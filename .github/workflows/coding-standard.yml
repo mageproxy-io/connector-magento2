@@ -1,0 +1,38 @@
+name: M2 Coding Standard
+on: [push, pull_request]
+
+jobs:
+  static74:
+    name: M2 Coding Standard PHP 7.4
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: extdn/github-actions-m2/magento-coding-standard/7.4@master
+
+  static81:
+    name: M2 Coding Standard PHP 8.1
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: extdn/github-actions-m2/magento-coding-standard/8.1@master
+
+  static82:
+    name: M2 Coding Standard PHP 8.2
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: extdn/github-actions-m2/magento-coding-standard/8.2@master
+
+  static83:
+    name: M2 Coding Standard PHP 8.3
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: extdn/github-actions-m2/magento-coding-standard/8.3@master
+
+  static84:
+    name: M2 Coding Standard PHP 8.4
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: extdn/github-actions-m2/magento-coding-standard/8.4@master

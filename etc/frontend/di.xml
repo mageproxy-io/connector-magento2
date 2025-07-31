@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<!--
+  ~ Mageproxy Connector for Magento2.
+  ~
+  ~ @package    Mageproxy_Connector
+  ~ @copyright  Copyright (c) 2025 Iframe Co Ltd
+  ~ @license    See LICENSE.txt for license details
+  -->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\Framework\View\Asset\GroupedCollection">
+        <plugin name="sortJsContentTypeGroups" type="Mageproxy\Connector\Plugin\View\Asset\GroupedCollectionPlugin" />
+    </type>
+    <type name="Mageproxy\Connector\Model\RequireJs\CompositeConfigProvider">
+        <arguments>
+            <argument name="configProviders" xsi:type="array">
+                <item name="baseUrl" sortOrder="10" xsi:type="object">Mageproxy\Connector\Model\RequireJs\ConfigProvider\BaseUrl</item>
+                <item name="recording" sortOrder="20" xsi:type="object">Mageproxy\Connector\Model\RequireJs\ConfigProvider\Recording</item>
+                <item name="optimization" sortOrder="30" xsi:type="object">Mageproxy\Connector\Model\RequireJs\ConfigProvider\OptimizationDeployed</item>
+                <item name="sriHashes" sortOrder="40" xsi:type="object">Mageproxy\Connector\Model\RequireJs\ConfigProvider\SriHashes</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="\Mageproxy\Connector\Block\Html\Head\RequireJsConfig">
+        <arguments>
+            <argument name="requireJsConfigProvider" xsi:type="object">Mageproxy\Connector\Model\RequireJs\CompositeConfigProvider</argument>
+        </arguments>
+    </type>
+    <virtualType name="NonAmdAssetsRegistry" type="Mageproxy\Connector\Model\Asset\AssetRegistry">
+        <arguments>
+            <argument name="matchAssets" xsi:type="array">
+                <item name="requirejs/require" xsi:type="const">Magento\Framework\RequireJs\Config::REQUIRE_JS_FILE_NAME</item>
+                <item name="mage/requirejs/mixins" xsi:type="const">Magento\Framework\RequireJs\Config::MIXINS_FILE_NAME</item>
+                <item name="requirejs-config" xsi:type="const">Magento\Framework\RequireJs\Config::CONFIG_FILE_NAME</item>
+                <item name="Mageproxy_Connector/js/requirejs/recorder" xsi:type="const">Mageproxy\Connector\Model\Asset\RecorderJsAssetFactory::FILE_IDENTIFIER</item>
+                <item name="requirejs-min-resolver" xsi:type="const">Magento\Framework\RequireJs\Config::MIN_RESOLVER_FILENAME</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <type name="Mageproxy\Connector\Plugin\View\Asset\GroupedCollectionPlugin">
+        <arguments>
+            <argument name="nonAmd" xsi:type="object">NonAmdAssetsRegistry</argument>
+        </arguments>
+    </type>
+    <type name="Magento\Framework\View\Page\Config\Generator\Head">
+        <plugin name="mageproxy_config_generator_head" type="Mageproxy\Connector\Plugin\PageConfigHeadGeneratorPlugin" />
+    </type>
+    <type name="Mageproxy\Connector\Model\RequireJs\ConfigProvider\Recording">
+        <arguments>
+            <argument name="nonAmd" xsi:type="object">NonAmdAssetsRegistry</argument>
+        </arguments>
+    </type>
+    <type name="Magento\Framework\Controller\ResultInterface">
+        <plugin name="add-recording-cookie" type="Mageproxy\Connector\Plugin\Controller\Result\AfterRenderResult"/>
+    </type>
+</config>

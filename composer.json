@@ -2,7 +2,7 @@
     "name": "mageproxy/connector-magento2",
     "description": "Integration with mageproxy.io",
     "type": "magento2-module",
-    "version": "0.9.0",
+    "version": "1.0.0",
     "license": [
         "BSL"
     ],

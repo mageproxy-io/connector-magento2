@@ -1,0 +1,30 @@
+<!--
+  ~ Mageproxy Connector for Magento2.
+  ~
+  ~ @package    Mageproxy_Connector
+  ~ @copyright  Copyright (c) 2025 Iframe Co Ltd
+  ~ @license    See LICENSE.txt for license details
+  -->
+<div class="admin__control-table-wrapper">
+    <table class="data-grid">
+        <thead>
+            <tr>
+                <th class="data-grid-th">
+                    <span data-bind="i18n: title"></span>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- ko foreach: { data: value, as: '$item' } -->
+            <tr class="data-row" data-bind="css: {'_odd-row': $index() % 2}">
+                <td data-bind="text: $item"></td>
+            </tr>
+            <!-- /ko -->
+            <!-- ko ifnot: value().length -->
+            <tr class="data-row">
+                <td style="text-align: center;" data-bind="text: $t('No items selected')"></td>
+            </tr>
+            <!-- /ko -->
+        </tbody>
+    </table>
+</div>

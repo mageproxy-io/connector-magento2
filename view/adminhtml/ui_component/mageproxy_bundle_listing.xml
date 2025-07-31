@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Mageproxy Connector for Magento2.
+  ~
+  ~ @package    Mageproxy_Connector
+  ~ @copyright  Copyright (c) 2025 Iframe Co Ltd
+  ~ @license    See LICENSE.txt for license details
+  -->
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">mageproxy_bundle_listing.mageproxy_bundle_listing_data_source</item>
+        </item>
+    </argument>
+    <settings>
+        <spinner>mageproxy_bundle_listing_columns</spinner>
+        <deps>
+            <dep>mageproxy_bundle_listing.mageproxy_bundle_listing_data_source</dep>
+        </deps>
+        <buttons/>
+    </settings>
+    <dataSource name="mageproxy_bundle_listing_data_source" component="Magento_Ui/js/grid/provider">
+        <settings>
+            <storageConfig>
+                <param name="indexField" xsi:type="string">bundle_id</param>
+            </storageConfig>
+            <updateUrl path="mui/index/render"/>
+        </settings>
+        <dataProvider class="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider" name="mageproxy_bundle_listing_data_source">
+            <settings>
+                <requestFieldName>id</requestFieldName>
+                <primaryFieldName>bundle_id</primaryFieldName>
+            </settings>
+        </dataProvider>
+    </dataSource>
+    <listingToolbar name="listing_top">
+        <filters name="listing_filters"/>
+        <paging name="listing_paging"/>
+    </listingToolbar>
+    <columns name="mageproxy_bundle_listing_columns">
+        <column name="url" class="Mageproxy\Connector\Ui\Component\Listing\Column\BundleUrl" sortOrder="5">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">Bundle</label>
+                <bodyTmpl>ui/grid/cells/html</bodyTmpl>
+            </settings>
+        </column>
+        <column name="sri_hash" sortOrder="10">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">SRI Hash</label>
+            </settings>
+        </column>
+        <column name="raw_size" class="Mageproxy\Connector\Ui\Component\Listing\Column\FileSize" sortOrder="20">
+            <settings>
+                <label translate="true">File Size</label>
+            </settings>
+        </column>
+        <column name="min_size" class="Mageproxy\Connector\Ui\Component\Listing\Column\FileSize" sortOrder="30">
+            <settings>
+                <label translate="true">Minified Size</label>
+            </settings>
+        </column>
+        <column name="com_size" class="Mageproxy\Connector\Ui\Component\Listing\Column\FileSize" sortOrder="40">
+            <settings>
+                <label translate="true">Compressed Size</label>
+            </settings>
+        </column>
+    </columns>
+</listing>

@@ -1,0 +1,63 @@
+<!--
+  ~ Mageproxy Connector for Magento2.
+  ~
+  ~ @package    Mageproxy_Connector
+  ~ @copyright  Copyright (c) 2025 Iframe Co Ltd
+  ~ @license    See LICENSE.txt for license details
+  -->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:DataObject/etc/fieldset.xsd">
+    <scope id="global">
+        <fieldset id="mageproxy_optimization_template">
+            <field name="minify_js">
+                <aspect name="to_request"/>
+                <aspect name="to_optimization"/>
+            </field>
+            <field name="minify_html">
+                <aspect name="to_request"/>
+                <aspect name="to_optimization"/>
+            </field>
+            <field name="chunk_js">
+                <aspect name="to_optimization"/>
+            </field>
+            <field name="chunk_js_size">
+                <aspect name="to_request" targetField="chunk_size"/>
+                <aspect name="to_optimization"/>
+            </field>
+            <field name="exclude_deps">
+                <aspect name="to_request"/>
+                <aspect name="to_optimization"/>
+            </field>
+            <field name="remove_deps">
+                <aspect name="to_request" />
+                <aspect name="to_optimization"/>
+            </field>
+            <field name="handles">
+                <aspect name="to_request" targetField="page_handles"/>
+                <aspect name="to_optimization"/>
+            </field>
+            <field name="browserslist_config">
+                <aspect name="to_request"/>
+                <aspect name="to_optimization"/>
+            </field>
+            <field name="transpile_globs">
+                <aspect name="to_request"/>
+                <aspect name="to_optimization"/>
+            </field>
+            <field name="optimization_id">
+                <aspect name="to_optimization"/>
+            </field>
+            <field name="use_polyfills">
+                <aspect name="to_request"/>
+                <aspect name="to_optimization"/>
+            </field>
+            <field name="include_sourcemap_js">
+                <aspect name="to_request" targetField="include_sourcemap"/>
+                <aspect name="to_optimization"/>
+            </field>
+            <field name="template_id">
+                <aspect name="to_optimization"/>
+            </field>
+        </fieldset>
+    </scope>
+</config>

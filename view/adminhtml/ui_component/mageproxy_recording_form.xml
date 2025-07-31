@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Mageproxy Connector for Magento2.
+  ~
+  ~ @package    Mageproxy_Connector
+  ~ @copyright  Copyright (c) 2025 Iframe Co Ltd
+  ~ @license    See LICENSE.txt for license details
+  -->
+<form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd" component="Magento_Customer/js/form/components/form">
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">mageproxy_recording_form.mageproxy_recording_form_data_source</item>
+        </item>
+        <item name="template" xsi:type="string">templates/form/collapsible</item>
+    </argument>
+    <settings>
+        <label translate="true">Recording Information</label>
+        <buttons>
+            <button name="back">
+                <label translate="true">Back</label>
+                <url path="*/*/"/>
+                <class>back</class>
+            </button>
+            <button name="timeline" class="Mageproxy\Connector\Block\Adminhtml\TimelineButton"/>
+            <button name="optimize" class="Mageproxy\Connector\Block\Adminhtml\CreateOptimizationButton"/>
+            <button name="revert" class="Mageproxy\Connector\Block\Adminhtml\RevertOptimizationButton"/>
+            <!-- virtual type buttons -->
+            <button name="refresh" class="Mageproxy\Connector\Block\Adminhtml\RefreshRecordingButton"/>
+            <button name="sync" class="Mageproxy\Connector\Block\Adminhtml\SyncRecordingButton" />
+            <button name="stop" class="Mageproxy\Connector\Block\Adminhtml\StopRecordingButton"/>
+            <button name="start" class="Mageproxy\Connector\Block\Adminhtml\StartRecordingButton"/>
+            <button name="delete" class="Mageproxy\Connector\Block\Adminhtml\DeleteRecordingButton"/>
+        </buttons>
+        <namespace>mageproxy_recording_form</namespace>
+        <dataScope>data</dataScope>
+        <deps>
+            <dep>mageproxy_recording_form.mageproxy_recording_form_data_source</dep>
+        </deps>
+    </settings>
+    <dataSource name="mageproxy_recording_form_data_source">
+        <argument name="data" xsi:type="array">
+            <item name="js_config" xsi:type="array">
+                <item name="component" xsi:type="string">Magento_Ui/js/form/provider</item>
+            </item>
+        </argument>
+        <dataProvider class="Mageproxy\Connector\Ui\DataProvider\Form\RecordingDataProvider" name="mageproxy_recording_form_data_source">
+            <settings>
+                <primaryFieldName>recording_id</primaryFieldName>
+                <requestFieldName>id</requestFieldName>
+            </settings>
+        </dataProvider>
+    </dataSource>
+    <fieldset name="general">
+        <settings>
+            <label translate="true">General</label>
+            <collapsible>true</collapsible>
+            <opened>true</opened>
+        </settings>
+        <field name="status" formElement="input" sortOrder="10">
+            <settings>
+                <dataScope>status</dataScope>
+                <label translate="true">Status</label>
+                <elementTmpl>ui/form/element/text</elementTmpl>
+                <dataScope>status</dataScope>
+                <dataType>text</dataType>
+            </settings>
+        </field>
+        <field name="store" formElement="input" sortOrder="20">
+            <settings>
+                <label translate="true">Store</label>
+                <elementTmpl>ui/form/element/html</elementTmpl>
+            </settings>
+        </field>
+        <field name="uuid" formElement="input" sortOrder="30" component="Mageproxy_Connector/js/component/form/element/uuid">
+            <settings>
+                <dataScope>uuid</dataScope>
+                <label translate="true">UUID</label>
+            </settings>
+        </field>
+        <field name="started_at" formElement="date" sortOrder="40">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="options" xsi:type="array">
+                        <item name="dateFormat" xsi:type="string">MMM d, y</item>
+                        <item name="showsTime" xsi:type="boolean">true</item>
+                        <item name="timeFormat" xsi:type="string">h:mm:ss a</item>
+                    </item>
+                </item>
+            </argument>
+            <settings>
+                <elementTmpl>ui/form/element/textDate</elementTmpl>
+                <dataType>text</dataType>
+                <label translate="true">Started At</label>
+            </settings>
+            <formElements>
+                <date>
+                    <settings>
+                        <options>
+                            <option name="dateFormat" xsi:type="string">MMM d, y</option>
+                            <option name="showsTime" xsi:type="boolean">true</option>
+                            <option name="timeFormat" xsi:type="string">h:mm:ss a</option>
+                        </options>
+                    </settings>
+                </date>
+            </formElements>
+        </field>
+        <field name="duration" formElement="input">
+            <settings>
+                <label translate="true">Scheduled Duration</label>
+                <elementTmpl>ui/form/element/text</elementTmpl>
+                <additionalClasses>
+                    <class name="duration">true</class>
+                </additionalClasses>
+                <addAfter translate="true">Minutes</addAfter>
+            </settings>
+        </field>
+        <field name="duration_progress" formElement="input" sortOrder="55" component="Mageproxy_Connector/js/component/form/element/duration-progress">
+            <settings>
+                <label/>
+            </settings>
+        </field>
+        <field name="finished_at" formElement="date" sortOrder="60">
+            <settings>
+                <elementTmpl>ui/form/element/textDate</elementTmpl>
+                <dataType>text</dataType>
+                <label translate="true">Ended At</label>
+                <imports>
+                    <link name="visible">${ $.provider }:data.finished_at</link>
+                </imports>
+            </settings>
+            <formElements>
+                <date>
+                    <settings>
+                        <options>
+                            <option name="showsTime" xsi:type="boolean">true</option>
+                        </options>
+                    </settings>
+                </date>
+            </formElements>
+        </field>
+        <field name="static_version" formElement="input" sortOrder="70">
+            <settings>
+                <label translate="true">Static Version</label>
+                <elementTmpl>ui/form/element/text</elementTmpl>
+                <tooltip>
+                    <description translate="true">What is this?</description>
+                    <link>https://experienceleague.adobe.com/en/docs/commerce-operations/configuration-guide/cache/static-content-signing</link>
+                </tooltip>
+            </settings>
+        </field>
+        <field name="deps_cnt" formElement="input" sortOrder="80">
+            <settings>
+                <label translate="true">RequireJS Dependency Count</label>
+                <elementTmpl>ui/form/element/text</elementTmpl>
+            </settings>
+        </field>
+        <field name="initiator" formElement="input" sortOrder="90">
+            <settings>
+                <label translate="true">Initiated By</label>
+                <elementTmpl>ui/form/element/text</elementTmpl>
+            </settings>
+        </field>
+    </fieldset>
+    <fieldset name="dependencies">
+        <settings>
+            <label translate="true">Dependencies</label>
+            <opened>false</opened>
+            <collapsible>true</collapsible>
+        </settings>
+        <container name="deps_info_message" template="ui/form/components/complex">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string"/>
+                    <item name="additionalClasses" xsi:type="string">message message-system-list</item>
+                    <item name="content" xsi:type="string" translate="false"><![CDATA[
+                        RequireJS dependencies are synchronized every minute by the cron.
+                        If you want to force this synchronization, you can do so by clicking the "Sync" button above.
+                    ]]></item>
+                </item>
+            </argument>
+        </container>
+        <insertListing name="mageproxy_dependency_listing">
+            <settings>
+                <externalProvider>${ $.ns }.mageproxy_dependency_listing_data_source</externalProvider>
+                <autoRender>true</autoRender>
+                <dataScope>mageproxy_dependency_listing</dataScope>
+                <ns>mageproxy_dependency_listing</ns>
+                <imports>
+                    <link name="recording_id">${ $.provider }:data.recording_id</link>
+                    <link name="params.recording_id">${ $.provider }:data.recording_id</link>
+                </imports>
+                <exports>
+                    <link name="recording_id">${ $.externalProvider }:params.recording_id</link>
+                </exports>
+            </settings>
+        </insertListing>
+    </fieldset>
+    <fieldset name="optimizations">
+        <settings>
+            <label translate="true">Optimizations</label>
+            <opened>false</opened>
+            <collapsible>true</collapsible>
+        </settings>
+        <modal name="view_optimization_modal">
+            <settings>
+                <options>
+                    <option name="title" xsi:type="string" translate="true">Optimization Info</option>
+                </options>
+            </settings>
+            <insertForm name="view_optimization_insert_form" component="Magento_Ui/js/form/components/insert-form">
+                <settings>
+                    <toolbarContainer>${ $.parentName }</toolbarContainer>
+                    <renderUrl path="mui/index/render_handle">
+                        <param name="buttons">1</param>
+                        <param name="handle">mageproxy_optimization_view</param>
+                    </renderUrl>
+                    <externalProvider>${ $.ns }.mageproxy_optimization_view_data_source</externalProvider>
+                    <ns>mageproxy_optimization_view</ns>
+                    <exports>
+                        <link name="optimization_id">${ $.externalProvider }:data.optimization_id</link>
+                    </exports>
+                    <imports>
+                        <link name="optimization_id">${ $.provider}:data.optimization_id</link>
+                    </imports>
+                </settings>
+            </insertForm>
+        </modal>
+        <insertListing name="mageproxy_optimization_listing">
+            <settings>
+                <dataLinks>
+                    <exports>false</exports>
+                    <imports>true</imports>
+                </dataLinks>
+                <externalProvider>mageproxy_optimization_listing.mageproxy_optimization_listing_data_source</externalProvider>
+                <autoRender>true</autoRender>
+                <dataScope>mageproxy_optimization_listing</dataScope>
+                <ns>mageproxy_optimization_listing</ns>
+                <exports>
+                    <link name="recording_id">${ $.externalProvider }:params.recording_id</link>
+                </exports>
+                <imports>
+                    <link name="recording_id">${ $.provider }:data.recording_id</link>
+                </imports>
+            </settings>
+        </insertListing>
+    </fieldset>
+    <modal name="deps_chart_modal">
+        <settings>
+            <options>
+                <option name="title" xsi:type="string" translate="true">Dependency Count Chart</option>
+                <option name="buttons" xsi:type="array">
+                    <item name="0" xsi:type="array">
+                        <item name="text" xsi:type="string" translate="true">Close</item>
+                        <item name="actions" xsi:type="array">
+                            <item name="0" xsi:type="string">closeModal</item>
+                        </item>
+                    </item>
+                    <item name="1" xsi:type="array">
+                        <item name="text" xsi:type="string" translate="true">Refresh</item>
+                        <item name="class" xsi:type="string">action-secondary</item>
+                        <item name="actions" xsi:type="array">
+                            <item name="0" xsi:type="array">
+                                <item name="targetName" xsi:type="string">${ $.name }.deps_chart</item>
+                                <item name="actionName" xsi:type="string">refreshChartData</item>
+                            </item>
+                        </item>
+                    </item>
+                </option>
+            </options>
+        </settings>
+        <container name="deps_chart" class="Mageproxy\Connector\Ui\Component\Chart" component="Mageproxy_Connector/js/component/chart" template="Mageproxy_Connector/chart">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="updateUrl" xsi:type="string">mageproxy/recording/depsChart</item>
+                    <item name="chartLabel" xsi:type="string" translate="true">RequireJs Dependency Count</item>
+                    <item name="yScaleLabel" xsi:type="string" translate="true">Count</item>
+                </item>
+            </argument>
+        </container>
+    </modal>
+    <modal name="create_optimization_form_modal">
+        <settings>
+            <options>
+                <option name="title" xsi:type="string" translate="true">Optimize Recording</option>
+            </options>
+        </settings>
+        <insertForm name="create_optimization_insert_form" component="Magento_Ui/js/form/components/insert-form">
+            <settings>
+                <toolbarContainer>${ $.parentName }</toolbarContainer>
+                <renderUrl path="mui/index/render_handle">
+                    <param name="buttons">1</param>
+                    <param name="handle">mageproxy_optimization_create</param>
+                </renderUrl>
+                <externalProvider>${ $.ns }.mageproxy_optimization_form_data_source</externalProvider>
+                <ns>mageproxy_optimization_form</ns>
+                <imports>
+                    <link name="recording_id">${ $.provider }:data.recording_id</link>
+                </imports>
+                <exports>
+                    <link name="recording_id">${ $.externalProvider }:data.recording_id</link>
+                </exports>
+            </settings>
+        </insertForm>
+    </modal>
+</form>

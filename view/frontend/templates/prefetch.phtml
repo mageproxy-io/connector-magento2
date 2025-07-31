@@ -1,0 +1,19 @@
+<?php
+/**
+ * Mageproxy Connector for Magento2.
+ *
+ * @package    Mageproxy_Connector
+ * @copyright  Copyright (c) 2025 Iframe Co Ltd
+ * @license    See LICENSE.txt for license details
+ */
+
+/** @var \Mageproxy\Connector\ViewModel\Prefetch $viewModel */
+$viewModel = $this->getViewModel();
+?>
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "Mageproxy_Connector/js/prefetch": <?= $viewModel->getPrefetchJson() ?>
+        }
+    }
+</script>

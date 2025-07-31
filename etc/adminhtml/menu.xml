@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!--
+  ~ Mageproxy Connector for Magento2.
+  ~
+  ~ @package    Mageproxy_Connector
+  ~ @copyright  Copyright (c) 2025 Iframe Co Ltd
+  ~ @license    See LICENSE.txt for license details
+  -->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add
+            id="Mageproxy_Connector::mageproxy"
+            title="mageproxy.io"
+            translate="title"
+            module="Mageproxy_Connector"
+            sortOrder="90"
+            parent="Magento_Backend::system_tools"
+            action="mageproxy/recording/"
+            resource="Mageproxy_Connector::system" />
+    </menu>
+</config>

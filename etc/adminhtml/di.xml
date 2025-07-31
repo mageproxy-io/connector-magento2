@@ -1,0 +1,91 @@
+<?xml version="1.0"?>
+<!--
+  ~ Mageproxy Connector for Magento2.
+  ~
+  ~ @package    Mageproxy_Connector
+  ~ @copyright  Copyright (c) 2025 Iframe Co Ltd
+  ~ @license    See LICENSE.txt for license details
+  -->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\Framework\Notification\MessageList">
+        <arguments>
+            <argument name="messages" xsi:type="array">
+                <item name="mageproxy_config_validation_fail" xsi:type="string">Mageproxy\Connector\Model\System\Message\ConfigVerificationFail</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Mageproxy\Connector\Observer\Adminhtml\ControllerPreDispatch">
+        <arguments>
+            <argument name="checkControllersForConfigValidationFlag" xsi:type="array">
+                <item name="recording_start" xsi:type="string">mageproxy_recording_start</item>
+                <item name="recording_create" xsi:type="string">mageproxy_recording_create</item>
+                <item name="recording_save" xsi:type="string">mageproxy_recording_save</item>
+                <item name="optimization_deploy" xsi:type="string">mageproxy_optimization_deploy</item>
+            </argument>
+        </arguments>
+    </type>
+    <virtualType name="Mageproxy\Connector\Block\Adminhtml\StartRecordingButton" type="Mageproxy\Connector\Block\Adminhtml\RecordingGenericButton">
+        <arguments>
+            <argument name="buttonParams" xsi:type="array">
+                <item name="action_name" xsi:type="string">start</item>
+                <item name="class" xsi:type="string">primary</item>
+                <item name="label" xsi:type="string">Start Recording</item>
+                <item name="sort_order" xsi:type="number">100</item>
+            </argument>
+            <argument name="statusIn" xsi:type="array">
+                <item name="stopped" xsi:type="const">Mageproxy\Connector\Api\Data\RecordingInterface::STATUS_STOPPED</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Mageproxy\Connector\Block\Adminhtml\DeleteRecordingButton" type="Mageproxy\Connector\Block\Adminhtml\RecordingGenericButton">
+        <arguments>
+            <argument name="buttonParams" xsi:type="array">
+                <item name="action_name" xsi:type="string">delete</item>
+                <item name="label" xsi:type="string">Delete</item>
+                <item name="sort_order" xsi:type="number">30</item>
+                <item name="confirm" xsi:type="boolean">true</item>
+            </argument>
+            <argument name="statusIn" xsi:type="array">
+                <item name="pending" xsi:type="const">Mageproxy\Connector\Api\Data\RecordingInterface::STATUS_PENDING</item>
+                <item name="stopped" xsi:type="const">Mageproxy\Connector\Api\Data\RecordingInterface::STATUS_STOPPED</item>
+                <item name="finished" xsi:type="const">Mageproxy\Connector\Api\Data\RecordingInterface::STATUS_FINISHED</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Mageproxy\Connector\Block\Adminhtml\StopRecordingButton" type="Mageproxy\Connector\Block\Adminhtml\RecordingGenericButton">
+        <arguments>
+            <argument name="buttonParams" xsi:type="array">
+                <item name="action_name" xsi:type="string">stop</item>
+                <item name="label" xsi:type="string">Stop Recording</item>
+                <item name="class" xsi:type="string">primary</item>
+                <item name="sort_order" xsi:type="number">100</item>
+                <item name="confirm" xsi:type="boolean">true</item>
+            </argument>
+            <argument name="statusIn" xsi:type="array">
+                <item name="running" xsi:type="const">Mageproxy\Connector\Api\Data\RecordingInterface::STATUS_RUNNING</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Mageproxy\Connector\Block\Adminhtml\SyncRecordingButton" type="Mageproxy\Connector\Block\Adminhtml\RecordingGenericButton">
+        <arguments>
+            <argument name="buttonParams" xsi:type="array">
+                <item name="action_name" xsi:type="string">sync</item>
+                <item name="label" xsi:type="string">Sync</item>
+                <item name="sort_order" xsi:type="number">20</item>
+            </argument>
+            <argument name="statusIn" xsi:type="array">
+                <item name="stopped" xsi:type="const">Mageproxy\Connector\Api\Data\RecordingInterface::STATUS_STOPPED</item>
+                <item name="running" xsi:type="const">Mageproxy\Connector\Api\Data\RecordingInterface::STATUS_RUNNING</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Mageproxy\Connector\Block\Adminhtml\RefreshRecordingButton" type="Mageproxy\Connector\Block\Adminhtml\RecordingGenericButton">
+        <arguments>
+            <argument name="buttonParams" xsi:type="array">
+                <item name="action_name" xsi:type="string">view</item>
+                <item name="label" xsi:type="string">Refresh</item>
+                <item name="sort_order" xsi:type="number">10</item>
+            </argument>
+        </arguments>
+    </virtualType>
+</config>

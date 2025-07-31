@@ -1,0 +1,18 @@
+/*
+ * Mageproxy Connector for Magento2.
+ *
+ * @package    Mageproxy_Connector
+ * @copyright  Copyright (c) 2025 Iframe Co Ltd
+ * @license    See LICENSE.txt for license details
+ */
+
+.admin__menu [data-ui-id^='menu-mageproxy-'] .submenu-group-title span:before,
+.admin__menu [data-ui-id^='menu-magento-'] [data-ui-id^='menu-magento-'] [data-ui-id^='menu-mageproxy-'] span:before {
+    background: url('../images/logo-menu-white.svg') no-repeat center;
+    content: '';
+    display: inline-block;
+    height: 18px;
+    margin-right: 12px;
+    vertical-align: top;
+    width: 15px;
+}

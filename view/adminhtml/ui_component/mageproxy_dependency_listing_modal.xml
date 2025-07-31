@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Mageproxy Connector for Magento2.
+  ~
+  ~ @package    Mageproxy_Connector
+  ~ @copyright  Copyright (c) 2025 Iframe Co Ltd
+  ~ @license    See LICENSE.txt for license details
+  -->
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">mageproxy_dependency_listing_modal.mageproxy_dependency_listing_modal_data_source</item>
+        </item>
+    </argument>
+    <settings>
+        <spinner>mageproxy_dependency_listing_modal_columns</spinner>
+        <deps>
+            <dep>mageproxy_dependency_listing_modal.mageproxy_dependency_listing_modal_data_source</dep>
+        </deps>
+        <buttons/>
+    </settings>
+    <dataSource name="mageproxy_dependency_listing_modal_data_source" component="Magento_Ui/js/grid/provider">
+        <settings>
+            <storageConfig>
+                <param name="indexField" xsi:type="string">module_id</param>
+            </storageConfig>
+            <updateUrl path="mui/index/render"/>
+        </settings>
+        <dataProvider class="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider" name="mageproxy_dependency_listing_modal_data_source">
+            <settings>
+                <requestFieldName>module_id</requestFieldName>
+                <primaryFieldName>module_id</primaryFieldName>
+            </settings>
+        </dataProvider>
+    </dataSource>
+    <listingToolbar name="listing_top">
+        <argument name="data" xsi:type="array">
+            <item name="config" xsi:type="array">
+                <item name="sticky" xsi:type="boolean">false</item>
+            </item>
+        </argument>
+        <filters name="listing_filters"/>
+        <paging name="listing_paging" />
+    </listingToolbar>
+    <columns name="mageproxy_dependency_listing_modal_columns">
+        <selectionsColumn name="ids" sortOrder="0">
+            <settings>
+                <indexField>module_id</indexField>
+                <preserveSelectionsOnFilter>true</preserveSelectionsOnFilter>
+            </settings>
+        </selectionsColumn>
+        <column name="module_id" sortOrder="10">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">Module ID</label>
+                <dataScope>module_id</dataScope>
+                <dataType>text</dataType>
+            </settings>
+        </column>
+        <column name="path" sortOrder="20" component="Mageproxy_Connector/js/grid/column/deps/path">
+            <settings>
+                <label translate="true">Path</label>
+                <dataType>text</dataType>
+                <bodyTmpl>Mageproxy_Connector/grid/deps/path</bodyTmpl>
+                <sortable>false</sortable>
+                <draggable>false</draggable>
+            </settings>
+        </column>
+    </columns>
+</listing>

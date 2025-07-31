@@ -1,0 +1,25 @@
+<?xml version="1.0" ?>
+<!--
+  ~ Mageproxy Connector for Magento2.
+  ~
+  ~ @package    Mageproxy_Connector
+  ~ @copyright  Copyright (c) 2025 Iframe Co Ltd
+  ~ @license    See LICENSE.txt for license details
+  -->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <script src="Mageproxy_Connector::js/requirejs/recorder.js" />
+    </head>
+    <body>
+        <block name="require.js" class="Mageproxy\Connector\Block\Html\Head\RequireJsConfig" template="Magento_Theme::page/js/require_js.phtml">
+            <block as="config" ifconfig="mageproxy_connector/settings/enabled" template="Mageproxy_Connector::requirejs/config.phtml" />
+        </block>
+        <referenceContainer name="before.body.end">
+            <block name="mpx.prefetch" template="Mageproxy_Connector::prefetch.phtml" ifconfig="mageproxy_connector/settings/enabled">
+                <arguments>
+                    <argument name="view_model" xsi:type="object">Mageproxy\Connector\ViewModel\Prefetch</argument>
+                </arguments>
+            </block>
+        </referenceContainer>
+    </body>
+</page>

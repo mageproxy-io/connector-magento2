@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<!--
+  ~ Mageproxy Connector for Magento2.
+  ~
+  ~ @package    Mageproxy_Connector
+  ~ @copyright  Copyright (c) 2025 Iframe Co Ltd
+  ~ @license    See LICENSE.txt for license details
+  -->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Module/etc/module.xsd">
+    <module name="Mageproxy_Connector" setup_version="0.9.9">
+        <sequence>
+            <module name="Magento_Csp"/>
+            <module name="Magento_RequireJs"/>
+            <module name="Magento_Theme"/>
+        </sequence>
+    </module>
+</config>

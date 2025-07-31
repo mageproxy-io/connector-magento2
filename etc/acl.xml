@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<!--
+  ~ Mageproxy Connector for Magento2.
+  ~
+  ~ @package    Mageproxy_Connector
+  ~ @copyright  Copyright (c) 2025 Iframe Co Ltd
+  ~ @license    See LICENSE.txt for license details
+  -->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Acl/etc/acl.xsd">
+    <acl>
+        <resources>
+            <resource id="Magento_Backend::admin">
+                <resource id="Magento_Backend::stores">
+                    <resource id="Magento_Backend::stores_settings">
+                        <resource id="Magento_Config::config">
+                            <resource id="Mageproxy_Connector::config" sortOrder="180" title="Manage Mageproxy Configuration" translate="title"/>
+                        </resource>
+                    </resource>
+                </resource>
+                <resource id="Magento_Backend::system">
+                    <resource id="Mageproxy_Connector::system" sortOrder="110" title="Mageproxy Connector" translate="title">
+                        <resource id="Mageproxy_Connector::recording" sortOrder="10" title="Recording" translate="title">
+                            <resource id="Mageproxy_Connector::recording_view" sortOrder="10" title="View" translate="title"/>
+                            <resource id="Mageproxy_Connector::recording_create" sortOrder="20" title="Create" translate="title"/>
+                            <resource id="Mageproxy_Connector::recording_delete" sortOrder="30" title="Delete" translate="title"/>
+                            <resource id="Mageproxy_Connector::recording_start" sortOrder="40" title="Start" translate="title"/>
+                            <resource id="Mageproxy_Connector::recording_stop" sortOrder="50" title="Stop" translate="title"/>
+                        </resource>
+                        <resource id="Mageproxy_Connector::optimization" sortOrder="20" title="Optimization" translate="title">
+                            <resource id="Mageproxy_Connector::optimization_create" sortOrder="10" title="Create" translate="title"/>
+                            <resource id="Mageproxy_Connector::optimization_deploy" sortOrder="20" title="Deploy" translate="title"/>
+                            <resource id="Mageproxy_Connector::optimization_revert" sortOrder="30" title="Revert" translate="title"/>
+                        </resource>
+                    </resource>
+                </resource>
+            </resource>
+        </resources>
+    </acl>
+</config>

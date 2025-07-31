@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Mageproxy Connector for Magento2.
+  ~
+  ~ @package    Mageproxy_Connector
+  ~ @copyright  Copyright (c) 2025 Iframe Co Ltd
+  ~ @license    See LICENSE.txt for license details
+  -->
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">mageproxy_recording_listing.mageproxy_recording_listing_data_source</item>
+        </item>
+    </argument>
+    <settings>
+        <spinner>mageproxy_recording_listing_columns</spinner>
+        <deps>
+            <dep>mageproxy_recording_listing.mageproxy_recording_listing_data_source</dep>
+        </deps>
+        <buttons>
+            <button name="createNewRecording" class="\Mageproxy\Connector\Block\Adminhtml\CreateNewRecordingButton" />
+            <button name="scheduleNewRecording" class="Mageproxy\Connector\Block\Adminhtml\ScheduleNewRecordingButton" />
+            <button name="refresh">
+                <url path="*/*/"/>
+                <label translate="true">Refresh</label>
+            </button>
+            <button name="config">
+                <label translate="true">System Configuration</label>
+                <url path="adminhtml/system_config/edit/section/mageproxy_connector"/>
+                <class>secondary</class>
+            </button>
+        </buttons>
+    </settings>
+    <dataSource name="mageproxy_recording_listing_data_source" component="Magento_Ui/js/grid/provider">
+        <settings>
+            <storageConfig>
+                <param name="indexField" xsi:type="string">recording_id</param>
+            </storageConfig>
+            <updateUrl path="mui/index/render"/>
+        </settings>
+        <dataProvider class="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider" name="mageproxy_recording_listing_data_source">
+            <settings>
+                <requestFieldName>id</requestFieldName>
+                <primaryFieldName>main_table.recording_id</primaryFieldName>
+            </settings>
+        </dataProvider>
+    </dataSource>
+    <listingToolbar name="listing_top">
+        <columnsControls name="columns_controls"/>
+        <filters name="listing_filters">
+            <settings>
+                <templates>
+                    <filters>
+                        <select>
+                            <param name="template" xsi:type="string">ui/grid/filters/elements/ui-select</param>
+                            <param name="component" xsi:type="string">Magento_Ui/js/form/element/ui-select</param>
+                        </select>
+                    </filters>
+                </templates>
+            </settings>
+        </filters>
+        <massaction name="listing_massaction">
+            <action name="delete">
+                <settings>
+                    <confirm>
+                        <message translate="true">Are you sure you want to delete selected items?</message>
+                        <title translate="true">Delete items</title>
+                    </confirm>
+                    <url path="mageproxy/recording/massDelete"/>
+                    <type>delete</type>
+                    <label translate="true">Delete</label>
+                </settings>
+            </action>
+        </massaction>
+        <paging name="listing_paging"/>
+    </listingToolbar>
+    <columns name="mageproxy_recording_listing_columns">
+        <selectionsColumn name="ids" sortOrder="0">
+            <settings>
+                <indexField>recording_id</indexField>
+            </settings>
+        </selectionsColumn>
+        <column name="recording_id" sortOrder="10">
+            <settings>
+                <filter>textRange</filter>
+                <label translate="true">ID</label>
+            </settings>
+        </column>
+        <column name="uuid" sortOrder="20">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">UUID</label>
+            </settings>
+        </column>
+        <column name="scheduled_at" class="Magento\Ui\Component\Listing\Columns\Date" component="Magento_Ui/js/grid/columns/date" sortOrder="30">
+            <settings>
+                <filter>dateRange</filter>
+                <dataType>date</dataType>
+                <label translate="true">Scheduled At</label>
+            </settings>
+        </column>
+        <column name="started_at" class="Magento\Ui\Component\Listing\Columns\Date" component="Magento_Ui/js/grid/columns/date" sortOrder="40">
+            <settings>
+                <filter>dateRange</filter>
+                <dataType>date</dataType>
+                <label translate="true">Started At</label>
+            </settings>
+        </column>
+        <column name="finished_at" class="Magento\Ui\Component\Listing\Columns\Date" component="Magento_Ui/js/grid/columns/date" sortOrder="44">
+            <settings>
+                <filter>dateRange</filter>
+                <dataType>date</dataType>
+                <label translate="true">Finished At</label>
+            </settings>
+        </column>
+        <column name="duration" sortOrder="50">
+            <settings>
+                <label translate="true">Duration (min)</label>
+            </settings>
+        </column>
+        <column name="static_version" sortOrder="60">
+            <settings>
+                <label translate="true">Static Version</label>
+            </settings>
+        </column>
+        <column name="initiator" sortOrder="65">
+            <settings>
+                <label translate="true">Initiator</label>
+                <filter>select</filter>
+                <bodyTmpl>ui/grid/cells/html</bodyTmpl>
+                <dataType>select</dataType>
+                <options class="Mageproxy\Connector\Model\Recording\Source\Initiator"/>
+            </settings>
+        </column>
+        <column name="store_id" class="Magento\Store\Ui\Component\Listing\Column\Store" sortOrder="70">
+            <settings>
+                <label translate="true">Store View</label>
+                <bodyTmpl>ui/grid/cells/html</bodyTmpl>
+                <sortable>false</sortable>
+            </settings>
+        </column>
+        <column name="status" class="Mageproxy\Connector\Ui\Component\Listing\Column\RecordingStatus" sortOrder="80">
+            <settings>
+                <filter>select</filter>
+                <options class="Mageproxy\Connector\Model\Recording\Source\Status"/>
+                <bodyTmpl>ui/grid/cells/html</bodyTmpl>
+                <dataType>select</dataType>
+                <label translate="true">Status</label>
+            </settings>
+        </column>
+        <column name="deployed" component="Magento_Ui/js/grid/columns/select" sortOrder="100">
+            <settings>
+                <options class="Mageproxy\Connector\Ui\Component\Listing\Column\Deployed"/>
+                <dataType>select</dataType>
+                <label translate="true">Deployed</label>
+                <sortable>false</sortable>
+            </settings>
+        </column>
+        <actionsColumn name="actions" class="Mageproxy\Connector\Ui\Component\Listing\Column\RecordingActions" sortOrder="200">
+            <settings>
+                <indexField>recording_id</indexField>
+            </settings>
+        </actionsColumn>
+    </columns>
+</listing>

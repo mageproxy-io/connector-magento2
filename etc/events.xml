@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!--
+  ~ Mageproxy Connector for Magento2.
+  ~
+  ~ @package    Mageproxy_Connector
+  ~ @copyright  Copyright (c) 2025 Iframe Co Ltd
+  ~ @license    See LICENSE.txt for license details
+  -->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="mageproxy_connector_config_validation_fail">
+        <observer instance="Mageproxy\Connector\Observer\ConfigValidationFailed"
+                  name="disable_mageproxy_on_config_validation_fail"/>
+    </event>
+    <event name="mageproxy_connector_config_validation_success">
+        <observer instance="Mageproxy\Connector\Observer\ConfigValidationSuccess"
+                  name="save_flag_config_validation_success"/>
+    </event>
+<!--    <event name="mageproxy_optimization_save_after">-->
+<!--        <observer name="mageproxy_optimization_save_after" instance="Mageproxy\Connector\Observer\OptimizationStatusChange" />-->
+<!--    </event>-->
+</config>

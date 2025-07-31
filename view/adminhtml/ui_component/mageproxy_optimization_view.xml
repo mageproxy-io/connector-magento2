@@ -1,0 +1,508 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Mageproxy Connector for Magento2.
+  ~
+  ~ @package    Mageproxy_Connector
+  ~ @copyright  Copyright (c) 2025 Iframe Co Ltd
+  ~ @license    See LICENSE.txt for license details
+  -->
+<form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">mageproxy_optimization_view.mageproxy_optimization_view_data_source</item>
+        </item>
+        <item name="template" xsi:type="string">templates/form/collapsible</item>
+    </argument>
+    <settings>
+        <label translate="true">Optimization</label>
+        <buttons>
+            <button name="deploy" class="Mageproxy\Connector\Block\Adminhtml\DeployOptimizationButton"/>
+            <button name="back" class="Mageproxy\Connector\Block\Adminhtml\ViewOptimizationBackButton"/>
+            <button name="revert" class="Mageproxy\Connector\Block\Adminhtml\RevertOptimizationButton"/>
+            <button name="saveTemplate" class="Mageproxy\Connector\Block\Adminhtml\SaveAsTemplateButton"/>
+        </buttons>
+        <namespace>mageproxy_optimization_view</namespace>
+        <dataScope>data</dataScope>
+        <deps>
+            <dep>mageproxy_optimization_view.mageproxy_optimization_view_data_source</dep>
+        </deps>
+    </settings>
+    <dataSource name="mageproxy_optimization_view_data_source">
+        <argument name="data" xsi:type="array">
+            <item name="js_config" xsi:type="array">
+                <item name="component" xsi:type="string">Magento_Ui/js/form/provider</item>
+            </item>
+        </argument>
+        <settings>
+            <submitUrl path="mageproxy/optimization/save"/>
+        </settings>
+        <dataProvider class="Mageproxy\Connector\Ui\DataProvider\Form\OptimizationViewDataProvider" name="mageproxy_optimization_view_data_source">
+            <settings>
+                <requestFieldName>optimization_id</requestFieldName>
+                <primaryFieldName>optimization_id</primaryFieldName>
+            </settings>
+        </dataProvider>
+    </dataSource>
+    <fieldset name="general_fs" sortOrder="10">
+        <settings>
+            <collapsible>true</collapsible>
+            <opened>true</opened>
+            <label translate="true">General</label>
+        </settings>
+        <field name="status" formElement="input" sortOrder="15">
+            <settings>
+                <label translate="true">Status</label>
+                <dataScope>status</dataScope>
+                <elementTmpl>ui/form/element/text</elementTmpl>
+            </settings>
+        </field>
+        <field name="uuid" formElement="input" sortOrder="20" component="Mageproxy_Connector/js/component/form/element/uuid">
+            <settings>
+                <dataScope>uuid</dataScope>
+                <label translate="true">UUID</label>
+            </settings>
+        </field>
+        <field name="deps_cnt" formElement="input" sortOrder="25">
+            <settings>
+                <label translate="true">Dependency Count</label>
+                <elementTmpl>ui/form/element/text</elementTmpl>
+            </settings>
+        </field>
+        <field name="requested_by" formElement="input" sortOrder="26">
+            <settings>
+                <label translate="true">Requested By</label>
+                <elementTmpl>ui/form/element/text</elementTmpl>
+            </settings>
+        </field>
+        <field name="template_url" formElement="input" sortOrder="30">
+            <settings>
+                <label translate="true">Auto Run Template</label>
+                <elementTmpl>ui/form/element/html</elementTmpl>
+            </settings>
+        </field>
+        <field name="error_message" formElement="textarea" sortOrder="35">
+            <settings>
+                <dataScope>error_message</dataScope>
+                <label translate="true">Error message</label>
+                <disabled>true</disabled>
+                <notice translate="true">In case of an error, contact support@mageproxy.io and mention the UUID above.</notice>
+                <imports>
+                    <link name="visible">${ $.provider }:data.error_message</link>
+                </imports>
+            </settings>
+        </field>
+    </fieldset>
+    <fieldset name="bundles_fs" sortOrder="20">
+        <settings>
+            <collapsible>true</collapsible>
+            <opened>false</opened>
+            <label translate="true">Bundles</label>
+        </settings>
+        <insertListing name="bundles">
+            <settings>
+                <externalProvider>${ $.ns }.mageproxy_bundle_listing_data_source</externalProvider>
+                <autoRender>true</autoRender>
+                <dataScope>mageproxy_bundle_listing</dataScope>
+                <ns>mageproxy_bundle_listing</ns>
+                <imports>
+                    <link name="optimization_id">${ $.provider }:data.optimization_id</link>
+                    <link name="params.optimization_id">${ $.provider }:data.optimization_id</link>
+                </imports>
+                <exports>
+                    <link name="optimization_id">${ $.externalProvider }:params.optimization_id</link>
+                </exports>
+            </settings>
+        </insertListing>
+    </fieldset>
+    <fieldset name="minification_fs" sortOrder="30">
+        <settings>
+            <collapsible>true</collapsible>
+            <opened>false</opened>
+            <label translate="true">Minification</label>
+        </settings>
+        <field name="minify_js_label" formElement="input" sortOrder="10">
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Minify JavaScript</label>
+                <elementTmpl>ui/form/element/text</elementTmpl>
+            </settings>
+        </field>
+        <field name="minify_html_label" formElement="input" sortOrder="20">
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Minify Html Templates</label>
+                <elementTmpl>ui/form/element/text</elementTmpl>
+            </settings>
+        </field>
+    </fieldset>
+    <fieldset name="chunking_fs" sortOrder="35">
+        <settings>
+            <collapsible>true</collapsible>
+            <label translate="true">Chunking</label>
+            <opened>false</opened>
+        </settings>
+        <field name="chunk_js_label" formElement="input" sortOrder="10">
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Chunk JavaScript</label>
+                <elementTmpl>ui/form/element/text</elementTmpl>
+            </settings>
+        </field>
+        <field name="chunk_js_size_label" formElement="input" sortOrder="20">
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Chunk Size</label>
+                <elementTmpl>ui/form/element/text</elementTmpl>
+                <imports>
+                    <link name="visible">${ $.provider }:data.chunk_js</link>
+                </imports>
+            </settings>
+        </field>
+    </fieldset>
+    <fieldset name="exclude_deps_fs" sortOrder="40">
+        <settings>
+            <collapsible>true</collapsible>
+            <opened>false</opened>
+            <label translate="true">Excluded Dependencies</label>
+        </settings>
+        <container name="no_items_message" template="ui/form/components/complex">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string"/>
+                    <item name="text" xsi:type="string" translate="true">No excluded dependencies.</item>
+                </item>
+            </argument>
+        </container>
+        <dynamicRows name="exclude_deps_dr" component="Magento_Ui/js/dynamic-rows/dynamic-rows-grid" template="ui/dynamic-rows/templates/grid">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="columnsHeaderAfterRender" xsi:type="boolean">true</item>
+                    <item name="defaultRecord" xsi:type="boolean">false</item>
+                    <item name="deleteButtonLabel" xsi:type="string">Remove</item>
+                    <item name="dataProvider" xsi:type="string">exclude_deps</item>
+                    <item name="identificationDRProperty" xsi:type="string">module_id</item>
+                    <item name="map" xsi:type="array">
+                        <item name="module_id" xsi:type="string">module_id</item>
+                    </item>
+                </item>
+            </argument>
+            <settings>
+                <additionalClasses>
+                    <class name="admin__field-wide">true</class>
+                </additionalClasses>
+                <columnsHeader>false</columnsHeader>
+                <recordTemplate>record</recordTemplate>
+                <imports>
+                    <link name="insertData">${ $.provider }:data.${ $.dataProvider }</link>
+                </imports>
+                <addButton>false</addButton>
+                <componentType>dynamicRows</componentType>
+                <dndConfig>
+                    <param name="enabled" xsi:type="boolean">false</param>
+                </dndConfig>
+                <identificationProperty>module_id</identificationProperty>
+                <deleteProperty>delete</deleteProperty>
+                <deleteValue>false</deleteValue>
+                <disabled>true</disabled>
+                <pageSize>200</pageSize>
+            </settings>
+            <container name="record" component="Magento_Ui/js/dynamic-rows/record">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="componentType" xsi:type="string">container</item>
+                        <item name="isTemplate" xsi:type="boolean">true</item>
+                        <item name="is_collection" xsi:type="boolean">true</item>
+                    </item>
+                </argument>
+                <field name="module_id" component="Magento_Ui/js/form/element/text" formElement="input" sortOrder="10">
+                    <settings>
+                        <label translate="true">ID</label>
+                        <dataType>text</dataType>
+                        <elementTmpl>ui/dynamic-rows/cells/text</elementTmpl>
+                    </settings>
+                </field>
+            </container>
+        </dynamicRows>
+    </fieldset>
+    <fieldset name="remove_deps_fs" sortOrder="50">
+        <settings>
+            <collapsible>true</collapsible>
+            <opened>false</opened>
+            <label translate="true">Removed Dependencies</label>
+        </settings>
+        <container name="no_items_message" template="ui/form/components/complex">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string"/>
+                    <item name="text" xsi:type="string" translate="true">No removed dependencies.</item>
+                </item>
+            </argument>
+        </container>
+        <dynamicRows name="remove_deps_dr" component="Magento_Ui/js/dynamic-rows/dynamic-rows-grid" template="ui/dynamic-rows/templates/grid">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="columnsHeaderAfterRender" xsi:type="boolean">true</item>
+                    <item name="defaultRecord" xsi:type="boolean">false</item>
+                    <item name="deleteButtonLabel" xsi:type="string">Remove</item>
+                    <item name="dataProvider" xsi:type="string">remove_deps</item>
+                    <item name="identificationDRProperty" xsi:type="string">module_id</item>
+                    <item name="map" xsi:type="array">
+                        <item name="module_id" xsi:type="string">module_id</item>
+                    </item>
+                </item>
+            </argument>
+            <settings>
+                <additionalClasses>
+                    <class name="admin__field-wide">true</class>
+                </additionalClasses>
+                <columnsHeader>false</columnsHeader>
+                <recordTemplate>record</recordTemplate>
+                <imports>
+                    <link name="insertData">${ $.provider }:data.${ $.dataProvider }</link>
+                </imports>
+                <addButton>false</addButton>
+                <componentType>dynamicRows</componentType>
+                <dndConfig>
+                    <param name="enabled" xsi:type="boolean">false</param>
+                </dndConfig>
+                <identificationProperty>module_id</identificationProperty>
+                <deleteProperty>delete</deleteProperty>
+                <deleteValue>false</deleteValue>
+                <disabled>true</disabled>
+                <pageSize>200</pageSize>
+            </settings>
+            <container name="record" component="Magento_Ui/js/dynamic-rows/record">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="componentType" xsi:type="string">container</item>
+                        <item name="isTemplate" xsi:type="boolean">true</item>
+                        <item name="is_collection" xsi:type="boolean">true</item>
+                    </item>
+                </argument>
+                <field name="module_id" component="Magento_Ui/js/form/element/text" formElement="input" sortOrder="10">
+                    <settings>
+                        <label translate="true">Module ID</label>
+                        <dataType>text</dataType>
+                        <elementTmpl>ui/dynamic-rows/cells/text</elementTmpl>
+                    </settings>
+                </field>
+            </container>
+        </dynamicRows>
+    </fieldset>
+    <fieldset name="page_handles_fs" sortOrder="60">
+        <settings>
+            <collapsible>true</collapsible>
+            <opened>false</opened>
+            <label translate="true">Page Handle Priority</label>
+        </settings>
+        <container name="no_items_message" template="ui/form/components/complex">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string"/>
+                    <item name="content" xsi:type="string" translate="true">No custom page handle priority.</item>
+                </item>
+            </argument>
+        </container>
+        <dynamicRows name="page_handles_dr" component="Magento_Ui/js/dynamic-rows/dynamic-rows-grid" template="ui/dynamic-rows/templates/grid">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="columnsHeaderAfterRender" xsi:type="boolean">true</item>
+                    <item name="defaultRecord" xsi:type="boolean">false</item>
+                    <item name="deleteButtonLabel" xsi:type="string">Remove</item>
+                    <item name="dataProvider" xsi:type="string">handles</item>
+                    <item name="identificationDRProperty" xsi:type="string">page_handle</item>
+                    <item name="map" xsi:type="array">
+                        <item name="page_handle" xsi:type="string">page_handle</item>
+                    </item>
+                </item>
+            </argument>
+            <settings>
+                <additionalClasses>
+                    <class name="admin__field-wide">true</class>
+                </additionalClasses>
+                <columnsHeader>false</columnsHeader>
+                <recordTemplate>record</recordTemplate>
+                <imports>
+                    <link name="insertData">${ $.provider }:data.${ $.dataProvider }</link>
+                </imports>
+                <addButton>false</addButton>
+                <componentType>dynamicRows</componentType>
+                <dndConfig>
+                    <param name="enabled" xsi:type="boolean">false</param>
+                </dndConfig>
+                <identificationProperty>page_handle</identificationProperty>
+                <deleteProperty>delete</deleteProperty>
+                <deleteValue>false</deleteValue>
+                <disabled>true</disabled>
+                <pageSize>20</pageSize>
+            </settings>
+            <container name="record" component="Magento_Ui/js/dynamic-rows/record">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="componentType" xsi:type="string">container</item>
+                        <item name="isTemplate" xsi:type="boolean">true</item>
+                        <item name="is_collection" xsi:type="boolean">true</item>
+                    </item>
+                </argument>
+                <field name="page_handle" component="Magento_Ui/js/form/element/text" formElement="input" sortOrder="10">
+                    <settings>
+                        <label translate="true">Page Handle</label>
+                        <dataType>text</dataType>
+                        <elementTmpl>ui/dynamic-rows/cells/text</elementTmpl>
+                    </settings>
+                </field>
+            </container>
+        </dynamicRows>
+    </fieldset>
+    <fieldset name="transpile_fs" sortOrder="70">
+        <settings>
+            <collapsible>true</collapsible>
+            <opened>false</opened>
+            <label translate="true">Transpilation</label>
+        </settings>
+        <container name="no_items_message" template="ui/form/components/complex">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string"/>
+                    <item name="text" xsi:type="string" translate="true">No transpilation instructions.</item>
+                </item>
+            </argument>
+        </container>
+        <field name="use_polyfills_label" formElement="input" sortOrder="5">
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Use Polyfills</label>
+                <elementTmpl>ui/form/element/text</elementTmpl>
+            </settings>
+        </field>
+        <field name="browserslist_config" formElement="textarea" sortOrder="10">
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Target Audience</label>
+                <elementTmpl>ui/form/element/text</elementTmpl>
+            </settings>
+        </field>
+        <dynamicRows name="transpile_globs_dr" component="Magento_Ui/js/dynamic-rows/dynamic-rows-grid" template="ui/dynamic-rows/templates/grid">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="columnsHeaderAfterRender" xsi:type="boolean">true</item>
+                    <item name="defaultRecord" xsi:type="boolean">false</item>
+                    <item name="deleteButtonLabel" xsi:type="string">Remove</item>
+                    <item name="dataProvider" xsi:type="string">transpile_globs</item>
+                    <item name="identificationDRProperty" xsi:type="string">glob</item>
+                    <item name="map" xsi:type="array">
+                        <item name="glob" xsi:type="string">glob</item>
+                    </item>
+                </item>
+            </argument>
+            <settings>
+                <additionalClasses>
+                    <class name="admin__field-wide">true</class>
+                </additionalClasses>
+                <columnsHeader>false</columnsHeader>
+                <recordTemplate>record</recordTemplate>
+                <imports>
+                    <link name="insertData">${ $.provider }:data.${ $.dataProvider }</link>
+                </imports>
+                <addButton>false</addButton>
+                <componentType>dynamicRows</componentType>
+                <dndConfig>
+                    <param name="enabled" xsi:type="boolean">false</param>
+                </dndConfig>
+                <identificationProperty>glob</identificationProperty>
+                <deleteProperty>delete</deleteProperty>
+                <deleteValue>false</deleteValue>
+                <disabled>true</disabled>
+                <pageSize>200</pageSize>
+            </settings>
+            <container name="record" component="Magento_Ui/js/dynamic-rows/record">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="componentType" xsi:type="string">container</item>
+                        <item name="isTemplate" xsi:type="boolean">true</item>
+                        <item name="is_collection" xsi:type="boolean">true</item>
+                    </item>
+                </argument>
+                <field name="glob" component="Magento_Ui/js/form/element/text" formElement="input" sortOrder="10">
+                    <settings>
+                        <label translate="true">Glob Pattern</label>
+                        <dataType>text</dataType>
+                        <elementTmpl>ui/dynamic-rows/cells/text</elementTmpl>
+                    </settings>
+                </field>
+            </container>
+        </dynamicRows>
+    </fieldset>
+    <fieldset name="source_map">
+        <settings>
+            <collapsible>true</collapsible>
+            <opened>false</opened>
+            <label translate="true">Source Map</label>
+        </settings>
+        <field name="include_sourcemap_js_label" formElement="input" sortOrder="10">
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Include JavaScript Source Map</label>
+                <elementTmpl>ui/form/element/text</elementTmpl>
+            </settings>
+        </field>
+    </fieldset>
+    <modal name="save_as_template_modal" component="Mageproxy_Connector/js/component/modal/save-as-template-modal">
+        <settings>
+            <options>
+                <option name="buttons" xsi:type="array">
+                    <item name="0" xsi:type="array">
+                        <item name="text" xsi:type="string">Cancel</item>
+                        <item name="class" xsi:type="string">action-secondary</item>
+                        <item name="actions" xsi:type="array">
+                            <item name="0" xsi:type="string">actionCancel</item>
+                        </item>
+                    </item>
+                    <item name="1" xsi:type="array">
+                        <item name="text" xsi:type="string">Save</item>
+                        <item name="class" xsi:type="string">action-primary</item>
+                        <item name="actions" xsi:type="array">
+                            <item name="0" xsi:type="string">submitAjax</item>
+                        </item>
+                    </item>
+                </option>
+                <option name="title" xsi:type="string">Save As Auto Run Template</option>
+                <option name="type" xsi:type="string">popup</option>
+            </options>
+            <dataScope>autorun</dataScope>
+        </settings>
+        <fieldset name="autorun_template_settings">
+            <settings>
+                <label/>
+            </settings>
+            <field name="store" formElement="select" sortOrder="10">
+                <settings>
+                    <label translate="true">Select Store</label>
+                    <dataScope>store</dataScope>
+                    <dataType>text</dataType>
+                </settings>
+                <formElements>
+                    <select>
+                        <settings>
+                            <options class="Mageproxy\Connector\Model\Optimization\Source\TemplateStoreSelection"/>
+                        </settings>
+                    </select>
+                </formElements>
+            </field>
+            <field name="store_label" formElement="input" sortOrder="20" component="Mageproxy_Connector/js/component/form/element/store-label-toggle">
+                <settings>
+                    <label>Store Name</label>
+                    <dataType>text</dataType>
+                    <elementTmpl>ui/form/element/html</elementTmpl>
+                    <imports>
+                        <link name="value">mageproxy_recording_form.mageproxy_recording_form_data_source:data.store</link>
+                        <link name="selectedStore">${ $.parentName }.store:value</link>
+                    </imports>
+                    <listens>
+                        <link name="selectedStore">onStoreSelected</link>
+                    </listens>
+                </settings>
+            </field>
+        </fieldset>
+    </modal>
+</form>

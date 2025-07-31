@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!--
+  ~ Mageproxy Connector for Magento2.
+  ~
+  ~ @package    Mageproxy_Connector
+  ~ @copyright  Copyright (c) 2025 Iframe Co Ltd
+  ~ @license    See LICENSE.txt for license details
+  -->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Cron:etc/crontab.xsd">
+    <group id="mageproxy">
+        <job name="mageproxy_process_recordings" instance="Mageproxy\Connector\Cron\ProcessRecordingsJob" method="execute">
+            <schedule>* * * * *</schedule>
+        </job>
+        <job name="mageproxy_fetch_recording_dependencies" instance="Mageproxy\Connector\Cron\GetRecordingDependenciesJob" method="execute">
+            <schedule>* * * * *</schedule>
+        </job>
+        <job name="mageproxy_process_optimizations" instance="Mageproxy\Connector\Cron\ProcessOptimizationsJob" method="execute">
+            <schedule>* * * * *</schedule>
+        </job>
+        <job name="mageproxy_after_module_inactive" instance="Mageproxy\Connector\Cron\AfterModuleInactiveJob" method="execute">
+            <schedule>* * * * *</schedule>
+        </job>
+        <job name="mageproxy_start_new_recordings" instance="Mageproxy\Connector\Cron\StartNewRecordings" method="execute">
+            <schedule>* * * * *</schedule>
+        </job>
+        <job name="mageproxy_check_config" instance="Mageproxy\Connector\Cron\CheckConfig" method="execute">
+            <schedule>* * * * *</schedule>
+        </job>
+        <job name="mageproxy_autorun" instance="Mageproxy\Connector\Cron\AutoRun" method="execute">
+            <schedule>* * * * *</schedule>
+        </job>
+    </group>
+</config>

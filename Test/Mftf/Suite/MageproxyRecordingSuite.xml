@@ -1,0 +1,15 @@
+<!--
+  ~ Mageproxy Connector for Magento2.
+  ~
+  ~ @package    Mageproxy_Connector
+  ~ @copyright  Copyright (c) 2025 Iframe Co Ltd
+  ~ @license    See LICENSE.txt for license details
+  -->
+<suites xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:mftf:Suite/etc/suiteSchema.xsd">
+    <suite name="MageproxyRecordingSuite">
+        <include>
+            <module name="Mageproxy_Connector" />
+            <group name="recordings"/>
+        </include>
+    </suite>
+</suites>

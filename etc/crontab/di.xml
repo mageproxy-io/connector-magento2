@@ -1,0 +1,176 @@
+<!--
+  ~ Mageproxy Connector for Magento2.
+  ~
+  ~ @package    Mageproxy_Connector
+  ~ @copyright  Copyright (c) 2025 Iframe Co Ltd
+  ~ @license    See LICENSE.txt for license details
+  -->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+
+    <!-- process recordings -->
+    <virtualType name="Mageproxy\Connector\Cron\ProcessRecordingsJob" type="Mageproxy\Connector\Cron\Job">
+        <arguments>
+            <argument name="condition" xsi:type="object">Mageproxy\Connector\Cron\Condition\ModuleActive</argument>
+            <argument name="processors" xsi:type="array">
+                <item name="status" sortOrder="10" xsi:type="object">Mageproxy\Connector\Cron\Processor\UpdateRecording</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <type name="Mageproxy\Connector\Cron\Processor\UpdateRecording">
+        <arguments>
+            <argument name="provider" xsi:type="object">UpdateRecordingProvider</argument>
+        </arguments>
+    </type>
+    <virtualType name="UpdateRecordingProvider" type="Mageproxy\Connector\Model\Provider\RecordingsProvider">
+        <arguments>
+            <argument name="searchCriteriaProvider" xsi:type="object">UpdateRecordingSearchCriteriaProvider</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="UpdateRecordingSearchCriteriaProvider" type="Mageproxy\Connector\Model\Provider\SearchCriteriaProvider">
+        <arguments>
+            <argument name="statuses" xsi:type="array">
+                <item name="pending" xsi:type="const">Mageproxy\Connector\Api\Data\RecordingInterface::STATUS_PENDING</item>
+                <item name="running" xsi:type="const">Mageproxy\Connector\Api\Data\RecordingInterface::STATUS_RUNNING</item>
+                <item name="stopped" xsi:type="const">Mageproxy\Connector\Api\Data\RecordingInterface::STATUS_STOPPED</item>
+            </argument>
+            <argument name="sortByField" xsi:type="string">scheduled_at</argument>
+        </arguments>
+    </virtualType>
+
+    <!-- Process optimizations -->
+    <virtualType name="Mageproxy\Connector\Cron\ProcessOptimizationsJob" type="Mageproxy\Connector\Cron\Job">
+        <arguments>
+            <argument name="condition" xsi:type="object">Mageproxy\Connector\Cron\Condition\ModuleActive</argument>
+            <argument name="processors" xsi:type="array">
+                <item name="update_optimization" xsi:type="object">Mageproxy\Connector\Cron\Processor\UpdateOptimization</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="UpdateOptimizationProvider" type="Mageproxy\Connector\Model\Provider\OptimizationsProvider">
+        <arguments>
+            <argument name="searchCriteriaProvider" xsi:type="object">UpdateOptimizationSearchCriteriaProvider</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="UpdateOptimizationSearchCriteriaProvider" type="Mageproxy\Connector\Model\Provider\SearchCriteriaProvider">
+        <arguments>
+            <argument name="statuses" xsi:type="array">
+                <item name="requested" xsi:type="const">Mageproxy\Connector\Api\Data\OptimizationInterface::STATUS_REQUESTED</item>
+                <item name="published" xsi:type="const">Mageproxy\Connector\Api\Data\OptimizationInterface::STATUS_PUBLISHED</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <type name="Mageproxy\Connector\Cron\Processor\UpdateOptimization">
+        <arguments>
+            <argument name="provider" xsi:type="object">UpdateOptimizationProvider</argument>
+        </arguments>
+    </type>
+
+    <!-- Get recording dependencies -->
+    <virtualType name="Mageproxy\Connector\Cron\GetRecordingDependenciesJob" type="Mageproxy\Connector\Cron\Job">
+        <arguments>
+            <argument name="condition" xsi:type="object">Mageproxy\Connector\Cron\Condition\ModuleActive</argument>
+            <argument name="processors" xsi:type="array">
+                <item name="get_deps" sortOrder="20" xsi:type="object">Mageproxy\Connector\Cron\Processor\GetRecordingDeps</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <type name="Mageproxy\Connector\Cron\Processor\GetRecordingDeps">
+        <arguments>
+            <argument name="provider" xsi:type="object">GetRecordingDepsProvider</argument>
+        </arguments>
+    </type>
+    <virtualType name="GetRecordingDepsProvider" type="\Mageproxy\Connector\Model\Provider\RecordingsProvider">
+        <arguments>
+            <argument name="searchCriteriaProvider" xsi:type="object">GetRecordingDepsSearchCriteriaProvider</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="GetRecordingDepsSearchCriteriaProvider" type="Mageproxy\Connector\Model\Provider\SearchCriteriaProvider">
+        <arguments>
+            <argument name="statuses" xsi:type="array">
+                <item name="0" xsi:type="const">Mageproxy\Connector\Api\Data\RecordingInterface::STATUS_RUNNING</item>
+                <item name="1" xsi:type="const">Mageproxy\Connector\Api\Data\RecordingInterface::STATUS_STOPPED</item>
+            </argument>
+            <argument name="sortByField" xsi:type="string">scheduled_at</argument>
+        </arguments>
+    </virtualType>
+
+    <!-- After module inactive cleanup job -->
+    <virtualType name="Mageproxy\Connector\Cron\AfterModuleInactiveJob" type="Mageproxy\Connector\Cron\Job">
+        <arguments>
+            <argument name="condition" xsi:type="object">Mageproxy\Connector\Cron\Condition\ModuleInactive</argument>
+            <argument name="processors" xsi:type="array">
+                <item name="revert_optimization" xsi:type="object">Mageproxy\Connector\Cron\Processor\RevertOptimization</item>
+                <item name="finish_recording" xsi:type="object">Mageproxy\Connector\Cron\Processor\FinishRecording</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <type name="Mageproxy\Connector\Cron\Processor\RevertOptimization">
+        <arguments>
+            <argument name="provider" xsi:type="object">RevertOptimizationProvider</argument>
+        </arguments>
+    </type>
+    <virtualType name="RevertOptimizationProvider" type="\Mageproxy\Connector\Model\Provider\OptimizationsProvider">
+        <arguments>
+            <argument name="searchCriteriaProvider" xsi:type="object">RevertOptimizationSearchCriteriaProvider</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="RevertOptimizationSearchCriteriaProvider" type="Mageproxy\Connector\Model\Provider\SearchCriteriaProvider">
+        <arguments>
+            <argument name="statuses" xsi:type="array">
+                <item name="0" xsi:type="const">Mageproxy\Connector\Api\Data\OptimizationInterface::STATUS_DEPLOYED</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <type name="Mageproxy\Connector\Cron\Processor\FinishRecording">
+        <arguments>
+            <argument name="provider" xsi:type="object">FinishRecordingProvider</argument>
+        </arguments>
+    </type>
+    <virtualType name="FinishRecordingProvider" type="\Mageproxy\Connector\Model\Provider\RecordingsProvider">
+        <arguments>
+            <argument name="searchCriteriaProvider" xsi:type="object">FinishRecordingSearchCriteriaProvider</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="FinishRecordingSearchCriteriaProvider" type="Mageproxy\Connector\Model\Provider\SearchCriteriaProvider">
+        <arguments>
+            <argument name="statuses" xsi:type="array">
+                <item name="0" xsi:type="const">Mageproxy\Connector\Api\Data\RecordingInterface::STATUS_RUNNING</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <!-- autorun -->
+    <virtualType name="Mageproxy\Connector\Cron\AutoRun" type="Mageproxy\Connector\Cron\Job">
+        <arguments>
+            <argument name="condition" xsi:type="object">Mageproxy\Connector\Cron\Condition\ModuleActive</argument>
+            <argument name="processors" xsi:type="array">
+                <item name="request_optimization" xsi:type="object">Mageproxy\Connector\Cron\Processor\AutoRun\RequestOptimization</item>
+                <item name="deploy_and_revert" xsi:type="object">Mageproxy\Connector\Cron\Processor\AutoRun\DeployAndRevert</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <type name="Mageproxy\Connector\Cron\Processor\AutoRun\RequestOptimization">
+        <arguments>
+            <argument name="provider" xsi:type="object">AutoRunProvider</argument>
+        </arguments>
+    </type>
+    <type name="Mageproxy\Connector\Cron\Processor\AutoRun\DeployAndRevert">
+        <arguments>
+            <argument name="provider" xsi:type="object">AutoRunProvider</argument>
+        </arguments>
+    </type>
+    <virtualType name="AutoRunProvider" type="Mageproxy\Connector\Model\Provider\RecordingsProvider">
+        <arguments>
+            <argument name="searchCriteriaProvider" xsi:type="object">AutoRunSearchCriteriaProvider</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="AutoRunSearchCriteriaProvider" type="Mageproxy\Connector\Model\Provider\SearchCriteriaProvider">
+        <arguments>
+            <argument name="statuses" xsi:type="array">
+                <item name="stopped" xsi:type="const">Mageproxy\Connector\Api\Data\RecordingInterface::STATUS_STOPPED</item>
+                <item name="running" xsi:type="const">Mageproxy\Connector\Api\Data\RecordingInterface::STATUS_RUNNING</item>
+            </argument>
+            <argument name="sortByField" xsi:type="string">scheduled_at</argument>
+        </arguments>
+    </virtualType>
+</config>

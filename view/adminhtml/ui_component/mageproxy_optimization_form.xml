@@ -1,0 +1,751 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Mageproxy Connector for Magento2.
+  ~
+  ~ @package    Mageproxy_Connector
+  ~ @copyright  Copyright (c) 2025 Iframe Co Ltd
+  ~ @license    See LICENSE.txt for license details
+  -->
+<form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">mageproxy_optimization_form.mageproxy_optimization_form_data_source</item>
+        </item>
+        <item name="template" xsi:type="string">templates/form/collapsible</item>
+    </argument>
+    <settings>
+        <label translate="true">New Optimization</label>
+        <buttons>
+            <button name="cancel" class="Mageproxy\Connector\Block\Adminhtml\CreateOptimizationCancelButton"/>
+            <button name="save" class="Mageproxy\Connector\Block\Adminhtml\SaveButton"/>
+        </buttons>
+        <namespace>mageproxy_optimization_form</namespace>
+        <dataScope>data</dataScope>
+        <deps>
+            <dep>mageproxy_optimization_form.mageproxy_optimization_form_data_source</dep>
+        </deps>
+    </settings>
+    <dataSource name="mageproxy_optimization_form_data_source">
+        <argument name="data" xsi:type="array">
+            <item name="js_config" xsi:type="array">
+                <item name="component" xsi:type="string">Magento_Ui/js/form/provider</item>
+            </item>
+        </argument>
+        <settings>
+            <submitUrl path="mageproxy/optimization/save"/>
+        </settings>
+        <dataProvider class="Mageproxy\Connector\Ui\DataProvider\Form\OptimizationDataProvider" name="mageproxy_optimization_form_data_source">
+            <settings>
+                <requestFieldName>id</requestFieldName>
+                <primaryFieldName>optimization_id</primaryFieldName>
+            </settings>
+        </dataProvider>
+    </dataSource>
+    <fieldset name="minification" sortOrder="10">
+        <settings>
+            <collapsible>true</collapsible>
+            <opened>true</opened>
+            <label translate="true">Minification</label>
+        </settings>
+        <field name="recording_id" formElement="input" sortOrder="0">
+            <settings>
+                <visible>false</visible>
+                <dataType>number</dataType>
+                <dataScope>recording_id</dataScope>
+            </settings>
+        </field>
+        <field name="type" formElement="input" sortOrder="0">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="default" xsi:type="string">js</item>
+                </item>
+            </argument>
+            <settings>
+                <visible>false</visible>
+                <dataType>text</dataType>
+                <dataScope>type</dataScope>
+            </settings>
+        </field>
+        <field name="minify_js" formElement="checkbox" sortOrder="10">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="default" xsi:type="number">1</item>
+                </item>
+            </argument>
+            <settings>
+                <dataType>boolean</dataType>
+                <label translate="true">Minify JavaScript Bundles</label>
+                <dataScope>minify_js</dataScope>
+            </settings>
+            <formElements>
+                <checkbox>
+                    <settings>
+                        <valueMap>
+                            <map name="false" xsi:type="number">0</map>
+                            <map name="true" xsi:type="number">1</map>
+                        </valueMap>
+                        <prefer>toggle</prefer>
+                    </settings>
+                </checkbox>
+            </formElements>
+        </field>
+        <field name="minify_html" formElement="checkbox" sortOrder="20">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="default" xsi:type="number">1</item>
+                </item>
+            </argument>
+            <settings>
+                <dataType>boolean</dataType>
+                <label translate="true">Minify Knockout Templates</label>
+                <dataScope>minify_html</dataScope>
+            </settings>
+            <formElements>
+                <checkbox>
+                    <settings>
+                        <valueMap>
+                            <map name="false" xsi:type="number">0</map>
+                            <map name="true" xsi:type="number">1</map>
+                        </valueMap>
+                        <prefer>toggle</prefer>
+                    </settings>
+                </checkbox>
+            </formElements>
+        </field>
+    </fieldset>
+    <fieldset name="chunking" sortOrder="15">
+        <settings>
+            <collapsible>true</collapsible>
+            <label translate="true">Chunking</label>
+            <opened>false</opened>
+        </settings>
+        <field name="chunk_js" formElement="checkbox" sortOrder="10">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="default" xsi:type="number">0</item>
+                </item>
+            </argument>
+            <settings>
+                <dataType>boolean</dataType>
+                <label translate="true">Chunk JavaScript bundles</label>
+            </settings>
+            <formElements>
+                <checkbox>
+                    <settings>
+                        <valueMap>
+                            <map name="false" xsi:type="number">0</map>
+                            <map name="true" xsi:type="number">1</map>
+                        </valueMap>
+                        <prefer>toggle</prefer>
+                    </settings>
+                </checkbox>
+            </formElements>
+        </field>
+        <field name="chunk_js_size" component="Magento_Ui/js/form/element/select" formElement="select" sortOrder="20">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="default" xsi:type="number">500</item>
+                </item>
+            </argument>
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Chunk Size</label>
+                <addAfter translate="true">(kB)</addAfter>
+                <imports>
+                    <link name="visible">${ $.parentName }.chunk_js:checked</link>
+                </imports>
+                <notice translate="true">Maximum bundle size before minification and compression</notice>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <options class="Mageproxy\Connector\Model\Optimization\Source\ChunkSizeSourceInterface"/>
+                    </settings>
+                </select>
+            </formElements>
+        </field>
+    </fieldset>
+    <fieldset name="dependencies" sortOrder="20">
+        <settings>
+            <collapsible>true</collapsible>
+            <label translate="true">Bundling</label>
+            <opened>false</opened>
+        </settings>
+        <fieldset name="exclude_deps" sortOrder="10">
+            <settings>
+                <label>Exclude</label>
+                <additionalClasses>
+                    <class name="admin__fieldset-section">true</class>
+                </additionalClasses>
+            </settings>
+            <container template="ui/form/components/complex">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="label" xsi:type="string"/>
+                        <item name="content" xsi:type="string" translate="true">Select dependencies that should not be bundled</item>
+                    </item>
+                </argument>
+                <button>
+                    <argument name="data" xsi:type="array">
+                        <item name="config" xsi:type="array">
+                            <item name="actions" xsi:type="array">
+                                <item name="0" xsi:type="array">
+                                    <item name="targetName" xsi:type="string">mageproxy_optimization_form.mageproxy_optimization_form.dependencies.exclude_deps.deps_modal</item>
+                                    <item name="actionName" xsi:type="string">openModal</item>
+                                </item>
+                                <item name="1" xsi:type="array">
+                                    <item name="targetName" xsi:type="string">mageproxy_optimization_form.mageproxy_optimization_form.dependencies.exclude_deps.deps_modal.mageproxy_dependency_listing_modal</item>
+                                    <item name="actionName" xsi:type="string">render</item>
+                                </item>
+                            </item>
+                        </item>
+                    </argument>
+                    <settings>
+                        <title translate="true">Select Dependencies</title>
+                    </settings>
+                </button>
+            </container>
+            <modal name="deps_modal">
+                <settings>
+                    <options>
+                        <option name="title" xsi:type="string">Select Dependencies</option>
+                        <option name="buttons" xsi:type="array">
+                            <item name="0" xsi:type="array">
+                                <item name="text" xsi:type="string">Cancel</item>
+                                <item name="actions" xsi:type="array">
+                                    <item name="0" xsi:type="string">actionCancel</item>
+                                </item>
+                            </item>
+                            <item name="1" xsi:type="array">
+                                <item name="text" xsi:type="string">Add Selected</item>
+                                <item name="class" xsi:type="string">action-primary</item>
+                                <item name="actions" xsi:type="array">
+                                    <item name="0" xsi:type="array">
+                                        <item name="targetName" xsi:type="string">index = mageproxy_dependency_listing_modal</item>
+                                        <item name="actionName" xsi:type="string">save</item>
+                                    </item>
+                                    <item name="1" xsi:type="string">closeModal</item>
+                                </item>
+                            </item>
+                        </option>
+                    </options>
+                </settings>
+                <insertListing name="mageproxy_dependency_listing_modal">
+                    <settings>
+                        <autoRender>false</autoRender>
+                        <dataScope>mageproxy_dependency_listing_modal</dataScope>
+                        <ns>mageproxy_dependency_listing_modal</ns>
+                        <realTimeLink>true</realTimeLink>
+                        <externalProvider>${ $.ns }.mageproxy_dependency_listing_modal_data_source</externalProvider>
+                        <selectionsProvider>${ $.ns }.${ $.ns }.mageproxy_dependency_listing_modal_columns.ids</selectionsProvider>
+                        <dataLinks>
+                            <imports>false</imports>
+                            <exports>true</exports>
+                        </dataLinks>
+                        <imports>
+                            <link name="recording_id">${ $.provider }:data.recording_id</link>
+                        </imports>
+                        <exports>
+                            <link name="recording_id">${ $.externalProvider }:params.recording_id</link>
+                        </exports>
+                        <behaviourType>simple</behaviourType>
+                        <externalFilterMode>true</externalFilterMode>
+                    </settings>
+                </insertListing>
+            </modal>
+            <dynamicRows name="assigned_deps_exclude" component="Magento_Ui/js/dynamic-rows/dynamic-rows-grid">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="columnsHeaderAfterRender" xsi:type="boolean">true</item>
+                        <item name="renderDefaultRecord" xsi:type="boolean">false</item>
+                        <item name="deleteButtonLabel" xsi:type="string">Remove</item>
+                        <item name="dataProvider" xsi:type="string">mageproxy_dependency_listing_modal</item>
+                        <item name="identificationDRProperty" xsi:type="string">module_id</item>
+                        <item name="map" xsi:type="array">
+                            <item name="module_id" xsi:type="string">module_id</item>
+                        </item>
+                    </item>
+                </argument>
+                <settings>
+                    <additionalClasses>
+                        <class name="admin__field-wide">true</class>
+                    </additionalClasses>
+                    <columnsHeader>false</columnsHeader>
+                    <recordTemplate>record</recordTemplate>
+                    <links>
+                        <link name="insertData">${ $.provider }:data.${ $.dataProvider }</link>
+                    </links>
+                    <addButton>false</addButton>
+                    <componentType>dynamicRows</componentType>
+                    <dndConfig>
+                        <param name="enabled" xsi:type="boolean">false</param>
+                    </dndConfig>
+                    <identificationProperty>module_id</identificationProperty>
+                    <deleteProperty>delete</deleteProperty>
+                    <pageSize>10</pageSize>
+                </settings>
+                <container name="record" component="Magento_Ui/js/dynamic-rows/record">
+                    <argument name="data" xsi:type="array">
+                        <item name="config" xsi:type="array">
+                            <item name="componentType" xsi:type="string">container</item>
+                            <item name="isTemplate" xsi:type="boolean">true</item>
+                            <item name="is_collection" xsi:type="boolean">true</item>
+                        </item>
+                    </argument>
+                    <field name="module_id" component="Magento_Ui/js/form/element/text" formElement="input" sortOrder="10">
+                        <settings>
+                            <label translate="true">Module ID</label>
+                            <dataType>text</dataType>
+                            <elementTmpl>ui/dynamic-rows/cells/text</elementTmpl>
+                        </settings>
+                    </field>
+                    <actionDelete sortOrder="60">
+                        <argument name="data" xsi:type="array">
+                            <item name="config" xsi:type="array">
+                                <item name="fit" xsi:type="boolean">false</item>
+                            </item>
+                        </argument>
+                        <settings>
+                            <additionalClasses>
+                                <class name="data-grid-actions-cell">true</class>
+                            </additionalClasses>
+                            <dataType>text</dataType>
+                            <label>Actions</label>
+                            <componentType>actionDelete</componentType>
+                        </settings>
+                    </actionDelete>
+                </container>
+            </dynamicRows>
+        </fieldset>
+        <fieldset name="handles" sortOrder="20">
+            <settings>
+                <additionalClasses>
+                    <class name="admin__fieldset-section">true</class>
+                </additionalClasses>
+                <label translate="true">Distribute</label>
+            </settings>
+            <container template="ui/form/components/complex">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="label" xsi:type="string"/>
+                        <item name="content" xsi:type="string" translate="true">Configure page handle priority when dependencies are tied between
+                        different page handles</item>
+                    </item>
+                </argument>
+                <button>
+                    <argument name="data" xsi:type="array">
+                        <item name="config" xsi:type="array">
+                            <item name="actions" xsi:type="array">
+                                <item name="0" xsi:type="array">
+                                    <item name="targetName" xsi:type="string">mageproxy_optimization_form.mageproxy_optimization_form.dependencies.handles.hdls_modal</item>
+                                    <item name="actionName" xsi:type="string">openModal</item>
+                                </item>
+                                <item name="1" xsi:type="array">
+                                    <item name="targetName" xsi:type="string">mageproxy_optimization_form.mageproxy_optimization_form.dependencies.handles.hdls_modal.mageproxy_pagehandle_listing_modal</item>
+                                    <item name="actionName" xsi:type="string">render</item>
+                                </item>
+                            </item>
+                        </item>
+                    </argument>
+                    <settings>
+                        <title translate="true">Select Page Handles</title>
+                    </settings>
+                </button>
+            </container>
+            <modal name="hdls_modal">
+                <settings>
+                    <options>
+                        <option name="title" xsi:type="string">Select Page Handles</option>
+                        <option name="buttons" xsi:type="array">
+                            <item name="0" xsi:type="array">
+                                <item name="text" xsi:type="string">Cancel</item>
+                                <item name="actions" xsi:type="array">
+                                    <item name="0" xsi:type="string">actionCancel</item>
+                                </item>
+                            </item>
+                            <item name="1" xsi:type="array">
+                                <item name="text" xsi:type="string">Add Selected</item>
+                                <item name="class" xsi:type="string">action-primary</item>
+                                <item name="actions" xsi:type="array">
+                                    <item name="0" xsi:type="array">
+                                        <item name="targetName" xsi:type="string">index = mageproxy_pagehandle_listing_modal</item>
+                                        <item name="actionName" xsi:type="string">save</item>
+                                    </item>
+                                    <item name="1" xsi:type="string">closeModal</item>
+                                </item>
+                            </item>
+                        </option>
+                    </options>
+                </settings>
+                <insertListing name="mageproxy_pagehandle_listing_modal">
+                    <settings>
+                        <autoRender>false</autoRender>
+                        <dataScope>mageproxy_pagehandle_listing_modal</dataScope>
+                        <ns>mageproxy_pagehandle_listing_modal</ns>
+                        <realTimeLink>true</realTimeLink>
+                        <externalProvider>${ $.ns }.mageproxy_pagehandle_listing_modal_data_source</externalProvider>
+                        <selectionsProvider>${ $.ns }.${ $.ns }.mageproxy_pagehandle_listing_modal_columns.ids</selectionsProvider>
+                        <dataLinks>
+                            <imports>false</imports>
+                            <exports>true</exports>
+                        </dataLinks>
+                        <imports>
+                            <link name="recording_id">${ $.provider }:data.recording_id</link>
+                        </imports>
+                        <exports>
+                            <link name="recording_id">${ $.externalProvider }:params.recording_id</link>
+                        </exports>
+                        <behaviourType>simple</behaviourType>
+                        <externalFilterMode>true</externalFilterMode>
+                    </settings>
+                </insertListing>
+            </modal>
+            <dynamicRows name="assigned_hdls" component="Mageproxy_Connector/js/component/dynamic-rows/dynamic-rows-grid">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="label" xsi:type="string"/>
+                        <item name="columnsHeader" xsi:type="boolean">false</item>
+                        <item name="columnsHeaderAfterRender" xsi:type="boolean">true</item>
+                        <item name="renderDefaultRecord" xsi:type="boolean">false</item>
+                        <item name="addButton" xsi:type="boolean">false</item>
+                        <item name="recordTemplate" xsi:type="string">record</item>
+                        <item name="identificationProperty" xsi:type="string">page_handle</item>
+                        <item name="identificationDRProperty" xsi:type="string">page_handle</item>
+                        <item name="deleteButtonLabel" xsi:type="string">Remove</item>
+                        <item name="dataProvider" xsi:type="string">mageproxy_pagehandle_listing_modal</item>
+                        <item name="dndConfig" xsi:type="array">
+                            <item name="enabled" xsi:type="boolean">true</item>
+                            <item name="template" xsi:type="string">ui/dynamic-rows/cells/dnd</item>
+                        </item>
+                        <item name="deleteProperty" xsi:type="string">delete</item>
+                        <item name="map" xsi:type="array">
+                            <item name="page_handle" xsi:type="string">page_handle</item>
+                        </item>
+                        <item name="links" xsi:type="array">
+                            <item name="insertData" xsi:type="string">${ $.provider }:data.${ $.dataProvider }</item>
+                        </item>
+                    </item>
+                </argument>
+                <settings>
+                    <additionalClasses>
+                        <class name="admin__field-wide">true</class>
+                    </additionalClasses>
+                </settings>
+                <container name="record" component="Magento_Ui/js/dynamic-rows/record">
+                    <argument name="data" xsi:type="array">
+                        <item name="config" xsi:type="array">
+                            <item name="componentType" xsi:type="string">container</item>
+                            <item name="isTemplate" xsi:type="boolean">true</item>
+                            <item name="is_collection" xsi:type="boolean">true</item>
+                            <item name="positionProvider" xsi:type="string">priority</item>
+                        </item>
+                    </argument>
+                    <field name="page_handle" formElement="input" sortOrder="10">
+                        <settings>
+                            <elementTmpl>ui/dynamic-rows/cells/text</elementTmpl>
+                            <dataType>text</dataType>
+                            <dataScope>page_handle</dataScope>
+                            <label translate="true">Page Handle</label>
+                            <labelVisible>false</labelVisible>
+                        </settings>
+                    </field>
+                    <field name="priority" formElement="input" sortOrder="30">
+                        <settings>
+                            <elementTmpl>ui/form/element/input</elementTmpl>
+                            <dataType>number</dataType>
+                            <dataScope>priority</dataScope>
+                            <label translate="true">Priority</label>
+                            <visible>false</visible>
+                        </settings>
+                    </field>
+                    <actionDelete sortOrder="60">
+                        <argument name="data" xsi:type="array">
+                            <item name="config" xsi:type="array">
+                                <item name="fit" xsi:type="boolean">false</item>
+                            </item>
+                        </argument>
+                        <settings>
+                            <additionalClasses>
+                                <class name="data-grid-actions-cell">true</class>
+                            </additionalClasses>
+                            <dataType>text</dataType>
+                            <label>Actions</label>
+                            <componentType>actionDelete</componentType>
+                        </settings>
+                    </actionDelete>
+                </container>
+            </dynamicRows>
+        </fieldset>
+        <fieldset name="remove_dps" sortOrder="30">
+            <settings>
+                <additionalClasses>
+                    <class name="admin__fieldset-section">true</class>
+                </additionalClasses>
+                <label translate="true">Remove</label>
+            </settings>
+            <container template="ui/form/components/complex">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="label" xsi:type="string"/>
+                        <item name="content" xsi:type="string" translate="true">Select dependencies that should be removed</item>
+                    </item>
+                </argument>
+                <button>
+                    <argument name="data" xsi:type="array">
+                        <item name="config" xsi:type="array">
+                            <item name="actions" xsi:type="array">
+                                <item name="0" xsi:type="array">
+                                    <item name="targetName" xsi:type="string">mageproxy_optimization_form.mageproxy_optimization_form.dependencies.remove_dps.dps_modal</item>
+                                    <item name="actionName" xsi:type="string">openModal</item>
+                                </item>
+                                <item name="1" xsi:type="array">
+                                    <item name="targetName" xsi:type="string">mageproxy_optimization_form.mageproxy_optimization_form.dependencies.remove_dps.dps_modal.mageproxy_dependency_listing_modal_remove</item>
+                                    <item name="actionName" xsi:type="string">render</item>
+                                </item>
+                            </item>
+                        </item>
+                    </argument>
+                    <settings>
+                        <title translate="true">Select Dependencies</title>
+                    </settings>
+                </button>
+            </container>
+            <modal name="dps_modal">
+                <settings>
+                    <options>
+                        <option name="title" xsi:type="string">Select Dependencies</option>
+                        <option name="buttons" xsi:type="array">
+                            <item name="0" xsi:type="array">
+                                <item name="text" xsi:type="string">Cancel</item>
+                                <item name="actions" xsi:type="array">
+                                    <item name="0" xsi:type="string">actionCancel</item>
+                                </item>
+                            </item>
+                            <item name="1" xsi:type="array">
+                                <item name="text" xsi:type="string">Add Selected</item>
+                                <item name="class" xsi:type="string">action-primary</item>
+                                <item name="actions" xsi:type="array">
+                                    <item name="0" xsi:type="array">
+                                        <item name="targetName" xsi:type="string">index = mageproxy_dependency_listing_modal_remove</item>
+                                        <item name="actionName" xsi:type="string">save</item>
+                                    </item>
+                                    <item name="1" xsi:type="string">closeModal</item>
+                                </item>
+                            </item>
+                        </option>
+                    </options>
+                </settings>
+                <insertListing name="mageproxy_dependency_listing_modal_remove">
+                    <settings>
+                        <autoRender>false</autoRender>
+                        <dataScope>mageproxy_dependency_listing_modal_remove</dataScope>
+                        <ns>mageproxy_dependency_listing_modal_remove</ns>
+                        <realTimeLink>true</realTimeLink>
+                        <externalProvider>${ $.ns }.mageproxy_dependency_listing_modal_remove_data_source</externalProvider>
+                        <selectionsProvider>${ $.ns }.${ $.ns }.mageproxy_dependency_listing_modal_remove_columns.ids</selectionsProvider>
+                        <dataLinks>
+                            <imports>false</imports>
+                            <exports>true</exports>
+                        </dataLinks>
+                        <imports>
+                            <link name="recording_id">${ $.provider }:data.recording_id</link>
+                        </imports>
+                        <exports>
+                            <link name="recording_id">${ $.externalProvider }:params.recording_id</link>
+                        </exports>
+                        <behaviourType>simple</behaviourType>
+                        <externalFilterMode>true</externalFilterMode>
+                    </settings>
+                </insertListing>
+            </modal>
+            <dynamicRows name="assigned_deps_remove" component="Mageproxy_Connector/js/component/dynamic-rows/dynamic-rows-grid">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="label" xsi:type="string"/>
+                        <item name="columnsHeader" xsi:type="boolean">false</item>
+                        <item name="columnsHeaderAfterRender" xsi:type="boolean">true</item>
+                        <item name="renderDefaultRecord" xsi:type="boolean">false</item>
+                        <item name="addButton" xsi:type="boolean">false</item>
+                        <item name="recordTemplate" xsi:type="string">record</item>
+                        <item name="identificationProperty" xsi:type="string">module_id</item>
+                        <item name="identificationDRProperty" xsi:type="string">module_id</item>
+                        <item name="deleteButtonLabel" xsi:type="string">Remove</item>
+                        <item name="dataProvider" xsi:type="string">mageproxy_dependency_listing_modal_remove</item>
+                        <item name="dndConfig" xsi:type="array">
+                            <item name="enabled" xsi:type="boolean">false</item>
+                        </item>
+                        <item name="deleteProperty" xsi:type="string">delete</item>
+                        <item name="map" xsi:type="array">
+                            <item name="module_id" xsi:type="string">module_id</item>
+                        </item>
+                        <item name="links" xsi:type="array">
+                            <item name="insertData" xsi:type="string">${ $.provider }:data.${ $.dataProvider }</item>
+                        </item>
+                    </item>
+                </argument>
+                <settings>
+                    <additionalClasses>
+                        <class name="admin__field-wide">true</class>
+                    </additionalClasses>
+                </settings>
+                <container name="record" component="Magento_Ui/js/dynamic-rows/record">
+                    <argument name="data" xsi:type="array">
+                        <item name="config" xsi:type="array">
+                            <item name="componentType" xsi:type="string">container</item>
+                            <item name="isTemplate" xsi:type="boolean">true</item>
+                            <item name="is_collection" xsi:type="boolean">true</item>
+                            <item name="positionProvider" xsi:type="string">priority</item>
+                        </item>
+                    </argument>
+                    <field name="module_id" formElement="input" sortOrder="10">
+                        <settings>
+                            <elementTmpl>ui/dynamic-rows/cells/text</elementTmpl>
+                            <dataType>text</dataType>
+                            <dataScope>module_id</dataScope>
+                            <label translate="true">Module ID</label>
+                            <labelVisible>false</labelVisible>
+                        </settings>
+                    </field>
+                    <actionDelete sortOrder="60">
+                        <argument name="data" xsi:type="array">
+                            <item name="config" xsi:type="array">
+                                <item name="fit" xsi:type="boolean">false</item>
+                            </item>
+                        </argument>
+                        <settings>
+                            <additionalClasses>
+                                <class name="data-grid-actions-cell">true</class>
+                            </additionalClasses>
+                            <dataType>text</dataType>
+                            <label>Actions</label>
+                            <componentType>actionDelete</componentType>
+                        </settings>
+                    </actionDelete>
+                </container>
+            </dynamicRows>
+        </fieldset>
+    </fieldset>
+    <fieldset name="transpile" sortOrder="30">
+        <settings>
+            <collapsible>true</collapsible>
+            <opened>false</opened>
+            <label translate="true">Transpilation</label>
+            <additionalClasses>
+                <class name="admin__fieldset-section">true</class>
+            </additionalClasses>
+        </settings>
+        <field name="browserslist_config" formElement="input" sortOrder="10">
+            <settings>
+                <dataType>text</dataType>
+                <placeholder translate="true">Enter browserslist config here, e.g. > 0.5%, last 2 versions</placeholder>
+                <tooltip>
+                    <description translate="true">For more information, click to visit the Browserslist website</description>
+                    <link>https://browsersl.ist/</link>
+                </tooltip>
+                <label translate="true">Target Audience</label>
+            </settings>
+        </field>
+        <field name="use_polyfills" formElement="checkbox" sortOrder="20">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="default" xsi:type="number">0</item>
+                </item>
+            </argument>
+            <settings>
+                <dataType>boolean</dataType>
+                <label translate="true">Use Polyfills</label>
+                <dataScope>use_polyfills</dataScope>
+                <tooltip><description translate="true">Use polyfills for modern ECMAScript features that are not supported as per your target audience configuration. If disabled, transpilation will only focus on syntax transformations, not feature support. This might increase the bundle size if enabled.</description></tooltip>
+            </settings>
+            <formElements>
+                <checkbox>
+                    <settings>
+                        <valueMap>
+                            <map name="false" xsi:type="number">0</map>
+                            <map name="true" xsi:type="number">1</map>
+                        </valueMap>
+                        <prefer>toggle</prefer>
+                    </settings>
+                </checkbox>
+            </formElements>
+        </field>
+        <dynamicRows name="transpile_globs">
+            <settings>
+                <label translate="true">Paths</label>
+                <additionalClasses>
+                    <class name="admin__field-medium">true</class>
+                </additionalClasses>
+            </settings>
+            <container name="record" component="Magento_Ui/js/dynamic-rows/record">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="componentType" xsi:type="string">container</item>
+                        <item name="isTemplate" xsi:type="boolean">true</item>
+                        <item name="is_collection" xsi:type="boolean">true</item>
+                        <item name="positionProvider" xsi:type="string">priority</item>
+                    </item>
+                </argument>
+                <field name="glob" formElement="input" sortOrder="10">
+                    <settings>
+                        <dataType>text</dataType>
+                        <label translate="true">Glob</label>
+                        <required>true</required>
+                    </settings>
+                </field>
+                <actionDelete sortOrder="60">
+                    <argument name="data" xsi:type="array">
+                        <item name="config" xsi:type="array">
+                            <item name="fit" xsi:type="boolean">false</item>
+                        </item>
+                    </argument>
+                    <settings>
+                        <additionalClasses>
+                            <class name="data-grid-actions-cell">true</class>
+                        </additionalClasses>
+                        <dataType>text</dataType>
+                        <label>Actions</label>
+                        <componentType>actionDelete</componentType>
+                    </settings>
+                </actionDelete>
+            </container>
+        </dynamicRows>
+        <field name="help_text" formElement="input">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="additionalClasses" xsi:type="string">admin__field-note</item>
+                    <item name="value" xsi:type="string" translate="true">Supports glob wild card patterns like *, ?, e.g Vendor_Module/js/**/*.js would recursively look through all folders in the module for .js files. Use ! to exclude files, e.g. !Vendor_Module/js/**/*.min.js</item>
+                    <item name="elementTmpl" xsi:type="string">ui/form/element/text</item>
+                </item>
+            </argument>
+        </field>
+    </fieldset>
+    <fieldset name="sourcemap" sortOrder="40">
+        <settings>
+            <collapsible>true</collapsible>
+            <opened>false</opened>
+            <label translate="true">Source Map</label>
+        </settings>
+        <field name="include_sourcemap_js" formElement="checkbox" sortOrder="10">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="default" xsi:type="number">0</item>
+                </item>
+            </argument>
+            <settings>
+                <dataType>boolean</dataType>
+                <label translate="true">Include JavaScript Source Map</label>
+            </settings>
+            <formElements>
+                <checkbox>
+                    <settings>
+                        <valueMap>
+                            <map name="false" xsi:type="number">0</map>
+                            <map name="true" xsi:type="number">1</map>
+                        </valueMap>
+                        <prefer>toggle</prefer>
+                    </settings>
+                </checkbox>
+            </formElements>
+        </field>
+    </fieldset>
+</form>

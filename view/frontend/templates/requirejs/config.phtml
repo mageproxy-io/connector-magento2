@@ -1,0 +1,17 @@
+<?php
+/**
+ * Mageproxy Connector for Magento2.
+ *
+ * @package    Mageproxy_Connector
+ * @copyright  Copyright (c) 2025 Iframe Co Ltd
+ * @license    See LICENSE.txt for license details
+ */
+
+/** @var \Magento\Framework\View\Helper\SecureHtmlRenderer $secureRenderer */
+/** @var \Magento\Framework\View\Element\Template $block */
+/** @var \Magento\Framework\Escaper $escaper */
+
+$scriptString = <<<JS
+require = {$block->getSerializedConfig()};
+JS;
+echo $secureRenderer->renderTag('script', [], $scriptString, false);

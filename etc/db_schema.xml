@@ -1,0 +1,128 @@
+<?xml version="1.0"?>
+<!--
+  ~ Mageproxy Connector for Magento2.
+  ~
+  ~ @package    Mageproxy_Connector
+  ~ @copyright  Copyright (c) 2025 Iframe Co Ltd
+  ~ @license    See LICENSE.txt for license details
+  -->
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="mageproxy_recording" resource="default" engine="innodb" comment="Mageproxy recordings">
+        <column name="recording_id" xsi:type="int" unsigned="true" nullable="false" identity="true" comment="Recording ID"/>
+        <column name="uuid" xsi:type="varchar" nullable="false" length="36" comment="Recording UUID"/>
+        <column name="created_at" xsi:type="datetime" on_update="false" nullable="false" comment="Created At"/>
+        <column name="scheduled_at" xsi:type="datetime" on_update="false" nullable="true" comment="Scheduled At"/>
+        <column name="started_at" xsi:type="datetime" on_update="false" nullable="true" comment="Started At"/>
+        <column name="finished_at" xsi:type="datetime" on_update="false" nullable="true" comment="Finished At"/>
+        <column name="duration" xsi:type="smallint" nullable="true" default="30" comment="Runtime in minutes" />
+        <column name="status" xsi:type="smallint" padding="6" unsigned="false" nullable="true" identity="false" default="0" comment="Status"/>
+        <column name="store_id" xsi:type="smallint" unsigned="true" nullable="false" identity="false" default="0" comment="Store ID"/>
+        <column name="deps_cnt" xsi:type="smallint" unsigned="true" nullable="true" identity="false" default="0" comment="Dependency Count"/>
+        <column name="hdls_cnt" xsi:type="smallint" unsigned="true" nullable="true" identity="false" default="0" comment="Handles Count"/>
+        <column name="start_count" xsi:type="smallint" unsigned="true" nullable="true" identity="false" default="0" comment="Start count"/>
+        <column name="static_version" xsi:type="varchar" length="255" nullable="false" comment="Static deploy version"/>
+        <column name="initiator" xsi:type="varchar" length="255" nullable="false" comment="Initiator"/>
+        <column name="auto_run_type" xsi:type="varchar" length="255" nullable="true" comment="Auto Run Type"/>
+        <column name="record_schedule" xsi:type="text" nullable="true" comment="Restart schedule"/>
+        <column name="page_handle_priority" xsi:type="text" nullable="true" comment="Page Handle priority"/>
+        <column name="error_msg" xsi:type="varchar" length="255" nullable="true" comment="Error message"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="recording_id"/>
+        </constraint>
+        <constraint xsi:type="foreign" referenceId="MAGEPROXY_RECORDING_STORE_ID_STORE_STORE_ID" table="mageproxy_recording" column="store_id" referenceTable="store" referenceColumn="store_id" onDelete="CASCADE"/>
+        <index referenceId="MAGEPROXY_RECORDING_UUID" indexType="btree">
+            <column name="uuid"/>
+        </index>
+        <index referenceId="MAGEPROXY_RECORDING_STATUS" indexType="btree">
+            <column name="status"/>
+        </index>
+    </table>
+    <table name="mageproxy_dependency" resource="default" engine="innodb" comment="Js deps">
+        <column name="dependency_id" xsi:type="int" unsigned="true" nullable="false" identity="true" comment="Dependency ID"/>
+        <column name="recording_id" xsi:type="int" unsigned="true" nullable="false" identity="false" comment="Recording ID"/>
+        <column name="module_id" xsi:type="varchar" length="255" nullable="false" comment="Require.js module ID"/>
+        <column name="page_handle" xsi:type="varchar" length="255" nullable="false" comment="Page Handle"/>
+        <column name="priority" xsi:type="smallint" unsigned="true" nullable="true" comment="Priority"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="dependency_id"/>
+        </constraint>
+        <constraint xsi:type="foreign" referenceId="MAGEPROXY_DEPENDENCY_RECORDING_ID_MAGEPROXY_RECORDING_RECORDING_ID" table="mageproxy_dependency" column="recording_id" referenceTable="mageproxy_recording" referenceColumn="recording_id" onDelete="CASCADE"/>
+        <constraint xsi:type="unique" referenceId="RECORDING_ID_MODULE_ID_PAGE_HANDLE">
+            <column name="recording_id"/>
+            <column name="module_id"/>
+            <column name="page_handle"/>
+        </constraint>
+    </table>
+    <table name="mageproxy_optimization" resource="default" engine="innodb" comment="Mageproxy optimization">
+        <column name="optimization_id" xsi:type="int" unsigned="true" nullable="false" identity="true" comment="Optimization ID"/>
+        <column name="uuid" xsi:type="varchar" nullable="false" length="36" comment="Optimization UUID"/>
+        <column name="requested_at" xsi:type="timestamp" on_update="false" nullable="false" default="CURRENT_TIMESTAMP" comment="Requested At"/>
+        <column name="requested_by" xsi:type="varchar" length="255" nullable="false" comment="Requested By"/>
+        <column name="deployed_at" xsi:type="datetime" on_update="false" nullable="true" comment="Deployed At"/>
+        <column name="reverted_at" xsi:type="datetime" on_update="false" nullable="true" comment="Reverted At"/>
+        <column name="status" xsi:type="smallint" padding="6" unsigned="false" nullable="false" identity="false" default="0" comment="Status"/>
+        <column name="recording_id" xsi:type="int" unsigned="true" nullable="false" identity="false" comment="Recording ID"/>
+        <column name="template_id" xsi:type="int" unsigned="true" nullable="true" identity="false" comment="Template ID"/>
+        <column name="minify_js" xsi:type="smallint" unsigned="true" nullable="false" identity="false" default="1" comment="Minify JS"/>
+        <column name="minify_html" xsi:type="smallint" unsigned="true" nullable="false" identity="false" default="1" comment="Minify Ko Templates"/>
+        <column name="chunk_js" xsi:type="smallint" unsigned="true" nullable="true" identity="false" default="1" comment="Chunk Js bundles"/>
+        <column name="chunk_js_size" xsi:type="smallint" unsigned="true" nullable="true" identity="false" default="500" comment="Js Chunk Size"/>
+        <column name="use_polyfills" xsi:type="smallint" unsigned="true" nullable="true" identity="false" default="0" comment="Use Polyfills"/>
+        <column name="include_sourcemap_js" xsi:type="smallint" unsigned="true" nullable="true" identity="false" default="0" comment="Include Js Source Map"/>
+        <column name="exclude_deps" xsi:type="text" nullable="true" comment="Excluded dependencies"/>
+        <column name="remove_deps" xsi:type="text" nullable="true" comment="Removed dependencies"/>
+        <column name="handles" xsi:type="text" nullable="true" comment="Page Handle distribution"/>
+        <column name="browserslist_config" xsi:type="text" nullable="true" comment="Browserslist config"/>
+        <column name="transpile_globs" xsi:type="text" nullable="true" comment="Transpile path globs"/>
+        <column name="deps_cnt" xsi:type="smallint" unsigned="true" nullable="true" identity="false" default="0" comment="Dependency Count"/>
+        <column name="hdls_cnt" xsi:type="smallint" unsigned="true" nullable="true" identity="false" default="0" comment="Handles Count"/>
+        <column name="recording_checksum" xsi:type="varchar" length="255" nullable="true" comment="Recording Checksum"/>
+        <column name="store_id" xsi:type="smallint" unsigned="true" nullable="false" identity="false" default="0" comment="Store ID"/>
+        <column name="error_message" xsi:type="text" nullable="true" comment="Error message"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="optimization_id"/>
+        </constraint>
+        <constraint xsi:type="foreign" referenceId="MAGEPROXY_OPTIMIZATION_RECORDING_ID_MAGEPROXY_RECORDING_RECORDING_ID" table="mageproxy_optimization" column="recording_id" referenceTable="mageproxy_recording" referenceColumn="recording_id" onDelete="CASCADE"/>
+        <constraint xsi:type="foreign" referenceId="MAGEPROXY_OPTIMIZATION_STORE_ID_STORE_STORE_ID" table="mageproxy_optimization" column="store_id" referenceTable="store" referenceColumn="store_id" onDelete="CASCADE"/>
+        <constraint xsi:type="foreign" referenceId="MAGEPROXY_OPTIMIZATION_TEMPLATE_ID_MAGEPROXY_OPTIMIZATION_TEMPLATE_TEMPLATE_ID" table="mageproxy_optimization" column="template_id" referenceTable="mageproxy_optimization_template" referenceColumn="template_id" onDelete="SET NULL"/>
+        <index referenceId="MAGEPROXY_OPTIMIZATION_UUID" indexType="btree">
+            <column name="uuid"/>
+        </index>
+        <index referenceId="MAGEPROXY_OPTIMIZATION_STATUS" indexType="btree">
+            <column name="status"/>
+        </index>
+    </table>
+    <table name="mageproxy_optimization_bundle" resource="default" engine="innodb" comment="Mageproxy Optimization Bundle">
+        <column name="bundle_id" xsi:type="int" unsigned="true" nullable="false" identity="true" comment="Bundle ID"/>
+        <column name="url" xsi:type="varchar" length="255" nullable="false" comment="URL"/>
+        <column name="sri_hash" xsi:type="varchar" length="255" nullable="false" comment="SRI hash"/>
+        <column name="optimization_id" xsi:type="int" unsigned="true" nullable="false" identity="false" comment="Optimization ID"/>
+        <column name="raw_size" xsi:type="int" nullable="true" unsigned="true" comment="Raw bundle size" />
+        <column name="min_size" xsi:type="int" nullable="true" unsigned="true" comment="Minified bundle size" />
+        <column name="com_size" xsi:type="int" nullable="true" unsigned="true" comment="Compressed bundle size" />
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="bundle_id"/>
+        </constraint>
+        <constraint xsi:type="foreign" referenceId="MAGEPROXY_OPTIMIZATION_BUNDLE_OPTIMIZATION_ID_MAGEPROXY_OPTIMIZATION_OPTIMIZATION_ID" table="mageproxy_optimization_bundle" column="optimization_id" referenceTable="mageproxy_optimization" referenceColumn="optimization_id" onDelete="CASCADE"/>
+    </table>
+    <table name="mageproxy_optimization_template" resource="default" engine="innodb" comment="Mageproxy Optimization Template">
+        <column name="template_id" xsi:type="int" unsigned="true" nullable="false" identity="true" comment="Template ID"/>
+        <column name="minify_js" xsi:type="smallint" unsigned="true" nullable="false" identity="false" default="1" comment="Minify JS"/>
+        <column name="minify_html" xsi:type="smallint" unsigned="true" nullable="false" identity="false" default="1" comment="Minify Ko Templates"/>
+        <column name="chunk_js" xsi:type="smallint" unsigned="true" nullable="true" identity="false" default="1" comment="Chunk Js bundles"/>
+        <column name="chunk_js_size" xsi:type="smallint" unsigned="true" nullable="true" identity="false" default="500" comment="Chunk Size"/>
+        <column name="use_polyfills" xsi:type="smallint" unsigned="false" nullable="true" identity="false" default="0" comment="Use Polyfills"/>
+        <column name="include_sourcemap_js" xsi:type="smallint" unsigned="true" nullable="true" identity="false" default="0" comment="Include Js Source Map"/>
+        <column name="exclude_deps" xsi:type="text" nullable="true" comment="Excluded dependencies"/>
+        <column name="remove_deps" xsi:type="text" nullable="true" comment="Removed dependencies"/>
+        <column name="handles" xsi:type="text" nullable="true" comment="Page Handle distribution"/>
+        <column name="browserslist_config" xsi:type="text" nullable="true" comment="Browserslist config"/>
+        <column name="transpile_globs" xsi:type="text" nullable="true" comment="Transpile path globs"/>
+        <column name="store_id" xsi:type="smallint" unsigned="true" nullable="false" identity="false" default="0" comment="Store ID"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="template_id"/>
+        </constraint>
+        <constraint xsi:type="foreign" referenceId="MAGEPROXY_OPTIMIZATION_STORE_ID_STORE_STORE_ID" table="mageproxy_optimization" column="store_id" referenceTable="store" referenceColumn="store_id" onDelete="CASCADE"/>
+    </table>
+</schema>

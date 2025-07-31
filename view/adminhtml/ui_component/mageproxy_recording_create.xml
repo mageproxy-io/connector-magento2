@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Mageproxy Connector for Magento2.
+  ~
+  ~ @package    Mageproxy_Connector
+  ~ @copyright  Copyright (c) 2025 Iframe Co Ltd
+  ~ @license    See LICENSE.txt for license details
+  -->
+<form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">mageproxy_recording_create.mageproxy_recording_create_data_source</item>
+        </item>
+        <item name="template" xsi:type="string">templates/form/collapsible</item>
+    </argument>
+    <settings>
+        <label translate="true">New Recording Info</label>
+        <buttons>
+            <button name="cancel">
+                <label translate="true">Cancel</label>
+                <class>back</class>
+                <url path="*/*/"/>
+            </button>
+            <button name="save" class="Mageproxy\Connector\Block\Adminhtml\SaveButton"/>
+        </buttons>
+        <dataScope>data</dataScope>
+        <namespace>mageproxy_recording_create</namespace>
+        <deps>
+            <dep>mageproxy_recording_create.mageproxy_recording_create_data_source</dep>
+        </deps>
+    </settings>
+    <dataSource name="mageproxy_recording_create_data_source">
+        <argument name="data" xsi:type="array">
+            <item name="js_config" xsi:type="array">
+                <item name="component" xsi:type="string">Magento_Ui/js/form/provider</item>
+            </item>
+        </argument>
+        <settings>
+            <submitUrl path="mageproxy/recording/save"/>
+        </settings>
+        <dataProvider name="mageproxy_recording_create_data_source" class="Mageproxy\Connector\Ui\DataProvider\Form\RecordingDataProvider">
+            <settings>
+                <requestFieldName>id</requestFieldName>
+                <primaryFieldName>recording_id</primaryFieldName>
+            </settings>
+        </dataProvider>
+    </dataSource>
+    <fieldset name="recording" sortOrder="10">
+        <settings>
+            <label translate="true">Recording</label>
+        </settings>
+        <field name="scheduled_at" formElement="date">
+            <settings>
+                <label>Scheduled At</label>
+                <dataScope>scheduled_at</dataScope>
+                <visible>true</visible>
+                <dataType>text</dataType>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+            </settings>
+            <formElements>
+                <date>
+                    <settings>
+                        <options>
+                            <option name="dateFormat" xsi:type="string">yyyy-MM-dd</option>
+                            <option name="timeFormat" xsi:type="string">HH:mm</option>
+                            <option name="showsTime" xsi:type="boolean">true</option>
+                            <option name="minDate" xsi:type="string">new Date()</option>
+                        </options>
+                    </settings>
+                </date>
+            </formElements>
+        </field>
+        <field name="duration" formElement="select" sortOrder="100">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="default" xsi:type="number">10</item>
+                </item>
+            </argument>
+            <settings>
+                <label translate="true">Duration</label>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <options class="Mageproxy\Connector\Model\System\Config\Source\Duration"/>
+                    </settings>
+                </select>
+            </formElements>
+        </field>
+        <field name="store_id" formElement="multiselect" class="Magento\Store\Ui\Component\Form\Field\StoreView">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">store_id</item>
+                    <item name="default" xsi:type="number">0</item>
+                </item>
+            </argument>
+            <settings>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+                <dataType>int</dataType>
+                <label translate="true">Store View</label>
+                <dataScope>store_id</dataScope>
+            </settings>
+            <formElements>
+                <multiselect>
+                    <settings>
+                        <options class="Mageproxy\Connector\Ui\Component\Listing\Column\Store\Options"/>
+                    </settings>
+                </multiselect>
+            </formElements>
+        </field>
+    </fieldset>
+</form>
