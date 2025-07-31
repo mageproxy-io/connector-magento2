@@ -1,0 +1,24 @@
+Business Source License 1.1
+
+Licensor: Iframe Co Ltd
+
+Licensed Work: mageproxy/connector-magento2
+
+License Grant:
+Subject to the terms of this license, you may use, copy, modify, and redistribute the Licensed Work, **solely for non-commercial purposes** and in accordance with the Usage Limitation below.
+
+Usage Limitation:
+The Licensed Work may not be used for any commercial purpose, including but not limited to providing a hosted service, incorporating into a commercial product, or offering paid support services, without the express written permission of the Licensor.
+
+Additional Terms:
+1. This license does not grant you rights to use the Licensor’s trademarks or trade names.
+2. Contributions to the Licensed Work are only accepted from individuals or entities explicitly authorized by the Licensor.
+3. The Licensed Work is provided “as-is” without warranties of any kind. The Licensor is not liable for any damages or losses resulting from the use of the Licensed Work.
+
+You may obtain a copy of the Business Source License 1.1 at:
+https://mariadb.com/bsl11
+
+For commercial licensing, please contact:
+Iframe Co Ltd, Moka, Mauritius
+support@mageproxy.io
+https://mageproxy.io

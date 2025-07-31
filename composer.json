@@ -1,0 +1,32 @@
+{
+    "name": "mageproxy/connector-magento2",
+    "description": "Integration with mageproxy.io",
+    "type": "magento2-module",
+    "version": "0.9.0",
+    "license": [
+        "BSL"
+    ],
+    "authors": [
+        {
+            "name": "mageproxy.io",
+            "email": "support@mageproxy.io"
+        }
+    ],
+    "require": {
+        "php": "~7.4.0||~8.1.0||~8.1.0||~8.2.0||~8.3.0",
+        "ext-json": "*",
+        "magento/framework": "*",
+        "magento/module-require-js": "*",
+        "magento/module-csp": "*"
+    },
+    "require-dev": {
+    },
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "Mageproxy\\Connector\\": ""
+        }
+    }
+}
