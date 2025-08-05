@@ -15,6 +15,7 @@ use Magento\Backend\App\Action\Context;
 use Magento\Framework\App\Action\HttpGetActionInterface;
 use Magento\Framework\Exception\CouldNotDeleteException;
 use Magento\Framework\Exception\NoSuchEntityException;
+use Mageproxy\Connector\Api\RecordingManagerInterface;
 use Mageproxy\Connector\Api\RecordingRepositoryInterface;
 
 class Delete extends Action implements HttpGetActionInterface
@@ -22,13 +23,16 @@ class Delete extends Action implements HttpGetActionInterface
     const ADMIN_RESOURCE = 'Mageproxy_Connector::recording_delete';
 
     private RecordingRepositoryInterface $recordingRepository;
+    private RecordingManagerInterface $recordingManager;
 
     public function __construct(
         Context $context,
-        RecordingRepositoryInterface $recordingRepository
+        RecordingRepositoryInterface $recordingRepository,
+        RecordingManagerInterface $recordingManager
     ) {
         parent::__construct($context);
         $this->recordingRepository = $recordingRepository;
+        $this->recordingManager = $recordingManager;
     }
 
     public function execute()
@@ -36,7 +40,8 @@ class Delete extends Action implements HttpGetActionInterface
         $id = (int) $this->getRequest()->getParam('id');
 
         try {
-            $this->recordingRepository->deleteById($id);
+            $recording = $this->recordingRepository->getById($id);
+            $this->recordingManager->delete($recording);
         } catch (CouldNotDeleteException|NoSuchEntityException $e) {
             $this->messageManager->addErrorMessage(__('An error occurred while deleting the recording.'));
             return $this->_redirect('*/*/');

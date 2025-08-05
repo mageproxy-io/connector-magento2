@@ -29,10 +29,12 @@ use Mageproxy\Connector\Model\Recording\Source\Status;
 use Mageproxy\Connector\Model\ResourceModel\Dependency\CollectionFactory;
 use Mageproxy\Connector\Model\System\Config\Source\AutoRunType;
 use Mageproxy\Connector\Model\System\Config\Source\RunMode;
+use Mageproxy\Connector\Model\ApiClient\PostDeleteRecordingInterface;
 
 class RecordingManager implements RecordingManagerInterface
 {
     private RecordingRepositoryInterface $recordingRepository;
+    private PostDeleteRecordingInterface $deleteRecordingApiClient;
     private Status $statusOptions;
     private StoreManagerInterface $storeManager;
     private SearchCriteriaBuilder $searchCriteriaBuilder;
@@ -61,7 +63,8 @@ class RecordingManager implements RecordingManagerInterface
         AutoRunScheduleFactory $autoRunScheduleFactory,
         CollectionFactory $dependencyCollectionFactory,
         GetRecordingJsDepsCountInterface $getRecordingJsDepsCountApiClient,
-        GetRecordingSnapshotInterface $getRecordingSnapshotApiClient
+        GetRecordingSnapshotInterface $getRecordingSnapshotApiClient,
+        PostDeleteRecordingInterface $deleteRecordingApiClient
     ) {
         $this->recordingRepository = $recordingRepository;
         $this->statusOptions = $statusOptions;
@@ -77,6 +80,7 @@ class RecordingManager implements RecordingManagerInterface
         $this->dependencyCollectionFactory = $dependencyCollectionFactory;
         $this->getRecordingJsDepsCountApiClient = $getRecordingJsDepsCountApiClient;
         $this->getRecordingSnapshotApiClient = $getRecordingSnapshotApiClient;
+        $this->deleteRecordingApiClient = $deleteRecordingApiClient;
     }
 
     /**
@@ -269,6 +273,28 @@ class RecordingManager implements RecordingManagerInterface
         }
         $recording->setStatus(RecordingInterface::STATUS_FINISHED);
         $this->recordingRepository->save($recording);
+        try {
+            $this->deleteRecordingApiClient->execute($recording->getUuid());
+        } catch (\Exception $e) {
+            // Might throw if recording already deleted
+        }
+    }
+
+    /**
+     * Deletes a recording.
+     *
+     * @param RecordingInterface $recording
+     * @return void
+     */
+    public function delete(RecordingInterface $recording): void
+    {
+        $uuid = $recording->getUuid();
+        $this->recordingRepository->delete($recording);
+        try {
+            $this->deleteRecordingApiClient->execute($uuid);
+        } catch (\Exception $e) {
+            // Might throw if recording already deleted
+        }
     }
 
     /**

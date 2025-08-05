@@ -19,6 +19,7 @@ use Magento\Framework\View\Result\PageFactory;
 use Magento\Ui\Component\MassAction\Filter;
 use Mageproxy\Connector\Api\Data\OptimizationInterface;
 use Mageproxy\Connector\Api\OptimizationRepositoryInterface;
+use Mageproxy\Connector\Api\RecordingManagerInterface;
 use Mageproxy\Connector\Api\RecordingRepositoryInterface;
 use Mageproxy\Connector\Model\ResourceModel\Recording\CollectionFactory;
 
@@ -27,6 +28,7 @@ class MassDelete extends Action implements HttpPostActionInterface
     public const ADMIN_RESOURCE = 'Mageproxy_Connector::recording_delete';
 
     private RecordingRepositoryInterface $recordingRepository;
+    private RecordingManagerInterface $recordingManager;
     private Filter $filter;
     private CollectionFactory $collectionFactory;
     private OptimizationRepositoryInterface $optimizationRepository;
@@ -36,6 +38,7 @@ class MassDelete extends Action implements HttpPostActionInterface
     public function __construct(
         Context $context,
         RecordingRepositoryInterface $recordingRepository,
+        RecordingManagerInterface $recordingManager,
         Filter $filter,
         CollectionFactory $collectionFactory,
         PageFactory $resultFactory,
@@ -45,6 +48,7 @@ class MassDelete extends Action implements HttpPostActionInterface
     ) {
         parent::__construct($context);
         $this->recordingRepository = $recordingRepository;
+        $this->recordingManager = $recordingManager;
         $this->filter = $filter;
         $this->collectionFactory = $collectionFactory;
         $this->resultFactory = $resultFactory;
@@ -84,7 +88,7 @@ class MassDelete extends Action implements HttpPostActionInterface
                 );
                 continue;
             }
-            $this->recordingRepository->deleteById($id);
+            $this->recordingManager->delete($recording);
             $deleteCnt++;
         }
 

@@ -29,6 +29,7 @@
     <preference for="Mageproxy\Connector\Model\ApiClient\PostNewRecordingInterface" type="Mageproxy\Connector\Model\ApiClient\PostNewRecording"/>
     <preference for="Mageproxy\Connector\Model\ApiClient\PostNewRecordingResponseInterface" type="Mageproxy\Connector\Model\ApiClient\PostNewRecordingResponse"/>
     <preference for="Mageproxy\Connector\Model\ApiClient\PostNewRecordingRequestInterface" type="Mageproxy\Connector\Model\ApiClient\PostNewRecordingRequest"/>
+    <preference for="Mageproxy\Connector\Model\ApiClient\PostDeleteRecordingInterface" type="Mageproxy\Connector\Model\ApiClient\PostDeleteRecording"/>
     <preference for="Mageproxy\Connector\Model\ApiClient\GetOptimizationInterface" type="Mageproxy\Connector\Model\ApiClient\GetOptimization"/>
     <preference for="Mageproxy\Connector\Model\ApiClient\GetOptimizationResponseInterface" type="Mageproxy\Connector\Model\ApiClient\GetOptimizationResponse"/>
     <preference for="Mageproxy\Connector\Model\ApiClient\DistributionInterface" type="Mageproxy\Connector\Model\ApiClient\Distribution"/>
@@ -90,6 +91,11 @@
         <arguments>
             <argument name="responseFactory" xsi:type="object">PostRecordingResponseFactory</argument>
             <argument name="endpointConfigPath" xsi:type="const">Mageproxy\Connector\Model\Config::XML_PATH_API_PATH_NEW_RECORDING</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="PostDeleteRecordingAdapter" type="Mageproxy\Connector\Model\ApiClient\Adapter">
+        <arguments>
+            <argument name="endpointConfigPath" xsi:type="const">Mageproxy\Connector\Model\Config::XML_PATH_API_PATH_POST_RECORDING_DELETE</argument>
         </arguments>
     </virtualType>
     <virtualType name="GetRecordingJsDepsAdapter" type="Mageproxy\Connector\Model\ApiClient\Adapter">
@@ -170,6 +176,11 @@
     <type name="Mageproxy\Connector\Model\ApiClient\PostNewRecording">
         <arguments>
             <argument name="adapter" xsi:type="object">PostNewRecordingAdapter</argument>
+        </arguments>
+    </type>
+    <type name="Mageproxy\Connector\Model\ApiClient\PostDeleteRecording">
+        <arguments>
+            <argument name="adapter" xsi:type="object">PostDeleteRecordingAdapter</argument>
         </arguments>
     </type>
     <type name="Mageproxy\Connector\Model\ApiClient\GetOptimization">
