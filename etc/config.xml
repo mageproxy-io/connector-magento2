@@ -16,6 +16,7 @@
                 <api_token backend_model="Magento\Config\Model\Config\Backend\Encrypted" />
                 <api_key backend_model="Magento\Config\Model\Config\Backend\Encrypted" />
                 <api_path_new_recording>/v1/services/:id/record</api_path_new_recording>
+                <api_path_delete_recording>/v1/recordings/:id</api_path_delete_recording>
                 <api_path_recording_deps>/v1/recordings/:id/handles/deps</api_path_recording_deps>
                 <api_path_recording_deps_cnt_ts>/v1/recordings/:id/deps/ts</api_path_recording_deps_cnt_ts>
                 <api_path_recording_deps_cnt>/v1/recordings/:id/deps/cnt</api_path_recording_deps_cnt>

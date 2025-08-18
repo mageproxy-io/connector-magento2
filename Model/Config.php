@@ -31,6 +31,7 @@ class Config
     public const XML_PATH_API_PATH_GET_SERVICE = 'mageproxy_connector/settings/api_path_get_service';
     public const XML_PATH_API_PATH_GET_OPTIMIZATION = 'mageproxy_connector/settings/api_path_get_optimization';
     public const XML_PATH_API_PATH_NEW_RECORDING = 'mageproxy_connector/settings/api_path_new_recording';
+    public const XML_PATH_API_PATH_DELETE_RECORDING = 'mageproxy_connector/settings/api_path_delete_recording';
     public const XML_PATH_API_PATH_RECORDING_OPTIMIZE = 'mageproxy_connector/settings/api_path_recording_optimize';
     public const XML_PATH_API_PATH_OAUTH_TOKEN = 'mageproxy_connector/settings/api_path_oauth_token';
     public const XML_PATH_API_PATH_POST_OPTIMIZATION_DEPLOY = 'mageproxy_connector/settings/api_path_post_optimization_deploy';

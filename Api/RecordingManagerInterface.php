@@ -149,4 +149,12 @@ interface RecordingManagerInterface
      * Update a snapshot of the recording
      */
     public function populateFromLatestSnapshot(RecordingInterface $recording): void;
+
+    /**
+     * Delete a recording
+     *
+     * @param \Mageproxy\Connector\Api\Data\RecordingInterface $recording
+     * @return void
+     */
+    public function delete(RecordingInterface $recording): void;
 }
