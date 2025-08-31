@@ -18,7 +18,9 @@ use Magento\Framework\App\Action\HttpPostActionInterface;
 use Magento\Framework\View\Result\PageFactory;
 use Magento\Ui\Component\MassAction\Filter;
 use Mageproxy\Connector\Api\Data\OptimizationInterface;
+use Mageproxy\Connector\Api\Data\RecordingInterface;
 use Mageproxy\Connector\Api\OptimizationRepositoryInterface;
+use Mageproxy\Connector\Api\RecordingManagerInterface;
 use Mageproxy\Connector\Api\RecordingRepositoryInterface;
 use Mageproxy\Connector\Model\ResourceModel\Recording\CollectionFactory;
 
@@ -32,6 +34,7 @@ class MassDelete extends Action implements HttpPostActionInterface
     private OptimizationRepositoryInterface $optimizationRepository;
     private SearchCriteriaBuilder $searchCriteriaBuilder;
     private RedirectFactory $redirectFactory;
+    private RecordingManagerInterface $recordingManager;
 
     public function __construct(
         Context $context,
@@ -41,7 +44,8 @@ class MassDelete extends Action implements HttpPostActionInterface
         PageFactory $resultFactory,
         OptimizationRepositoryInterface $optimizationRepository,
         SearchCriteriaBuilder $searchCriteriaBuilder,
-        RedirectFactory $redirectFactory
+        RedirectFactory $redirectFactory,
+        RecordingManagerInterface $recordingManager
     ) {
         parent::__construct($context);
         $this->recordingRepository = $recordingRepository;
@@ -51,41 +55,59 @@ class MassDelete extends Action implements HttpPostActionInterface
         $this->optimizationRepository = $optimizationRepository;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         $this->redirectFactory = $redirectFactory;
+        $this->recordingManager = $recordingManager;
     }
 
     public function execute()
     {
-        $collection = $this->filter->getCollection($this->collectionFactory->create());
+        try {
+            $collection = $this->filter->getCollection($this->collectionFactory->create());
 
-        $this->searchCriteriaBuilder->addFilter(
-            OptimizationInterface::STATUS,
-            OptimizationInterface::STATUS_DEPLOYED
-        );
-        $result = $this->optimizationRepository->getList(
-            $this->searchCriteriaBuilder->create()
-        );
-        $deployedRecordingIds = [];
-        if ($result->getTotalCount() > 0) {
-            $items = $result->getItems();
-            $deployedRecordingIds = array_map(function (OptimizationInterface $optimization) {
-                return (int) $optimization->getRecordingId();
-            }, array_values($items));
-        }
-
-        $deleteCnt = 0;
-        foreach ($collection as $id => $recording) {
-            if (in_array($id, $deployedRecordingIds)) {
-                $this->messageManager->addErrorMessage(
-                    __(
-                        'The recording with ID "%1" is deployed and cannot be deleted. '
-                        . 'First revert the deployment before deleting.',
-                        $recording->getUuid()
-                    )
-                );
-                continue;
+            $this->searchCriteriaBuilder->addFilter(
+                OptimizationInterface::STATUS,
+                OptimizationInterface::STATUS_DEPLOYED
+            );
+            $result = $this->optimizationRepository->getList(
+                $this->searchCriteriaBuilder->create()
+            );
+            $deployedRecordingIds = [];
+            if ($result->getTotalCount() > 0) {
+                $items = $result->getItems();
+                $deployedRecordingIds = array_map(function (OptimizationInterface $optimization) {
+                    return (int) $optimization->getRecordingId();
+                }, array_values($items));
             }
-            $this->recordingRepository->deleteById($id);
-            $deleteCnt++;
+
+            $deleteCnt = 0;
+            foreach ($collection as $id => $recording) {
+                if (in_array($id, $deployedRecordingIds)) {
+                    $this->messageManager->addErrorMessage(
+                        __(
+                            'The recording with ID "%1" is deployed and cannot be deleted. '
+                            . 'First revert the deployment before deleting.',
+                            $recording->getUuid()
+                        )
+                    );
+                    continue;
+                }
+                if ($recording->getStatus() === RecordingInterface::STATUS_RUNNING) {
+                    $this->messageManager->addErrorMessage(
+                        __(
+                            'The recording with ID "%1" is currently running and cannot be deleted. '
+                            . 'First stop the recording before deleting.',
+                            $recording->getUuid()
+                        )
+                    );
+                    continue;
+                }
+                $this->recordingManager->delete($recording);
+                $deleteCnt++;
+            }
+        } catch (\Exception $e) {
+            $this->messageManager->addErrorMessage(
+                __('An error occurred while deleting the recordings.')
+            );
+            return $this->redirectFactory->create()->setUrl($this->getUrl('*/*/'));
         }
 
         $this->messageManager->addSuccessMessage(
