@@ -21,14 +21,12 @@ use Mageproxy\Connector\Api\Data\OptimizationInterface;
 use Mageproxy\Connector\Api\Data\RecordingInterface;
 use Mageproxy\Connector\Api\OptimizationRepositoryInterface;
 use Mageproxy\Connector\Api\RecordingManagerInterface;
-use Mageproxy\Connector\Api\RecordingRepositoryInterface;
 use Mageproxy\Connector\Model\ResourceModel\Recording\CollectionFactory;
 
 class MassDelete extends Action implements HttpPostActionInterface
 {
     public const ADMIN_RESOURCE = 'Mageproxy_Connector::recording_delete';
 
-    private RecordingRepositoryInterface $recordingRepository;
     private Filter $filter;
     private CollectionFactory $collectionFactory;
     private OptimizationRepositoryInterface $optimizationRepository;
@@ -38,7 +36,6 @@ class MassDelete extends Action implements HttpPostActionInterface
 
     public function __construct(
         Context $context,
-        RecordingRepositoryInterface $recordingRepository,
         Filter $filter,
         CollectionFactory $collectionFactory,
         PageFactory $resultFactory,
@@ -48,7 +45,6 @@ class MassDelete extends Action implements HttpPostActionInterface
         RecordingManagerInterface $recordingManager
     ) {
         parent::__construct($context);
-        $this->recordingRepository = $recordingRepository;
         $this->filter = $filter;
         $this->collectionFactory = $collectionFactory;
         $this->resultFactory = $resultFactory;
