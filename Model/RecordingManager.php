@@ -16,6 +16,7 @@ use Magento\Framework\App\View\Deployment\Version;
 use Magento\Framework\Exception\CouldNotSaveException;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Framework\Exception\NotFoundException;
 use Magento\Framework\Stdlib\DateTime as StdLibDateTime;
 use Magento\Store\Model\StoreManagerInterface;
 use Mageproxy\Connector\Api\Data\RecordingInterface;
@@ -63,7 +64,7 @@ class RecordingManager implements RecordingManagerInterface
         AutoRunScheduleFactory $autoRunScheduleFactory,
         CollectionFactory $dependencyCollectionFactory,
         GetRecordingJsDepsCountInterface $getRecordingJsDepsCountApiClient,
-        GetRecordingSnapshotInterface $getRecordingSnapshotApiClient
+        GetRecordingSnapshotInterface $getRecordingSnapshotApiClient,
         DeleteRecordingInterface $deleteRecordingApiClient
     ) {
         $this->recordingRepository = $recordingRepository;
@@ -80,6 +81,7 @@ class RecordingManager implements RecordingManagerInterface
         $this->dependencyCollectionFactory = $dependencyCollectionFactory;
         $this->getRecordingJsDepsCountApiClient = $getRecordingJsDepsCountApiClient;
         $this->getRecordingSnapshotApiClient = $getRecordingSnapshotApiClient;
+        $this->deleteRecordingApiClient = $deleteRecordingApiClient;
     }
 
     /**
@@ -280,11 +282,7 @@ class RecordingManager implements RecordingManagerInterface
     }
 
     /**
-     * Deletes recording locally and remotely
-     *
-     * @param \Mageproxy\Connector\Api\Data\RecordingInterface $recording
-     * @return void
-     * @throws \Magento\Framework\Exception\CouldNotDeleteException
+     * @inheritdoc
      */
     public function delete(RecordingInterface $recording): void
     {
@@ -434,7 +432,7 @@ class RecordingManager implements RecordingManagerInterface
                 if ($this->getRecordingJsDepsCountApiClient->execute($uuid)->getCount() === 0) {
                     return false;
                 }
-            } catch (NoSuchEntityException|ApiException $e) {
+            } catch (NoSuchEntityException|ApiException|NotFoundException $e) {
                 return false;
             }
         }

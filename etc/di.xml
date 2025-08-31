@@ -46,6 +46,7 @@
     <preference for="Mageproxy\Connector\Model\ApiClient\GetRecordingSnapshotInterface" type="Mageproxy\Connector\Model\ApiClient\GetRecordingSnapshot"/>
     <preference for="Mageproxy\Connector\Model\ApiClient\GetRecordingSnapshotResponseInterface" type="Mageproxy\Connector\Model\ApiClient\GetRecordingSnapshotResponse"/>
     <preference for="Mageproxy\Connector\Model\Optimization\Source\ChunkSizeSourceInterface" type="Mageproxy\Connector\Model\Optimization\Source\ChunkSize"/>
+    <preference for="Mageproxy\Connector\Model\ApiClient\DeleteOptimizationInterface" type="Mageproxy\Connector\Model\ApiClient\DeleteOptimization"/>
 
     <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
         <arguments>
@@ -95,7 +96,7 @@
     </virtualType>
     <virtualType name="DeleteRecordingAdapter" type="Mageproxy\Connector\Model\ApiClient\Adapter">
         <arguments>
-            <argument name="endpointConfigPath" xsi:type="const">Mageproxy\Connector\Model\Config::XML_PATH_API_PATH_DELETE_RECORDING</argument>
+            <argument name="endpointConfigPath" xsi:type="const">Mageproxy\Connector\Model\Config::XML_PATH_API_PATH_GET_RECORDING</argument>
         </arguments>
     </virtualType>
     <virtualType name="GetRecordingJsDepsAdapter" type="Mageproxy\Connector\Model\ApiClient\Adapter">
@@ -123,6 +124,11 @@
         <arguments>
             <argument name="endpointConfigPath" xsi:type="const">Mageproxy\Connector\Model\Config::XML_PATH_API_PATH_GET_OPTIMIZATION</argument>
             <argument name="responseFactory" xsi:type="object">GetOptimizationResponseFactory</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="DeleteOptimizationAdapter" type="Mageproxy\Connector\Model\ApiClient\Adapter">
+        <arguments>
+            <argument name="endpointConfigPath" xsi:type="const">Mageproxy\Connector\Model\Config::XML_PATH_API_PATH_GET_OPTIMIZATION</argument>
         </arguments>
     </virtualType>
     <virtualType name="GetRecordingJsDepsCountTsAdapter" type="Mageproxy\Connector\Model\ApiClient\Adapter">
@@ -226,6 +232,11 @@
     <type name="Mageproxy\Connector\Model\ApiClient\GetRecordingSnapshot">
         <arguments>
             <argument name="adapter" xsi:type="object">GetRecordingSnapshotAdapter</argument>
+        </arguments>
+    </type>
+    <type name="\Mageproxy\Connector\Model\ApiClient\DeleteOptimization">
+        <arguments>
+            <argument name="adapter" xsi:type="object">DeleteOptimizationAdapter</argument>
         </arguments>
     </type>
     <!-- Override deployment -->

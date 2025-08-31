@@ -22,6 +22,7 @@ class PostOptimizeRecordingRequest implements PostOptimizeRecordingRequestInterf
     private ?array $transpileGlobs = [];
     private ?string $browserslistConfig = null;
     private ?int $chunkSize = null;
+    private ?string $storeViewCode = null;
     private DistributionInterface $distribution;
 
     public function setMinifyHtml(bool $minifyHtml): void
@@ -132,5 +133,15 @@ class PostOptimizeRecordingRequest implements PostOptimizeRecordingRequestInterf
     public function setIncludeSourcemap(bool $includeSourcemap): void
     {
         $this->includeSourcemap = $includeSourcemap;
+    }
+
+    public function setStoreViewCode(string $storeViewCode): void
+    {
+        $this->storeViewCode = $storeViewCode;
+    }
+
+    public function getStoreViewCode(): string
+    {
+        return $this->storeViewCode;
     }
 }

@@ -13,21 +13,35 @@ namespace Mageproxy\Connector\Controller\Adminhtml\Recording;
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
 use Magento\Framework\App\Action\HttpGetActionInterface;
-use Magento\Framework\Exception\CouldNotDeleteException;
-use Magento\Framework\Exception\NoSuchEntityException;
+use Mageproxy\Connector\Api\RecordingManagerInterface;
 use Mageproxy\Connector\Api\RecordingRepositoryInterface;
 
 class Delete extends Action implements HttpGetActionInterface
 {
     const ADMIN_RESOURCE = 'Mageproxy_Connector::recording_delete';
 
+    /**
+     * @var \Mageproxy\Connector\Api\RecordingManagerInterface
+     */
+    private RecordingManagerInterface $recordingManager;
+
+    /**
+     * @var \Mageproxy\Connector\Api\RecordingRepositoryInterface
+     */
     private RecordingRepositoryInterface $recordingRepository;
 
+    /**
+     * @param \Magento\Backend\App\Action\Context $context
+     * @param \Mageproxy\Connector\Api\RecordingManagerInterface $recordingManager
+     * @param \Mageproxy\Connector\Api\RecordingRepositoryInterface $recordingRepository
+     */
     public function __construct(
         Context $context,
+        RecordingManagerInterface $recordingManager,
         RecordingRepositoryInterface $recordingRepository
     ) {
         parent::__construct($context);
+        $this->recordingManager = $recordingManager;
         $this->recordingRepository = $recordingRepository;
     }
 
@@ -36,8 +50,9 @@ class Delete extends Action implements HttpGetActionInterface
         $id = (int) $this->getRequest()->getParam('id');
 
         try {
-            $this->recordingRepository->deleteById($id);
-        } catch (CouldNotDeleteException|NoSuchEntityException $e) {
+            $recording = $this->recordingRepository->getById($id);
+            $this->recordingManager->delete($recording);
+        } catch (\Exception $e) {
             $this->messageManager->addErrorMessage(__('An error occurred while deleting the recording.'));
             return $this->_redirect('*/*/');
         }

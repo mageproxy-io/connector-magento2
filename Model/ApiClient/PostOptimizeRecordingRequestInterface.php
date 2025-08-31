@@ -134,4 +134,15 @@ interface PostOptimizeRecordingRequestInterface extends ExtensibleDataInterface
      * @return void
      */
     public function setIncludeSourcemap(bool $includeSourcemap): void;
+
+    /**
+     * @param string $storeViewCode
+     * @return void
+     */
+    public function setStoreViewCode(string $storeViewCode): void;
+
+    /**
+     * @return string|null
+     */
+    public function getStoreViewCode(): string;
 }
