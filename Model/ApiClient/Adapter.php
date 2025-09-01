@@ -17,7 +17,6 @@ use Magento\Framework\Api\ExtensibleDataObjectConverter;
 use Magento\Framework\Exception\AuthenticationException;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NotFoundException;
-use Magento\Framework\HTTP\Client\CurlFactory;
 use Magento\Framework\Serialize\Serializer\Json;
 use Mageproxy\Connector\Model\ApiClient\Auth\AuthStrategyInterface;
 use Mageproxy\Connector\Model\ApiClient\Exception\ApiException;
@@ -26,10 +25,10 @@ use Mageproxy\Connector\Model\Config;
 /**
  * @method post(?$requestObject = null, array $params = []): mixed|null
  * @method get(array $params = []): mixed|null
+ * @method delete(array $params = []): mixed|null
  */
 class Adapter
 {
-
     private CurlFactory $curlFactory;
     private Json $json;
     private Config $config;
@@ -83,9 +82,9 @@ class Adapter
         $params = array_shift($arguments) ?? [];
         $endpoint = $this->config->getApiEndpoint($this->endpointConfigPath, $params);
         $payload = $payload ?? [];
-        if (!in_array($method, ['get', 'post'])) {
+        if (!in_array($method, ['get', 'post', 'delete'])) {
             throw new BadMethodCallException(
-                __('Method %1 is not supported in the API adapter. Use "GET" or "POST".', $method)
+                __('Method %1 is not supported in the API adapter. Use "GET", "POST" or "DELETE".', $method)
             );
         }
         try {
@@ -93,6 +92,8 @@ class Adapter
                 $curl->post($endpoint, $this->json->serialize($payload));
             } elseif ($method === 'get') {
                 $curl->get($endpoint);
+            } elseif ($method === 'delete') {
+                $curl->delete($endpoint);
             }
         } catch (Exception $e) {
             throw new ApiException(

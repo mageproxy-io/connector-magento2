@@ -23,6 +23,7 @@ use Mageproxy\Connector\Api\Data\RecordingInterface;
 use Mageproxy\Connector\Api\OptimizationManagerInterface;
 use Mageproxy\Connector\Api\OptimizationRepositoryInterface;
 use Mageproxy\Connector\Api\RecordingManagerInterface;
+use Mageproxy\Connector\Model\ApiClient\DeleteOptimizationInterface;
 use Mageproxy\Connector\Model\ApiClient\DistributionResolver;
 use Mageproxy\Connector\Model\ApiClient\PostOptimizeRecordingInterface;
 use Mageproxy\Connector\Model\ApiClient\PostOptimizeRecordingRequestInterfaceFactory;
@@ -41,6 +42,7 @@ class OptimizationManager implements OptimizationManagerInterface
     private DateTime $dateTimeFmt;
     private CopyObject $objectCopyService;
     private RecordingManagerInterface $recordingManager;
+    private DeleteOptimizationInterface $deleteOptimizationApi;
 
     public function __construct(
         StoreManagerInterface $storeManager,
@@ -54,7 +56,8 @@ class OptimizationManager implements OptimizationManagerInterface
         PurgeFullPageCache $purgeFullPageCache,
         DateTime $dateTimeFmt,
         CopyObject $objectCopyService,
-        RecordingManagerInterface $recordingManager
+        RecordingManagerInterface $recordingManager,
+        DeleteOptimizationInterface $deleteOptimizationApi
     ) {
         $this->storeManager = $storeManager;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
@@ -68,6 +71,7 @@ class OptimizationManager implements OptimizationManagerInterface
         $this->dateTimeFmt = $dateTimeFmt;
         $this->objectCopyService = $objectCopyService;
         $this->recordingManager = $recordingManager;
+        $this->deleteOptimizationApi = $deleteOptimizationApi;
     }
 
     public function deploy(OptimizationInterface $optimization): void
@@ -105,9 +109,25 @@ class OptimizationManager implements OptimizationManagerInterface
         try {
             $this->optimizationRepository->save($optimization);
             $this->purgeFullPageCache->shouldPurge();
-        } catch (CouldNotSaveException $e) {
+            if ($afterStatus === OptimizationInterface::STATUS_FINISHED) {
+                $this->finish($optimization);
+            }
+        } catch (CouldNotSaveException|LocalizedException $e) {
             throw new LocalizedException(__('Could not revert optimization'));
         }
+    }
+
+    public function finish(OptimizationInterface $optimization): void
+    {
+        if ($optimization->getStatus() !== OptimizationInterface::STATUS_FINISHED) {
+            $optimization->setStatus(OptimizationInterface::STATUS_FINISHED);
+            try {
+                $this->optimizationRepository->save($optimization);
+            } catch (\Exception $e) {
+                throw new LocalizedException(__('Could not finish optimization.'));
+            }
+        }
+        $this->deleteOptimizationApi->execute($optimization->getUuid());
     }
 
     /**
@@ -174,6 +194,7 @@ class OptimizationManager implements OptimizationManagerInterface
         );
 
         $request->setDistribution($magentoDistribution);
+        $request->setStoreViewCode($this->storeManager->getStore($recording->getStoreId())->getCode());
 
         $result = $this->postOptimizeRecording->execute($recording->getUuid(), $request);
         if (!$result || !$result->getId()) {
@@ -201,6 +222,19 @@ class OptimizationManager implements OptimizationManagerInterface
         $optimization->setRecordingChecksum($recording->getChecksum());
 
         $this->optimizationRepository->save($optimization);
+
+        // Finish all relevant previous optimizations
+        $optsToFinish = $this->optimizationRepository->getList(
+            $this->searchCriteriaBuilder
+                ->addFilter('recording_id', $recording->getId())
+                ->addFilter('optimization_id', $optimization->getId(), 'neq')
+                ->addFilter('status', OptimizationInterface::STATUS_FINISHED, 'neq') // Ignore already finished optimizations
+                ->addFilter('status', OptimizationInterface::STATUS_DEPLOYED, 'neq') // Ignore deployed optimizations!
+                ->create()
+        )->getItems();
+        foreach ($optsToFinish as $optToFinish) {
+            $this->finish($optToFinish);
+        }
 
         return $optimization;
     }

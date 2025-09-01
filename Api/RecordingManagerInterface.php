@@ -149,4 +149,16 @@ interface RecordingManagerInterface
      * Update a snapshot of the recording
      */
     public function populateFromLatestSnapshot(RecordingInterface $recording): void;
+
+    /**
+     * Deletes recording locally and remotely
+     *
+     * @param \Mageproxy\Connector\Api\Data\RecordingInterface $recording
+     * @return void
+     * @throws \Magento\Framework\Exception\CouldNotDeleteException
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     * @throws \Magento\Framework\Exception\LocalizedException
+     * @throws \Magento\Framework\Exception\NotFoundException
+     */
+    public function delete(RecordingInterface $recording): void;
 }

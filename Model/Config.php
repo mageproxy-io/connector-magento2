@@ -24,18 +24,24 @@ class Config
     public const XML_PATH_CLIENT_SECRET = 'mageproxy_connector/settings/client_secret';
     public const XML_PATH_TRACKING_URL = 'mageproxy_connector/settings/tracking_url';
     public const XML_PATH_API_BASE_URL = 'mageproxy_connector/settings/api_base_url';
+
+    public const XML_PATH_API_PATH_NEW_RECORDING = 'mageproxy_connector/settings/api_path_new_recording';
     public const XML_PATH_API_PATH_GET_RECORDING_DEPS = 'mageproxy_connector/settings/api_path_recording_deps';
     public const XML_PATH_API_PATH_GET_RECORDING_DEPS_CNT_TS = 'mageproxy_connector/settings/api_path_recording_deps_cnt_ts';
     public const XML_PATH_API_PATH_GET_RECORDING_DEPS_CNT = 'mageproxy_connector/settings/api_path_recording_deps_cnt';
     public const XML_PATH_API_PATH_GET_RECORDING_SNAPSHOT = 'mageproxy_connector/settings/api_path_recording_snapshot';
-    public const XML_PATH_API_PATH_GET_SERVICE = 'mageproxy_connector/settings/api_path_get_service';
-    public const XML_PATH_API_PATH_GET_OPTIMIZATION = 'mageproxy_connector/settings/api_path_get_optimization';
-    public const XML_PATH_API_PATH_NEW_RECORDING = 'mageproxy_connector/settings/api_path_new_recording';
     public const XML_PATH_API_PATH_RECORDING_OPTIMIZE = 'mageproxy_connector/settings/api_path_recording_optimize';
+    public const XML_PATH_API_PATH_GET_RECORDING = 'mageproxy_connector/settings/api_path_get_recording';
+
+    public const XML_PATH_API_PATH_GET_SERVICE = 'mageproxy_connector/settings/api_path_get_service';
+
     public const XML_PATH_API_PATH_OAUTH_TOKEN = 'mageproxy_connector/settings/api_path_oauth_token';
+
+    public const XML_PATH_API_PATH_GET_OPTIMIZATION = 'mageproxy_connector/settings/api_path_get_optimization';
     public const XML_PATH_API_PATH_POST_OPTIMIZATION_DEPLOY = 'mageproxy_connector/settings/api_path_post_optimization_deploy';
     public const XML_PATH_API_PATH_POST_RECORDING_START = 'mageproxy_connector/settings/api_path_recording_start';
     public const XML_PATH_API_PATH_POST_OPTIMIZATION_REVERT = 'mageproxy_connector/settings/api_path_post_optimization_revert';
+
     public const XML_PATH_API_KEY = 'mageproxy_connector/settings/api_key';
     public const XML_PATH_RUN_MODE = 'mageproxy_connector/settings/run_mode';
     public const XML_PATH_AUTO_RUN_TYPE = 'mageproxy_connector/settings/auto_run_type';

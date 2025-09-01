@@ -16,11 +16,13 @@ use Magento\Framework\App\View\Deployment\Version;
 use Magento\Framework\Exception\CouldNotSaveException;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Framework\Exception\NotFoundException;
 use Magento\Framework\Stdlib\DateTime as StdLibDateTime;
 use Magento\Store\Model\StoreManagerInterface;
 use Mageproxy\Connector\Api\Data\RecordingInterface;
 use Mageproxy\Connector\Api\RecordingManagerInterface;
 use Mageproxy\Connector\Api\RecordingRepositoryInterface;
+use Mageproxy\Connector\Model\ApiClient\DeleteRecordingInterface;
 use Mageproxy\Connector\Model\ApiClient\Exception\ApiException;
 use Mageproxy\Connector\Model\ApiClient\GetRecordingJsDepsCountInterface;
 use Mageproxy\Connector\Model\ApiClient\GetRecordingSnapshotInterface;
@@ -33,6 +35,7 @@ use Mageproxy\Connector\Model\System\Config\Source\RunMode;
 class RecordingManager implements RecordingManagerInterface
 {
     private RecordingRepositoryInterface $recordingRepository;
+    private DeleteRecordingInterface $deleteRecordingApiClient;
     private Status $statusOptions;
     private StoreManagerInterface $storeManager;
     private SearchCriteriaBuilder $searchCriteriaBuilder;
@@ -61,7 +64,8 @@ class RecordingManager implements RecordingManagerInterface
         AutoRunScheduleFactory $autoRunScheduleFactory,
         CollectionFactory $dependencyCollectionFactory,
         GetRecordingJsDepsCountInterface $getRecordingJsDepsCountApiClient,
-        GetRecordingSnapshotInterface $getRecordingSnapshotApiClient
+        GetRecordingSnapshotInterface $getRecordingSnapshotApiClient,
+        DeleteRecordingInterface $deleteRecordingApiClient
     ) {
         $this->recordingRepository = $recordingRepository;
         $this->statusOptions = $statusOptions;
@@ -77,6 +81,7 @@ class RecordingManager implements RecordingManagerInterface
         $this->dependencyCollectionFactory = $dependencyCollectionFactory;
         $this->getRecordingJsDepsCountApiClient = $getRecordingJsDepsCountApiClient;
         $this->getRecordingSnapshotApiClient = $getRecordingSnapshotApiClient;
+        $this->deleteRecordingApiClient = $deleteRecordingApiClient;
     }
 
     /**
@@ -269,6 +274,21 @@ class RecordingManager implements RecordingManagerInterface
         }
         $recording->setStatus(RecordingInterface::STATUS_FINISHED);
         $this->recordingRepository->save($recording);
+        try {
+            $this->deleteRecordingApiClient->execute($recording->getUuid());
+        } catch (\Exception $e) {
+            // Might throw if recording already deleted
+        }
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function delete(RecordingInterface $recording): void
+    {
+        $uuid = $recording->getUuid();
+        $this->recordingRepository->delete($recording);
+        $this->deleteRecordingApiClient->execute($uuid);
     }
 
     /**
@@ -412,7 +432,7 @@ class RecordingManager implements RecordingManagerInterface
                 if ($this->getRecordingJsDepsCountApiClient->execute($uuid)->getCount() === 0) {
                     return false;
                 }
-            } catch (NoSuchEntityException|ApiException $e) {
+            } catch (NoSuchEntityException|ApiException|NotFoundException $e) {
                 return false;
             }
         }

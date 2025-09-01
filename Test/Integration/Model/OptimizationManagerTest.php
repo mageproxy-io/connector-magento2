@@ -71,6 +71,11 @@ class OptimizationManagerTest extends TestCase
         self::assertSame(OptimizationInterface::STATUS_READY, $optimization->getStatus());
     }
 
+    public function testRevertOptimizationToStatusFinished(): void
+    {
+        $objectManager = Bootstrap::getObjectManager();
+    }
+
     /**
      * @covers \Mageproxy\Connector\Model\OptimizationManager::deploymentInProgress
      * @magentoDataFixture Mageproxy_Connector::Test/Integration/_files/recording_finished.php
