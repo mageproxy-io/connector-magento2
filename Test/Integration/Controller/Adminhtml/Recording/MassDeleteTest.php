@@ -14,6 +14,7 @@ use Laminas\Http\Request;
 use Magento\Framework\Message\MessageInterface;
 use Magento\TestFramework\Helper\Bootstrap;
 use Magento\TestFramework\TestCase\AbstractBackendController;
+use Mageproxy\Connector\Model\ApiClient\DeleteRecordingInterface;
 use Mageproxy\Connector\Model\ResourceModel\Recording\Collection;
 
 /**
@@ -45,11 +46,17 @@ class MassDeleteTest extends AbstractBackendController
         $recordingCollection = $objectManager->create(Collection::class);
         $items = $recordingCollection->getItems();
         $deleteIds = array_slice(array_keys($items), 0, 2);
-        $expectedIdsAfterDelete = array_slice(array_keys($items), 2);
+        $expectedIdsAfterDelete = array_slice(array_keys($items), 1); // second recording is running
         $requestData = [
             'selected' => $deleteIds,
             'namespace' => 'mageproxy_recording_listing',
         ];
+
+        $apiDeleteMock = $this->createMock(DeleteRecordingInterface::class);
+        $apiDeleteMock->expects(self::exactly(1))
+            ->method('execute');
+
+        $objectManager->addSharedInstance($apiDeleteMock, DeleteRecordingInterface::class, true);
 
         $this->getRequest()
             ->setParams($requestData)
@@ -60,7 +67,7 @@ class MassDeleteTest extends AbstractBackendController
         $idsAfterDelete = $recordingCollection->getAllIds();
         self::assertEquals($idsAfterDelete, $expectedIdsAfterDelete);
         $this->assertSessionMessages(
-            $this->equalTo(['A total of 2 record(s) have been deleted.']),
+            $this->equalTo(['A total of 1 record(s) have been deleted.']),
             MessageInterface::TYPE_SUCCESS
         );
     }

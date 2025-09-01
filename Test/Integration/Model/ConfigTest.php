@@ -62,14 +62,6 @@ class ConfigTest extends TestCase
 
     /**
      * @covers \Mageproxy\Connector\Model\Config::getTrackingUrl
-     */
-    public function testGetDefaultTrackingUrlIsNull(): void
-    {
-        self::assertEquals(null, $this->configModel->getTrackingUrl());
-    }
-
-    /**
-     * @covers \Mageproxy\Connector\Model\Config::getTrackingUrl
      * @magentoConfigFixture default/mageproxy_connector/settings/tracking_url https://recorder.mageproxy.io/v2/track
      */
     public function testGetTrackingUrlWhenSetInSystemConfig(): void

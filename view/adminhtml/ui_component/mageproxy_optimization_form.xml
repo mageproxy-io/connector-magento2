@@ -41,6 +41,11 @@
             </settings>
         </dataProvider>
     </dataSource>
+    <container name="notice" >
+        <htmlContent name="html_content">
+            <block class="Magento\Backend\Block\Template" name="optimization.notice" template="Mageproxy_Connector::optimization-notice.phtml"/>
+        </htmlContent>
+    </container>
     <fieldset name="minification" sortOrder="10">
         <settings>
             <collapsible>true</collapsible>

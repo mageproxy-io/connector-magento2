@@ -11,7 +11,6 @@ declare(strict_types=1);
 namespace Mageproxy\Connector\Test\Integration\Model\ApiClient;
 
 use Magento\Framework\HTTP\Client\Curl;
-use Magento\Framework\HTTP\Client\CurlFactory;
 use Magento\TestFramework\Helper\Bootstrap;
 use Mageproxy\Connector\Model\ApiClient\Adapter;
 use Mageproxy\Connector\Model\ApiClient\GetServiceResponseInterface;
@@ -64,7 +63,7 @@ class AdapterTest extends TestCase
             ->method('getStatus')
             ->willReturn(200);
 
-        $curlFactoryMock = self::createMock(CurlFactory::class);
+        $curlFactoryMock = self::createMock(\Mageproxy\Connector\Model\ApiClient\CurlFactory::class);
         $curlFactoryMock
             ->expects(self::once())
             ->method('create')
@@ -105,7 +104,7 @@ class AdapterTest extends TestCase
             ->method('getStatus')
             ->willReturn(200);
 
-        $curlFactoryMock = self::createMock(CurlFactory::class);
+        $curlFactoryMock = self::createMock(\Mageproxy\Connector\Model\ApiClient\CurlFactory::class);
         $curlFactoryMock
             ->expects(self::once())
             ->method('create')

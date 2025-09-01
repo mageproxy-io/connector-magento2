@@ -19,7 +19,6 @@ use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NotFoundException;
 use Magento\Framework\Serialize\Serializer\Json;
 use Mageproxy\Connector\Model\ApiClient\Auth\AuthStrategyInterface;
-use Mageproxy\Connector\Model\ApiClient\CurlFactory;
 use Mageproxy\Connector\Model\ApiClient\Exception\ApiException;
 use Mageproxy\Connector\Model\Config;
 
@@ -30,7 +29,6 @@ use Mageproxy\Connector\Model\Config;
  */
 class Adapter
 {
-
     private CurlFactory $curlFactory;
     private Json $json;
     private Config $config;
