@@ -13,7 +13,7 @@
                 <value id="mageproxy-io" type="host">*.mageproxy.io</value>
             </values>
         </policy>
-        <policy id="connect-src">
+        <policy id="img-src">
             <values>
                 <value id="mageproxy-io" type="host">*.mageproxy.io</value>
             </values>

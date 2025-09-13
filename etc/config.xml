@@ -29,7 +29,7 @@
                 <api_path_post_optimization_deploy>/v1/optimizations/:id/deploy</api_path_post_optimization_deploy>
                 <api_path_post_optimization_revert>/v1/optimizations/:id/revert</api_path_post_optimization_revert>
                 <api_base_url>https://api.mageproxy.io</api_base_url>
-                <tracking_url>https://recorder.mageproxy.io/v1/track.html</tracking_url>
+                <tracking_url>https://recorder.mageproxy.io/v1/s.gif</tracking_url>
                 <include_timestamp>0</include_timestamp>
                 <request_timeout>5</request_timeout>
                 <run_mode>manual</run_mode>
