@@ -142,6 +142,14 @@ define('mageproxy/requirejs-recorder', [ 'module' ], function (module) {
             if ('fetchPriority' in img) {
                 img.fetchPriority = 'low';
             }
+            if ('crossOrigin' in img) {
+                img.crossOrigin = 'anonymous';
+            } else {
+                try { img.setAttribute('crossorigin', 'anonymous'); } catch (e) {}
+            }
+            if ('referrerPolicy' in img) {
+                img.referrerPolicy = 'no-referrer';
+            }
             const cleanup = () => {
                 pixelPool.delete(img);
             };
