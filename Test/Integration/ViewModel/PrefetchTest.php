@@ -36,7 +36,7 @@ class PrefetchTest extends TestCase
             'routeToPrefetchBundleResolver' => $resolverMock
         ]);
 
-        $result = $viewModel->getPrefetchJson();
+        $result = $viewModel->getPrefetchRulesJson();
         $this->assertJson($result);
     }
 }

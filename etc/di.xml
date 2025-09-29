@@ -7,6 +7,7 @@
   ~ @license    See LICENSE.txt for license details
   -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Mageproxy\Connector\Api\Data\PrefetchInterface" type="Mageproxy\Connector\Model\Prefetch"/>
     <preference for="Mageproxy\Connector\Api\Data\RecordingInterface" type="Mageproxy\Connector\Model\Recording"/>
     <preference for="Mageproxy\Connector\Api\Data\DependencyInterface" type="Mageproxy\Connector\Model\Dependency"/>
     <preference for="Mageproxy\Connector\Api\Data\OptimizationInterface" type="Mageproxy\Connector\Model\Optimization"/>
@@ -58,6 +59,7 @@
                 <item name="mageproxy_dependency_listing_modal_remove_data_source" xsi:type="string">Mageproxy\Connector\Ui\DataProvider\Listing\DependencyModalDataProvider</item>
                 <item name="mageproxy_pagehandle_listing_modal_data_source" xsi:type="string">Mageproxy\Connector\Ui\DataProvider\Listing\PageHandleModalDataProvider</item>
                 <item name="mageproxy_bundle_listing_data_source" xsi:type="string">Mageproxy\Connector\Ui\DataProvider\Listing\BundleDataProvider</item>
+                <item name="mageproxy_prefetch_listing_data_source" xsi:type="string">Mageproxy\Connector\Ui\DataProvider\Listing\PrefetchDataProvider</item>
             </argument>
         </arguments>
     </type>

@@ -31,6 +31,11 @@
                             <resource id="Mageproxy_Connector::optimization_deploy" sortOrder="20" title="Deploy" translate="title"/>
                             <resource id="Mageproxy_Connector::optimization_revert" sortOrder="30" title="Revert" translate="title"/>
                         </resource>
+                        <resource id="Mageproxy_Connector::prefetch" sortOrder="30" title="Prefetch" translate="title">
+                            <resource id="Mageproxy_Connector::prefetch_view" sortOrder="10" title="View" translate="title"/>
+                            <resource id="Mageproxy_Connector::prefetch_edit" sortOrder="20" title="Edit" translate="title"/>
+                            <resource id="Mageproxy_Connector::prefetch_delete" sortOrder="30" title="Delete" translate="title"/>
+                        </resource>
                     </resource>
                 </resource>
             </resource>

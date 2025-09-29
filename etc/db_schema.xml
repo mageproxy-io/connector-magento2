@@ -53,7 +53,7 @@
             <column name="module_id"/>
             <column name="page_handle"/>
         </constraint>
-    </table>
+</table>
     <table name="mageproxy_optimization" resource="default" engine="innodb" comment="Mageproxy optimization">
         <column name="optimization_id" xsi:type="int" unsigned="true" nullable="false" identity="true" comment="Optimization ID"/>
         <column name="uuid" xsi:type="varchar" nullable="false" length="36" comment="Optimization UUID"/>
@@ -124,5 +124,17 @@
             <column name="template_id"/>
         </constraint>
         <constraint xsi:type="foreign" referenceId="MAGEPROXY_OPTIMIZATION_STORE_ID_STORE_STORE_ID" table="mageproxy_optimization" column="store_id" referenceTable="store" referenceColumn="store_id" onDelete="CASCADE"/>
+    </table>
+    <table name="mageproxy_prefetch" resource="default" engine="innodb" comment="Mageproxy prefetch definitions">
+        <column name="prefetch_id" xsi:type="int" unsigned="true" nullable="false" identity="true" comment="Prefetch ID"/>
+        <column name="store_id" xsi:type="smallint" unsigned="true" nullable="false" comment="Store ID"/>
+        <column name="rules" xsi:type="text" nullable="false" comment="Serialized rules"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="prefetch_id"/>
+        </constraint>
+        <constraint xsi:type="foreign" referenceId="MAGEPROXY_PREFETCH_STORE_ID_STORE_STORE_ID" table="mageproxy_prefetch" column="store_id" referenceTable="store" referenceColumn="store_id" onDelete="CASCADE"/>
+        <constraint xsi:type="unique" referenceId="MAGEPROXY_PREFETCH_STORE_ID">
+            <column name="store_id"/>
+        </constraint>
     </table>
 </schema>

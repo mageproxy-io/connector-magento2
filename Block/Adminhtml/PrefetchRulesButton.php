@@ -12,14 +12,13 @@ namespace Mageproxy\Connector\Block\Adminhtml;
 
 use Magento\Framework\UrlInterface;
 use Magento\Framework\View\Element\UiComponent\Control\ButtonProviderInterface;
-use Mageproxy\Connector\Api\Data\RecordingInterface;
 
-class ScheduleNewRecordingButton implements ButtonProviderInterface
+class PrefetchRulesButton implements ButtonProviderInterface
 {
     private UrlInterface $urlBuilder;
 
     public function __construct(
-        UrlInterface $urlBuilder,
+        UrlInterface $urlBuilder
     ) {
         $this->urlBuilder = $urlBuilder;
     }
@@ -27,14 +26,13 @@ class ScheduleNewRecordingButton implements ButtonProviderInterface
     public function getButtonData()
     {
         return [
-            'label' => __('Schedule New Recording'),
-            // 'disabled' => $this->config->getRunMode() !== RunMode::MODE_MANUAL,
+            'label' => __('Prefetch Rules'),
+            'class' => 'secondary',
             'on_click' => sprintf(
                 "location.href = '%s';",
-                $this->urlBuilder->getUrl('*/recording/create', ['mode' => RecordingInterface::MODE_SCHEDULED])
+                $this->urlBuilder->getUrl('mageproxy/prefetch/index')
             ),
-            'class' => 'action',
-            'sort_order' => 20,
+            'sort_order' => 5
         ];
     }
 }

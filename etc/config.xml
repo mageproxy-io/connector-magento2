@@ -40,11 +40,7 @@
                 <minify_html>1</minify_html>
                 <recording_flush_fpc>0</recording_flush_fpc>
                 <preload_bundles>0</preload_bundles>
-                <prefetch_rules>
-                    <![CDATA[
-a[href*="/customer/account/create"]|customer.account.create|interaction
-                    ]]>
-                </prefetch_rules>
+                <prefetch_enabled>0</prefetch_enabled>
             </settings>
         </mageproxy_connector>
     </default>

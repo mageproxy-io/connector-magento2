@@ -147,11 +147,14 @@
                         <config_path>mageproxy_connector/settings/preload_bundles</config_path>
                         <comment>Preloading the core bundle can improve performance. NOTE: this will only apply when the configuration to move scripts to the bottom of the page is enabled.</comment>
                     </field>
-                    <field id="prefetch_rules" type="textarea" translate="label" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
-                        <label>Prefetch Rules</label>
-                        <config_path>mageproxy_connector/settings/prefetch_rules</config_path>
-                        <comment><![CDATA[Each line contains a rule. Expected format: selector|bundle pattern[|prefetch_on ('viewport'|'interaction')]]]></comment>
+                    
+                    <field id="prefetch_enabled" type="select" translate="label comment" sortOrder="45" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                        <label>Enable Prefetch Rules</label>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                        <config_path>mageproxy_connector/settings/prefetch_enabled</config_path>
+                        <frontend_model>Mageproxy\Connector\Block\Adminhtml\System\Config\PrefetchEnabled</frontend_model>
                     </field>
+
                 </group>
             </group>
         </section>

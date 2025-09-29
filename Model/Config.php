@@ -53,7 +53,7 @@ class Config
     public const XML_PATH_RECORD_SCHEDULE = 'mageproxy_connector/settings/record_schedule';
     public const XML_PATH_RECORDING_FLUSH_FPC = 'mageproxy_connector/settings/recording_flush_fpc';
     public const XML_PATH_PRELOAD_BUNDLES = 'mageproxy_connector/settings/preload_bundles';
-    public const XML_PATH_PREFETCH_RULES = 'mageproxy_connector/settings/prefetch_rules';
+    public const XML_PATH_PREFETCH_ENABLED = 'mageproxy_connector/settings/prefetch_enabled';
 
     private ScopeConfigInterface $scopeConfig;
     private MutableScopeConfigInterface $mutableScopeConfig;
@@ -242,24 +242,13 @@ class Config
         return $this->scopeConfig->isSetFlag(self::XML_PATH_PRELOAD_BUNDLES, ScopeInterface::SCOPE_STORE, $storeId);
     }
 
-    public function getPrefetchRules($storeId = null): array
+    /**
+     * @param null $storeId
+     * @return bool
+     */
+    public function getPrefetchEnabled($storeId = null): bool
     {
-        $rulesConf = $this->scopeConfig->getValue(self::XML_PATH_PREFETCH_RULES, ScopeInterface::SCOPE_STORE, $storeId);
-        $rulesConf = trim($rulesConf);
-        if (!empty($rulesConf)) {
-            return array_map(function ($line) {
-                $line = trim($line);
-                $rule = explode('|', $line);
-                if (count($rule) < 2 || count($rule) > 3) {
-                    throw new \InvalidArgumentException(sprintf('Invalid prefetch rule: "%s". Expected format: "selector|bundle pattern[|prefetch_on]"', $line));
-                }
-                return [
-                    'selector' => trim($rule[0]),
-                    'bundle' => trim($rule[1]),
-                    'prefetch_on' => isset($rule[2]) ? trim($rule[2]) : 'interaction',
-                ];
-            }, preg_split('/\r\n|\n|\r/', $rulesConf, -1, PREG_SPLIT_NO_EMPTY));
-        }
-        return [];
+        return $this->scopeConfig->isSetFlag(self::XML_PATH_PREFETCH_ENABLED, ScopeInterface::SCOPE_STORE, $storeId);
     }
+
 }

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Mageproxy Connector for Magento2.
+  ~
+  ~ @package    Mageproxy_Connector
+  ~ @copyright  Copyright (c) 2025 Iframe Co Ltd
+  ~ @license    See LICENSE.txt for license details
+  -->
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">mageproxy_prefetch_listing.mageproxy_prefetch_listing_data_source</item>
+        </item>
+    </argument>
+    <settings>
+        <spinner>mageproxy_prefetch_listing_columns</spinner>
+        <deps>
+            <dep>mageproxy_prefetch_listing.mageproxy_prefetch_listing_data_source</dep>
+        </deps>
+        <buttons>
+            <button name="back">
+                <label translate="true">Back</label>
+                <url path="mageproxy/recording/index"/>
+                <class>back</class>
+            </button>
+            <button name="add">
+                <label translate="true">Add Prefetch Rules</label>
+                <url path="mageproxy/prefetch/new"/>
+                <class>primary</class>
+            </button>
+        </buttons>
+    </settings>
+    <dataSource name="mageproxy_prefetch_listing_data_source" component="Magento_Ui/js/grid/provider">
+        <settings>
+            <storageConfig>
+                <param name="indexField" xsi:type="string">prefetch_id</param>
+            </storageConfig>
+            <updateUrl path="mui/index/render"/>
+        </settings>
+        <dataProvider class="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider" name="mageproxy_prefetch_listing_data_source">
+            <settings>
+                <requestFieldName>id</requestFieldName>
+                <primaryFieldName>main_table.prefetch_id</primaryFieldName>
+            </settings>
+        </dataProvider>
+    </dataSource>
+    <columns name="mageproxy_prefetch_listing_columns">
+        <column name="prefetch_id" sortOrder="10">
+            <settings>
+                <filter>textRange</filter>
+                <label translate="true">ID</label>
+            </settings>
+        </column>
+        <column name="store_id" class="Mageproxy\Connector\Ui\Component\Listing\Column\PrefetchStore" sortOrder="20">
+            <settings>
+                <label translate="true">Store View</label>
+                <bodyTmpl>ui/grid/cells/html</bodyTmpl>
+                <sortable>false</sortable>
+            </settings>
+        </column>
+        <column name="rules_cnt" sortOrder="30">
+            <settings>
+                <label translate="true">Rules</label>
+                <sortable>false</sortable>
+            </settings>
+        </column>
+        <actionsColumn name="actions" class="Mageproxy\Connector\Ui\Component\Listing\Column\PrefetchActions" sortOrder="100">
+            <settings>
+                <indexField>prefetch_id</indexField>
+            </settings>
+        </actionsColumn>
+    </columns>
+</listing>

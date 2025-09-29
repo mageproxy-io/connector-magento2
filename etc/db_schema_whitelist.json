@@ -30,6 +30,18 @@
             "MAGEPROXY_RECORDING_STORE_ID_STORE_STORE_ID": true
         }
     },
+    "mageproxy_prefetch": {
+        "column": {
+            "prefetch_id": true,
+            "store_id": true,
+            "rules": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "MAGEPROXY_PREFETCH_STORE_ID_STORE_STORE_ID": true,
+            "MAGEPROXY_PREFETCH_STORE_ID": true
+        }
+    },
     "mageproxy_dependency": {
         "column": {
             "dependency_id": true,

@@ -38,6 +38,7 @@ class CreateNewRecordingButton implements ButtonProviderInterface
             'label' => __('Start New Recording'),
             'disabled' => $this->config->getRunMode() !== RunMode::MODE_MANUAL,
             'class' => 'save primary',
+            'sort_order' => 10,
             'on_click' => sprintf(
                 "location.href = '%s';",
                 $this->urlBuilder->getUrl('*/recording/create', ['mode' => RecordingInterface::MODE_IMMEDIATE])

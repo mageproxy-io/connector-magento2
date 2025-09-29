@@ -18,8 +18,9 @@
             <dep>mageproxy_recording_listing.mageproxy_recording_listing_data_source</dep>
         </deps>
         <buttons>
-            <button name="createNewRecording" class="\Mageproxy\Connector\Block\Adminhtml\CreateNewRecordingButton" />
+            <button name="createNewRecording" class="\Mageproxy\Connector\Block\Adminhtml\CreateNewRecordingButton"/>
             <button name="scheduleNewRecording" class="Mageproxy\Connector\Block\Adminhtml\ScheduleNewRecordingButton" />
+            <button name="prefetchRules" class="Mageproxy\Connector\Block\Adminhtml\PrefetchRulesButton" />
             <button name="refresh">
                 <url path="*/*/"/>
                 <label translate="true">Refresh</label>
