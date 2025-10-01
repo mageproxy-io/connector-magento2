@@ -46,8 +46,9 @@ class DeploymentModeValidator implements ValidatorInterface
     public function validate(): array
     {
         $errors = [];
+        /** @var \Magento\Framework\RequireJs\Config $config */
         $config = $this->rjsConfigFactory->create();
-        $path = $config->getMinResolverRelativePath();
+        $path = $config->getMapFileRelativePath();
         $dir = $this->filesystem->getDirectoryRead(DirectoryList::STATIC_VIEW);
         if ($dir->isExist($path)) {
             $errors[] = __(
