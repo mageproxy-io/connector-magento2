@@ -12,21 +12,32 @@ namespace Mageproxy\Connector\Model\Config;
 
 use Magento\Framework\App\Filesystem\DirectoryList;
 use Magento\Framework\Filesystem;
-use Magento\Framework\RequireJs\Config;
+use Magento\Framework\RequireJs\ConfigFactory;
 
 class DeploymentModeValidator implements ValidatorInterface
 {
-    private Config $rjsConfig;
-    private Filesystem $filesystem;
-
     const ERROR_CODE = 'DEPLOYMENT_MODE_VALIDATION_ERROR';
 
+    /**
+     * @var \Magento\Framework\Filesystem
+     */
+    private Filesystem $filesystem;
+
+    /**
+     * @var \Magento\Framework\RequireJs\ConfigFactory
+     */
+    private ConfigFactory $rjsConfigFactory;
+
+    /**
+     * @param \Magento\Framework\Filesystem $filesystem
+     * @param \Magento\Framework\RequireJs\ConfigFactory $rjsConfigFactory
+     */
     public function __construct(
-        Config $rjsConfig,
-        Filesystem $filesystem
+        Filesystem $filesystem,
+        ConfigFactory $rjsConfigFactory
     ) {
-        $this->rjsConfig = $rjsConfig;
         $this->filesystem = $filesystem;
+        $this->rjsConfigFactory = $rjsConfigFactory;
     }
 
     /**
@@ -35,16 +46,15 @@ class DeploymentModeValidator implements ValidatorInterface
     public function validate(): array
     {
         $errors = [];
-
-        $relPath = $this->rjsConfig->getMapFileRelativePath();
-        $dir = $this->filesystem->getDirectoryWrite(DirectoryList::STATIC_VIEW);
-        if ($dir->isExist($relPath)) {
+        $config = $this->rjsConfigFactory->create();
+        $path = $config->getMinResolverRelativePath();
+        $dir = $this->filesystem->getDirectoryRead(DirectoryList::STATIC_VIEW);
+        if ($dir->isExist($path)) {
             $errors[] = __(
                 'You have deployed static assets using compact mode. '
                 . 'Please run static content deploy with standard or quick mode'
             );
         }
-
         return $errors;
     }
 
