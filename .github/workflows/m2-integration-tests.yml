@@ -19,7 +19,7 @@ jobs:
       matrix:
         php: [ '8.2' ]
         magento: [ '2.4.7' ]
-    uses: extdn/github-actions-m2/.github/workflows/magento-integration-tests.yml@v1
+    uses: extdn/github-actions-m2/.github/workflows/magento-integration-tests.yml@main
     with:
       php: ${{ matrix.php }}
       magento: ${{ matrix.magento }}
