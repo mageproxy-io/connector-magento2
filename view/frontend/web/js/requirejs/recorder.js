@@ -119,43 +119,104 @@ define('mageproxy/requirejs-recorder', [ 'module' ], function (module) {
             return args;
         }
 
+        const trackQueue = [];
+        let flushScheduled = false;
+        let worker = null;
+
+        function scheduleFlush() {
+            if (flushScheduled) { return; }
+            flushScheduled = true;
+            const run = function () {
+                flushScheduled = false;
+                flushQueue();
+            };
+            if ('requestIdleCallback' in window) {
+                try { window.requestIdleCallback(run, { timeout: 2000 }); return; } catch (e) {}
+            }
+            setTimeout(run, 0);
+        }
+
+        function ensureWorker() {
+            if (worker !== null) { return worker; }
+            try {
+                // Inline worker to perform fetch requests off the main thread
+                var code = [
+                    'self.onmessage = function(e){',
+                    '  var urls = e.data || [];',
+                    '  for (var i=0;i<urls.length;i++){',
+                    '    try {',
+                    "      fetch(urls[i], { method: 'GET', mode: 'cors', credentials: 'omit', keepalive: true }).catch(function(){});",
+                    '    } catch (ex) {}',
+                    '  }',
+                    '};'
+                ].join('\n');
+                var blob = new Blob([ code ], { type: 'text/javascript' });
+                var wurl = URL.createObjectURL(blob);
+                worker = new Worker(wurl);
+                try { URL.revokeObjectURL(wurl); } catch (e) {}
+            } catch (e) {
+                worker = null;
+            }
+            return worker;
+        }
+
+        function flushQueue() {
+            if (!trackQueue.length) { return; }
+            const batch = trackQueue.splice(0, trackQueue.length);
+            const w = ensureWorker();
+            if (w) {
+                try { w.postMessage(batch); return; } catch (e) {}
+            }
+            // Fallback on main thread: prefer fetch (CORS) to avoid image decode/layout
+            for (let i = 0; i < batch.length; i++) {
+                try {
+                    if ('fetch' in window) {
+                        fetch(batch[i], { method: 'GET', mode: 'cors', credentials: 'omit', keepalive: true }).catch(function(){});
+                    } else {
+                        addTrackingPixel(batch[i]);
+                    }
+                } catch (e) {
+                    // Final fallback
+                    addTrackingPixel(batch[i]);
+                }
+            }
+        }
+
+        function enqueueTrackUrl(url) {
+            trackQueue.push(url);
+            scheduleFlush();
+        }
+
+        // Ensure pending queue is flushed on page hide/unload
+        try {
+            document.addEventListener('visibilitychange', function () {
+                if (document.visibilityState === 'hidden') { flushQueue(); }
+            }, { capture: true, passive: true });
+            window.addEventListener('pagehide', function () { flushQueue(); }, { capture: true, passive: true });
+        } catch (e) {}
+
         /**
-         * Tracks a dependency against the mageproxy recorder
+         * Tracks a dependency against the mageproxy recorder (non-blocking)
          * @param args
          */
         function track(args) {
-
-            let url = new URL(moduleConfig.trackUrl);
+            var url = new URL(moduleConfig.trackUrl);
             for (const [ key, value ] of Object.entries(args)) {
                 url.searchParams.append(key, value);
             }
-
-            addTrackingPixel(url.toString());
-
+            enqueueTrackUrl(url.toString());
         }
 
+        // Retained for legacy fallback and compatibility when fetch/worker unavailable
         function addTrackingPixel(url) {
             const img = new Image();
-            if ('decoding' in img) {
-                img.decoding = 'async';
-            }
-            if ('fetchPriority' in img) {
-                img.fetchPriority = 'low';
-            }
-            if ('crossOrigin' in img) {
-                img.crossOrigin = 'anonymous';
-            } else {
-                try { img.setAttribute('crossorigin', 'anonymous'); } catch (e) {}
-            }
-            if ('referrerPolicy' in img) {
-                img.referrerPolicy = 'no-referrer';
-            }
-            const cleanup = () => {
-                pixelPool.delete(img);
-            };
-            img.onload = cleanup;
-            img.onerror = cleanup;
-            img.onabort = cleanup;
+            if ('decoding' in img) { img.decoding = 'async'; }
+            if ('fetchPriority' in img) { img.fetchPriority = 'low'; }
+            if ('crossOrigin' in img) { img.crossOrigin = 'anonymous'; }
+            else { try { img.setAttribute('crossorigin', 'anonymous'); } catch (e) {} }
+            // Do not force a no-referrer policy; allow default/referrer for auditing
+            const cleanup = () => { pixelPool.delete(img); };
+            img.onload = cleanup; img.onerror = cleanup; img.onabort = cleanup;
             pixelPool.add(img);
             img.src = url;
         }
@@ -170,6 +231,7 @@ define('mageproxy/requirejs-recorder', [ 'module' ], function (module) {
         function recordNonAmd() {
             for (const [ moduleId, sft ] of Object.entries(moduleConfig.nonAmd)) {
                 const args = urlArgs(moduleId, sft);
+                // Queue instead of immediate network to avoid blocking
                 track(args);
             }
         }

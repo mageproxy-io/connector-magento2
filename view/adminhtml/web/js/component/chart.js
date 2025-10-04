@@ -94,22 +94,17 @@ define([
                         x: {
                             type: 'timeseries',
                             time: {
-                                unit: 'hour', // or 'day' if you prefer
+                                unit: 'hour',
                                 displayFormats: {
-                                    hour: 'MMM d, HH:mm', // e.g., "May 5, 14:00"
-                                    day: 'MMM d',          // for daily view
+                                    hour: 'MMM D, HH:mm',
+                                    day: 'MMM D',
                                 },
-                                tooltipFormat: 'MMM d, HH:mm:ss'
+                                tooltipFormat: 'MMM D, HH:mm:ss'
                             },
                             title: {
                                 display: true,
                                 text: 'Time'
                             },
-                            adapters: {
-                                date: {
-                                    timezone: 'Asia/Tokyo', // Set the timezone to Asia/Tokyo
-                                }
-                            }
                         },
                         y: {
                             type: 'linear',
