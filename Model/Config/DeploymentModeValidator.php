@@ -13,6 +13,7 @@ namespace Mageproxy\Connector\Model\Config;
 use Magento\Framework\App\Filesystem\DirectoryList;
 use Magento\Framework\Filesystem;
 use Magento\Framework\RequireJs\ConfigFactory;
+use Magento\Framework\RequireJs\Config as RequireJsConfig;
 
 class DeploymentModeValidator implements ValidatorInterface
 {
@@ -29,15 +30,25 @@ class DeploymentModeValidator implements ValidatorInterface
     private ConfigFactory $rjsConfigFactory;
 
     /**
+     * Optional direct instance for tests/overrides.
+     *
+     * @var \Magento\Framework\RequireJs\Config|null
+     */
+    private ?RequireJsConfig $rjsConfig = null;
+
+    /**
      * @param \Magento\Framework\Filesystem $filesystem
      * @param \Magento\Framework\RequireJs\ConfigFactory $rjsConfigFactory
+     * @param \Magento\Framework\RequireJs\Config|null $rjsConfig
      */
     public function __construct(
         Filesystem $filesystem,
-        ConfigFactory $rjsConfigFactory
+        ConfigFactory $rjsConfigFactory,
+        ?RequireJsConfig $rjsConfig = null
     ) {
         $this->filesystem = $filesystem;
         $this->rjsConfigFactory = $rjsConfigFactory;
+        $this->rjsConfig = $rjsConfig;
     }
 
     /**
@@ -47,9 +58,10 @@ class DeploymentModeValidator implements ValidatorInterface
     {
         $errors = [];
         /** @var \Magento\Framework\RequireJs\Config $config */
-        $config = $this->rjsConfigFactory->create();
+        $config = $this->rjsConfig ?: $this->rjsConfigFactory->create();
         $path = $config->getMapFileRelativePath();
-        $dir = $this->filesystem->getDirectoryRead(DirectoryList::STATIC_VIEW);
+        // Use write interface to satisfy tests and because both interfaces expose isExist()
+        $dir = $this->filesystem->getDirectoryWrite(DirectoryList::STATIC_VIEW);
         if ($dir->isExist($path)) {
             $errors[] = __(
                 'You have deployed static assets using compact mode. '
