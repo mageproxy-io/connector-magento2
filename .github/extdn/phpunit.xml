@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit backupGlobals="false"
+         backupStaticAttributes="false"
+         beStrictAboutTestsThatDoNotTestAnything="false"
+         beStrictAboutOutputDuringTests="false"
+         colors="true"
+         verbose="true"
+         bootstrap="/var/www/magento2ce/dev/tests/integration/framework/bootstrap.php">
+
+    <testsuites>
+        <testsuite name="Mageproxy_Connector Integration">
+            <!-- Run the module's integration tests -->
+            <directory suffix="Test.php">/var/www/magento2ce/vendor/mageproxy/connector-magento2/Test/Integration</directory>
+        </testsuite>
+    </testsuites>
+
+    <php>
+        <ini name="display_errors" value="1"/>
+        <ini name="display_startup_errors" value="1"/>
+        <ini name="memory_limit" value="-1"/>
+        <env name="MAGENTO_INSTALL_BASE" value="/var/www/magento2ce"/>
+    </php>
+</phpunit>
+

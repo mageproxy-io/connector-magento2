@@ -41,4 +41,5 @@ jobs:
           module_name: Mageproxy_Connector
           composer_name: mageproxy/connector-magento2
           magento_version: '2.4.6-p3'
-
+          composer_version: '2'
+          phpunit_file: '.github/extdn/phpunit.xml'
