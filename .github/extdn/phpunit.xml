@@ -23,10 +23,10 @@
         <ini name="display_startup_errors" value="1"/>
         <ini name="memory_limit" value="-1"/>
         <ini name="date.timezone" value="UTC"/>
-        <const name="TESTS_INSTALL_CONFIG_FILE" value="/var/www/magento2ce/dev/tests/integration/etc/install-config-mysql.php"/>
-        <const name="TESTS_POST_INSTALL_SETUP_COMMAND_CONFIG_FILE" value="/var/www/magento2ce/dev/tests/integration/etc/post-install-setup-command-config.php"/>
-        <const name="TESTS_GLOBAL_CONFIG_FILE" value="/var/www/magento2ce/dev/tests/integration/etc/config-global.php"/>
-        <const name="TESTS_GLOBAL_CONFIG_DIR" value="/var/www/magento2ce/app/etc"/>
+        <const name="TESTS_INSTALL_CONFIG_FILE" value="etc/install-config-mysql.php"/>
+        <const name="TESTS_POST_INSTALL_SETUP_COMMAND_CONFIG_FILE" value="etc/post-install-setup-command-config.php"/>
+        <const name="TESTS_GLOBAL_CONFIG_FILE" value="etc/config-global.php"/>
+        <const name="TESTS_GLOBAL_CONFIG_DIR" value="../../../app/etc"/>
         <const name="TESTS_CLEANUP" value="enabled"/>
         <const name="USE_OVERRIDE_CONFIG" value="enabled"/>
     </php>
