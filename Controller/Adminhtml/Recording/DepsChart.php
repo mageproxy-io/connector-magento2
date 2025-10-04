@@ -14,7 +14,6 @@ use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
 use Magento\Framework\App\Action\HttpGetActionInterface;
 use Magento\Framework\Controller\ResultFactory;
-use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
 use Mageproxy\Connector\Api\OptimizationRepositoryInterface;
 use Mageproxy\Connector\Api\RecordingRepositoryInterface;
 use Mageproxy\Connector\Model\ApiClient\GetRecordingJsDepsCountTsInterface;
@@ -26,20 +25,17 @@ class DepsChart extends Action implements HttpGetActionInterface
     private GetRecordingJsDepsCountTsInterface $getRecordingJsDepsCountTs;
     private RecordingRepositoryInterface $recordingRepository;
     private OptimizationRepositoryInterface $optimizationRepository;
-    private TimezoneInterface $tz;
 
     public function __construct(
         Context $context,
         GetRecordingJsDepsCountTsInterface $getRecordingJsDepsCountTs,
         RecordingRepositoryInterface $recordingRepository,
-        OptimizationRepositoryInterface $optimizationRepository,
-        TimezoneInterface $tz
+        OptimizationRepositoryInterface $optimizationRepository
     ) {
         parent::__construct($context);
         $this->getRecordingJsDepsCountTs = $getRecordingJsDepsCountTs;
         $this->recordingRepository = $recordingRepository;
         $this->optimizationRepository = $optimizationRepository;
-        $this->tz = $tz;
     }
 
     public function execute()
