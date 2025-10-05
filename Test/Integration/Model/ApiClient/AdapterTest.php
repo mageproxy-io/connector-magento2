@@ -53,7 +53,7 @@ class AdapterTest extends TestCase
             ->method('post')
             ->with(
                 "https://www.example.com/v1/services/$serviceId/record",
-                '{"service_id":"123123-1231231-12312","domain":"example.com"}'
+                '{"service_id":"123123-1231231-12312","domain":"example.com","static_version":"1759579168"}'
             );
 
         $curlMock->expects(self::once())
@@ -80,6 +80,7 @@ class AdapterTest extends TestCase
         $requestObject = $objectManager->create(PostNewRecordingRequestInterface::class);
         $requestObject->setServiceId('123123-1231231-12312');
         $requestObject->setDomain('example.com');
+        $requestObject->setStaticVersion('1759579168');
         $response = $client->post($requestObject, ['id' => $serviceId]);
         self::assertSame('uuid-recording', $response->getId());
     }
