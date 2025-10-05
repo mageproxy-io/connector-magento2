@@ -10,6 +10,8 @@ declare(strict_types=1);
 
 namespace Mageproxy\Connector\Model\ApiClient;
 
+use Magento\Framework\Exception\NotFoundException;
+
 class DeleteOptimization implements DeleteOptimizationInterface
 {
     /**
@@ -25,6 +27,11 @@ class DeleteOptimization implements DeleteOptimizationInterface
 
     public function execute(string $optimizationId): void
     {
-        $this->adapter->delete(['id' => $optimizationId]);
+        try {
+            $this->adapter->delete(['id' => $optimizationId]);
+        } catch (NotFoundException $e) {
+            // Optimization is already absent remotely; treat as success
+            return;
+        }
     }
 }

@@ -32,7 +32,18 @@ the following command:
 
 ```shell
 cd dev/tests/integration
-../../vendor/bin/phpunit ../../../vendor/mageproxy/connector-magento2/tests/integration
+../../vendor/bin/phpunit ../../../vendor/mageproxy/connector-magento2/Test/Integration
+```
+
+## Production deployment
+After installing the package, enable the module and run setup upgrade, then compile and deploy static content, and finally flush caches:
+
+```shell
+bin/magento module:enable Mageproxy_Connector
+bin/magento setup:upgrade
+bin/magento setup:di:compile
+bin/magento setup:static-content:deploy -f
+bin/magento cache:flush
 ```
 
 # License

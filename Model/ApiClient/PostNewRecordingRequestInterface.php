@@ -36,4 +36,13 @@ interface PostNewRecordingRequestInterface extends ExtensibleDataInterface
      */
     public function getDomain(): string;
 
+    /**
+     * @return void
+     */
+    public function setStaticVersion(string $staticVersion): void;
+
+    /**
+     * @return string
+     */
+    public function getStaticVersion(): string;
 }

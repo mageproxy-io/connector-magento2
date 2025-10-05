@@ -65,7 +65,7 @@ class RecordingManager implements RecordingManagerInterface
         CollectionFactory $dependencyCollectionFactory,
         GetRecordingJsDepsCountInterface $getRecordingJsDepsCountApiClient,
         GetRecordingSnapshotInterface $getRecordingSnapshotApiClient,
-        DeleteRecordingInterface $deleteRecordingApiClient
+        DeleteRecordingInterface $deleteRecordingApiClient,
     ) {
         $this->recordingRepository = $recordingRepository;
         $this->statusOptions = $statusOptions;

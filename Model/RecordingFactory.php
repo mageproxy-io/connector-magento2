@@ -68,6 +68,7 @@ class RecordingFactory
     {
         $request = $this->postNewRecordingRequestFactory->create();
         $request->setServiceId($this->config->getServiceId());
+        $request->setStaticVersion($this->deployedVersion->getValue());
         $baseUrl = $this->storeManager->getStore($storeId)->getBaseUrl();
 
         // Send the domain for the requested recording

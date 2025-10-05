@@ -18,19 +18,6 @@
                 <value id="mageproxy-io" type="host">*.mageproxy.io</value>
             </values>
         </policy>
-        <!-- Allow inline-created Web Workers via blob: URL -->
-        <policy id="worker-src">
-            <values>
-                <value id="blob-scheme" type="scheme">blob:</value>
-            </values>
-        </policy>
-        <!-- Fallback for older UAs that gate workers under child-src -->
-        <policy id="child-src">
-            <values>
-                <value id="blob-scheme" type="scheme">blob:</value>
-            </values>
-        </policy>
-        <!-- Allow fetch() from the recorder endpoint domain -->
         <policy id="connect-src">
             <values>
                 <value id="mageproxy-io" type="host">*.mageproxy.io</value>

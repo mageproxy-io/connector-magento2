@@ -10,6 +10,8 @@ declare(strict_types=1);
 
 namespace Mageproxy\Connector\Model\ApiClient;
 
+use Magento\Framework\Exception\NotFoundException;
+
 class DeleteRecording implements DeleteRecordingInterface
 {
     private Adapter $adapter;
@@ -22,6 +24,11 @@ class DeleteRecording implements DeleteRecordingInterface
 
     public function execute(string $recordingId): void
     {
-        $this->adapter->delete(['id' => $recordingId]);
+        try {
+            $this->adapter->delete(['id' => $recordingId]);
+        } catch (NotFoundException $e) {
+            // Recording is already absent remotely; treat as success
+            return;
+        }
     }
 }

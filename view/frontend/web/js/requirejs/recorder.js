@@ -142,12 +142,25 @@ define('mageproxy/requirejs-recorder', [ 'module' ], function (module) {
                 // Inline worker to perform fetch requests off the main thread
                 var code = [
                     'self.onmessage = function(e){',
-                    '  var urls = e.data || [];',
-                    '  for (var i=0;i<urls.length;i++){',
-                    '    try {',
-                    "      fetch(urls[i], { method: 'GET', mode: 'cors', credentials: 'omit', keepalive: true }).catch(function(){});",
-                    '    } catch (ex) {}',
+                    '  var urls = (e && e.data && e.data.urls) ? e.data.urls : (Array.isArray(e && e.data) ? e.data : []);',
+                    '  var MAX = 6;',
+                    '  var inFlight = 0, idx = 0;',
+                    '  function pump(){',
+                    '    if (idx >= urls.length) { return; }',
+                    '    while (inFlight < MAX && idx < urls.length) {',
+                    '      var u = urls[idx++];',
+                    '      inFlight++;',
+                    '      try {',
+                    "        fetch(u, { method: 'GET', mode: 'cors', credentials: 'omit' })",
+                    "          .then(function(){}, function(){})",
+                    "          .then(function(){ inFlight--; pump(); });",
+                    '      } catch (ex) {',
+                    '        inFlight--;',
+                    '        pump();',
+                    '      }',
+                    '    }',
                     '  }',
+                    '  pump();',
                     '};'
                 ].join('\n');
                 var blob = new Blob([ code ], { type: 'text/javascript' });
@@ -165,13 +178,13 @@ define('mageproxy/requirejs-recorder', [ 'module' ], function (module) {
             const batch = trackQueue.splice(0, trackQueue.length);
             const w = ensureWorker();
             if (w) {
-                try { w.postMessage(batch); return; } catch (e) {}
+                try { w.postMessage({ urls: batch }); return; } catch (e) {}
             }
             // Fallback on main thread: prefer fetch (CORS) to avoid image decode/layout
             for (let i = 0; i < batch.length; i++) {
                 try {
                     if ('fetch' in window) {
-                        fetch(batch[i], { method: 'GET', mode: 'cors', credentials: 'omit', keepalive: true }).catch(function(){});
+                        fetch(batch[i], { method: 'GET', mode: 'cors', credentials: 'omit' }).catch(function(){});
                     } else {
                         addTrackingPixel(batch[i]);
                     }

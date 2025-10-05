@@ -33,4 +33,14 @@ class PostNewRecordingRequest extends DataObject implements PostNewRecordingRequ
     {
         $this->setData('domain', $domain);
     }
+
+    public function setStaticVersion(string $staticVersion): void
+    {
+        $this->setData('static_version', $staticVersion);
+    }
+
+    public function getStaticVersion(): string
+    {
+        return $this->getData('static_version');
+    }
 }

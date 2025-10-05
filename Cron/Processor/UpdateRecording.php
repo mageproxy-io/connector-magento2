@@ -10,6 +10,8 @@ declare(strict_types=1);
 
 namespace Mageproxy\Connector\Cron\Processor;
 
+use Mageproxy\Connector\Api\Data\OptimizationInterface;
+use Mageproxy\Connector\Api\OptimizationManagerInterface;
 use Mageproxy\Connector\Api\RecordingManagerInterface;
 use Mageproxy\Connector\Cron\AbstractProcessor;
 use Mageproxy\Connector\Model\ProviderInterface;
@@ -19,15 +21,18 @@ class UpdateRecording extends AbstractProcessor
 {
     private Status $status;
     private RecordingManagerInterface $recordingManager;
+    private OptimizationManagerInterface $optimizationManager;
 
     public function __construct(
         RecordingManagerInterface $recordingManager,
+        OptimizationManagerInterface $optimizationManager,
         ProviderInterface $provider,
         Status $status
     ) {
         parent::__construct($provider);
         $this->status = $status;
         $this->recordingManager = $recordingManager;
+        $this->optimizationManager = $optimizationManager;
     }
 
     /**
@@ -47,6 +52,12 @@ class UpdateRecording extends AbstractProcessor
         $origStatus = $entity->getStatus();
         if ($this->recordingManager->shouldFinish($entity)) {
             $this->recordingManager->finish($entity); // * -> FINISHED
+            if ($this->optimizationManager->deploymentInProgress($entity->getStoreId())) {
+                $optimization = $this->optimizationManager->getDeployedOptimization($entity->getStoreId());
+                try {
+                    $this->optimizationManager->revert($optimization, OptimizationInterface::STATUS_FINISHED);
+                } catch (\Exception $e) {}
+            }
         } elseif ($this->recordingManager->wasMissed($entity)) {
             $this->recordingManager->missed($entity); // PENDING -> MISSED
         } elseif ($this->recordingManager->shouldStart($entity) || $this->recordingManager->shouldRestart($entity)) {
